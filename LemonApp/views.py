@@ -67,8 +67,8 @@ def elements(request):
 def generic(request):
 	return render(request,'generic.html')
 	
-def home(request):
-	return render(request,'index.html')
+# def home(request):
+# 	return render(request,'index.html')
 
 def create(request):
 	return render(request,'create.html')
