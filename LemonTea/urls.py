@@ -35,5 +35,6 @@ urlpatterns = [
     url(r'^create$', views.create, name="create"),
     url(r'^logout$', views.logout_view, name="logout"),
     url(r'^community', views.community ,name='community'),
+    url(r'^page',views.page, name="page"),
     
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -1,0 +1,45 @@
+{%include "head.html"%}
+
+<body>
+	{% include "HeaderMenu.html"%}
+	<div class = "ui main container">
+		<!-- 帖子主题 -->
+		<div class="ui segment" id="example1">
+    		<div class="ui sticky" >
+      			<h3 class="ui header">帖子题目</h3>
+      			    <div class="image">
+      					<img src="../static/images/HighPerformance.png">
+    				</div>
+      			<p>主要内容</p>
+    		</div>
+   		</div>
+   		<!--  End 帖子主题-->
+		<div class="ui comments">
+          <h3 class="ui dividing header" style="width:80rem">讨论</h3>
+            <div class="comment">
+            	<a class="avatar">
+            	<img src="/images/avatar/small/matt.jpg">
+            	</a>
+          			<div class="content">
+          				<a class="author">Matt</a>
+          				<div class="metadata">
+          				<span class="date">今天下午 5:42</span>
+          				</div>
+      					<div class="text" style="width:80rem">太赞了！ </div>
+      					<div class="actions">
+        					<a class="reply">Reply</a>
+      					</div>
+   		 			</div>
+ 			 </div>
+
+  		<form class="ui reply form">
+    		<div class="field" style="width:80rem">
+      			<textarea></textarea>
+    		</div>
+    		<div class="ui blue labeled submit icon button"><i class="icon edit"></i>回复</div>
+  		</form>
+</div>
+
+	</div>
+</body>
+</html>

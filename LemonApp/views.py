@@ -105,3 +105,7 @@ def school(request):
 def community(request):
 	context = {}
 	return render(request,'community.html',context)
+
+def page(request):
+	context = {}
+	return render(request,'page.html',context)
