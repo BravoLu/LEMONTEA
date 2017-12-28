@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Hello Semantic!</title>
+    <link rel="stylesheet" type="text/css" href="static/semantic.css">
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.js"></script>
+    <script src="static/semantic.js"></script>
+    <script>
+    $(document).ready(function() {
+        // 鼠标放到 dropdown 时显示下拉菜单，默认只有点击后才显示
+        $('.dropdown.item').dropdown({
+            on: 'hover'
+        });
+    });
+    </script>
+    <style type="text/css">
+    .hidden.menu {
+        display: none;
+    }
+    /* masthead */
+
+    .ui.masthead.segment {
+        border-radius: 0;
+        margin: 0rem 0em;
+        min-height: 700px;
+        padding: 1em 0em;
+        margin-top: 0em;
+    }
+
+    .masthead .logo.item img {
+        margin-right: 1em;
+    }
+
+    .masthead .ui.menu .ui.button {
+        margin-left: 0.5em;
+    }
+
+    .masthead h1.ui.header {
+        margin-top: 3em;
+        margin-bottom: 0em;
+        font-size: 4em;
+        font-weight: normal;
+    }
+
+    .masthead h2 {
+        font-size: 1.7em;
+        font-weight: normal;
+    }
+    /* .vertical.stripe */
+
+    .ui.vertical.stripe.segment {
+        margin: 0rem 0em;
+    }
+
+    .ui.vertical.stripe {
+        padding: 2em 0em;
+    }
+
+    .ui.vertical.stripe>.text.container {
+        text-align: center;
+        width: 300px;
+        margin: auto;
+    }
+
+    .ui.vertical.stripe>.text.container h1 {
+        font-size: 3em
+    }
+
+    .ui.vertical.stripe>.grid {
+        margin-top: -1rem;
+        margin-bottom: -1rem;
+        margin-left: 2rem;
+        margin-right: 2rem;
+    }
+
+    .ui.vertical.stripe>.grid>.row {
+        padding-top: 4rem;
+    }
+
+    .ui.vertical.stripe h3 {
+        font-size: 2em;
+    }
+
+    .ui.vertical.stripe .button+h3,
+    .ui.vertical.stripe p+h3 {
+        margin-top: 3em;
+    }
+
+    .ui.vertical.stripe .floated.image {
+        clear: both;
+    }
+
+    .ui.vertical.stripe p {
+        font-size: 1.33em;
+    }
+
+    .ui.vertical.stripe .horizontal.divider {
+        margin: 3em 0em;
+    }
+    /* .quote.stripe */
+
+    .quote.stripe.segment {
+        padding: 0em;
+    }
+
+    .quote.stripe.segment .grid .column {
+        padding-top: 5em;
+        padding-bottom: 5em;
+    }
+    /* footer */
+
+    .footer.segment {
+        padding: 5em 0em;
+        border-radius: 0;
+    }
+    .footer.segment .container{
+    	width: 933px;
+    	margin:auto;
+    }
+
+    .secondary.pointing.menu .toc.item {
+        display: none;
+    }
+
+    @media only screen and (max-width: 700px) {
+        .ui.fixed.menu {
+            display: none !important;
+        }
+        .secondary.pointing.menu .item,
+        .secondary.pointing.menu .menu {
+            display: none;
+        }
+        .secondary.pointing.menu .toc.item {
+            display: block;
+        }
+        .masthead.segment {
+            min-height: 350px;
+        }
+        .masthead h1.ui.header {
+            font-size: 2em;
+            margin-top: 1.5em;
+        }
+        .masthead h2 {
+            margin-top: 0.5em;
+            font-size: 1.5em;
+        }
+    }
+    </style>
+</head>
+
+<body>
+    {% include "HeaderMenu.html"%}
+    <div class="ui inverted vertical masthead center aligned segment ">
+        <div class="ui text container">
+            <h1 class="ui inverted header">Lemon Tea</h1>
+            <div class="ui text container">
+                <h2>励志做中国最好的教育平台</h2>
+            </div>
+            <br>
+            <a href="#" class="ui huge center aligned button">从这里开始 <i class="right arrow icon"></i></a>
+        </div>
+    </div>
+    <!--vertical stripe segement-->
+    <div class="ui vertical stripe segment">
+        <div class="ui text container">
+            <h1>作为学生</h1>
+        </div>
+        <div class="ui middle aligned stackable grid container">
+            <div class="row">
+                <div class="eight wide column">
+                    <h3 class="ui header">这里有最好最全的学习资料</h3>
+                    <p>你需要的学习资料都可以在这里找到</p>
+                    <h3 class="ui header">这里有最方便的学习交流平台</h3>
+                    <p>在这里，你可以与自己学校的老师、同学互动交流</p>
+                </div>
+                <div class="six wide right floated column">
+                    <img src="assets/images/wireframe/white-image.png" class="ui large bordered rounded image">
+                </div>
+            </div>
+            <div class="row">
+                <div class="center aligned column">
+                    <a class="ui huge button">Check Them Out</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ui vertical stripe segment">
+        <div class="ui text container">
+            <h1>作为教师</h1>
+        </div>
+        <div class="ui middle aligned stackable grid container">
+            <div class="row">
+                <div class="right floated eight wide column">
+                    <h3 class="ui header">这里有最好的教学管理系统</h3>
+                    <p>您可以轻松便捷地管理课程内容</p>
+                    <h3 class="ui header">我编不出来了</h3>
+                    <p>我真编不出来了</p>
+                </div>
+                <div class="six wide left floated column">
+                    <img src="assets/images/wireframe/white-image.png" class="ui large bordered rounded image">
+                </div>
+            </div>
+            <div class="row">
+                <div class="center aligned column">
+                    <a class="ui huge button">Check Them Out</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--footer-->
+    <div class="ui inverted vertical footer segment">
+        <div class="ui container">
+            <div class="ui stackable inverted divided equal height stackable grid">
+                <div class="three wide column">
+                    <h4 class="ui inverted header">About</h4>
+                    <div class="ui inverted link list">
+                        <a href="#" class="item">Sitemap</a>
+                        <a href="#" class="item">Contact Us</a>
+                        <a href="#" class="item">Religious Ceremonies</a>
+                        <a href="#" class="item">Gazebo Plans</a>
+                    </div>
+                </div>
+                <div class="three wide column">
+                    <h4 class="ui inverted header">Services</h4>
+                    <div class="ui inverted link list">
+                        <a href="#" class="item">Banana Pre-Order</a>
+                        <a href="#" class="item">DNA FAQ</a>
+                        <a href="#" class="item">How To Access</a>
+                        <a href="#" class="item">Favorite X-Men</a>
+                    </div>
+                </div>
+                <div class="seven wide column">
+                    <h4 class="ui inverted header">Footer Header</h4>
+                    <p>Extra space for a call to action inside the footer that could help re-engage users.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
