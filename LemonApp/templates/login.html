@@ -46,6 +46,23 @@
       $('.ui.form')
         .form({
           fields: {
+            username: {
+              identifier  : 'username',
+              rules: [
+                {
+                  type   : 'empty',
+                  prompt : 'Please enter your username'
+                },
+                {
+                  type   : 'length[3]',
+                  prompt : 'Your username must be at least 3 characters'
+                },
+                {
+                  type   : 'maxLength[20]',
+                  prompt : 'Your username must be at most 20 characters'
+                }
+              ]
+            },
             email: {
               identifier  : 'email',
               rules: [
@@ -67,8 +84,21 @@
                   prompt : 'Please enter your password'
                 },
                 {
-                  type   : 'length[6]',
+                  type   : 'minLength[6]',
                   prompt : 'Your password must be at least 6 characters'
+                },
+                {
+                  type   : 'maxLength[20]',
+                  prompt : 'Your password must be at most 20 characters'
+                }
+              ]
+            },
+            confirm_password: {
+              identifier  : 'confirm_password',
+              rules: [
+                {
+                  type   : 'empty',
+                  prompt : 'Please confirm your password'
                 }
               ]
             }
@@ -119,18 +149,19 @@
        登录
       </div>
     </h2>
-    <form class="ui large form">
+    <form action="/login" method="post" class="ui large form">
+      {% csrf_token %}
       <div class="ui stacked segment">
         <div class="field">
           <div class="ui left icon input">
             <i class="user icon"></i>
-            <input type="text" name="Username" placeholder="用户名:">
+            {{ form.username }}
           </div>
         </div>
         <div class="field">
           <div class="ui left icon input">
             <i class="lock icon"></i>
-            <input type="password" name="password" placeholder="密码">
+            {{ form.password }}
           </div>
         </div>
         <div class="ui fluid large teal submit button">登录</div>

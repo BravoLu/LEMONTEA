@@ -9,33 +9,6 @@ def home(request):
 	#return render(request, 'login.html', locals())
 	return render(request, 'index.html')
 
-def loginORsignup(request):
-	if request.method == 'POST':
-		if 'email' in request.POST:
-			signupform = SignupForm(data=request.POST,auto_id="%s")
-			loginform = LoginForm(auto_id="%s")
-			if signupform.is_valid():
-				UserModel = get_user_model()
-				username = signupform.cleaned_data['username']
-				email = signupform.cleaned_data['email']
-				password = signupform.cleaned_data['password']
-				user = UserModel.objects.create_user(username=username,email=email,password=password)
-				user.save()
-				auth_user = authenticate(username=username,password=password)
-				auth_login(request, user)
-				return redirect("home")
-		else:
-			loginform = LoginForm(data=request.POST, auto_id="%s")
-			signupform = SignupForm(auto_id="%s")			
-			if loginform.is_valid():		
-				user = authenticate(username=loginform.cleaned_data['username'], password=loginform.cleaned_data['password'])			
-				auth_login(request, user)
-				return redirect("home")
-	else:
-		loginform = LoginForm(auto_id="%s")
-		signupform = SignupForm(auto_id="%s")
-	return render(request, 'loginORsignup.html', locals())
-
 def signup(request):
 	if request.method == 'POST':
 		form = SignupForm(data=request.POST,auto_id="%s")
@@ -48,9 +21,10 @@ def signup(request):
 			user.save()
 			auth_user = authenticate(username=username,password=password)
 			auth_login(request,auth_user)
-			return redirect("login")
-		else:
-			return redirect("loginORsignup")
+			return redirect("home")
+	else:
+		form = SignupForm(auto_id="%s")
+		return render(request, "logup.html", locals())
 
 def login(request):
 	if request.method =='POST':
@@ -59,8 +33,9 @@ def login(request):
 			user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])			
 			auth_login(request,user)
 			return redirect("home")
-		else:
-			return redirect("loginORsignup")
+	else:
+		form = LoginForm(auto_id="%s")
+		return render(request, "login.html", locals())
 
 def elements(request):
 	return render(request,'elements.html')
