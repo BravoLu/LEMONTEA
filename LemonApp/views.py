@@ -55,7 +55,7 @@ def identity(request):
 
 def shop(request):
 	context = {}
-	return render(request,'shopcpy.html',context)
+	return render(request,'shop.html',context)
 
 def course(request):
 	context = {}
@@ -76,3 +76,7 @@ def logout_view(request):
 def school(request):
 	context = {}
 	return render(request,'school.html',context)
+
+def community(request):
+	context = {}
+	return render(request,'community.html',context)
