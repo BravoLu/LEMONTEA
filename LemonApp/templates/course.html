@@ -7,9 +7,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     
+    <script src="../static/js/jquery.min.js"></script>
+    <script src="../static/js/menu.js"></script>
     <link rel="stylesheet" type="text/css" href="../static/semantic.css">
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.js"></script>
-    <script src="../static/semantic.js"></script>
+    <script src="../static/semantic.min.js"></script>
 
     <script>
     $(document).ready(function() {
@@ -17,11 +18,10 @@
         $('.dropdown.item').dropdown({
             on: 'hover'
         });
-        
-    });
+        $('.menu .item').tab();
+     });
+
     </script>
-
-
 
     <style type="text/css">
     body {
@@ -37,52 +37,11 @@
       max-width: 450px;
     }
     </style>
-  <script>
-  $(document)
-    .ready(function() {
-      $('.ui.form')
-        .form({
-          fields: {
-            email: {
-              identifier  : 'email',
-              rules: [
-                {
-                  type   : 'empty',
-                  prompt : 'Please enter your e-mail'
-                },
-                {
-                  type   : 'email',
-                  prompt : 'Please enter a valid e-mail'
-                }
-              ]
-            },
-            password: {
-              identifier  : 'password',
-              rules: [
-                {
-                  type   : 'empty',
-                  prompt : 'Please enter your password'
-                },
-                {
-                  type   : 'length[6]',
-                  prompt : 'Your password must be at least 6 characters'
-                }
-              ]
-            }
-          }
-        })
-      ;
-    })
-    ;
-  </script>
- <script>
-   $('.menu .item').on('click', function() {   
-  $(this)
-    .addClass('active')
-    .siblings()
-    .removeClass('active'); 
-    })
- </script>
+ 
+
+
+
+
 </head>
 
 <body>
@@ -126,12 +85,12 @@
         <img src="../static/images/HighPerformance.png">
 
       <div class="ui three item stackable tabs menu">
-        <a class="active item" data-tap="introduction">课程表</a>
-        <a class="item" data-tap="material">课程资料</a>
-        <a class="item" data-tap="disscus">课程讨论</a>
+        <a class="active item" data-tab="introduction">课程表</a>
+        <a class="item" data-tab="material">课程资料</a>
+        <a class="item" data-tab="disscus">课程讨论</a>
       </div>
 <!-- Introduction Part -->
-      <div class="ui active intro tab" data-tab="introduction">
+      <div class="ui active tab" data-tab="introduction">
 
         <div class="ui main container">
 
@@ -142,208 +101,62 @@
             <h3 class="ui header"><a href="#">Week 1: OpenMP基础</a></h3>
 
             <p>这节课主要讲了OpenMP的基本语法</p>
-          
-          </div>
-        </div>
-      </div>
-<!-- End introduction part -->
-<!-- material part -->
-<div class="ui tab" data-tab="definition">
-
-  <div class="ui main container">
-
-    <h2 class="ui dividing header">Types</h2>
-
-    <div class="no example">
-      <h4 class="ui header">Container</h4>
-      <p>A standard container</p>
-    </div>
-
-    <div class="ui ignored code">
-      <div class="ui container">
-        <p></p>
-      </div>
-    </div>
-
-  </div>
-
-  <div class="ui container">
-    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing
-    elit. Aenean commodo ligula eget dolor. Aenean massa
-    <strong>strong</strong>. Cum sociis natoque penatibus
-    et magnis dis parturient montes, nascetur ridiculus
-    mus. Donec quam felis, ultricies nec, pellentesque
-    eu, pretium quis, sem. Nulla consequat massa quis
-    enim. Donec pede justo, fringilla vel, aliquet nec,
-    vulputate eget, arcu. In enim justo, rhoncus ut,
-    imperdiet a, venenatis vitae, justo. Nullam dictum
-    felis eu pede <a href="#">link</a>
-    mollis pretium. Integer tincidunt. Cras dapibus.
-    Vivamus elementum semper nisi. Aenean vulputate
-    eleifend tellus. Aenean leo ligula, porttitor eu,
-    consequat vitae, eleifend ac, enim. Aliquam lorem ante,
-    dapibus in, viverra quis, feugiat a, tellus. Phasellus
-    viverra nulla ut metus varius laoreet. Quisque rutrum.
-    Aenean imperdiet. Etiam ultricies nisi vel augue.
-    Curabitur ullamcorper ultricies nisi.</p>
-  </div>
-
-  <div class="ui main container">
-
-    <div class="no example">
-      <h4 class="ui header">Text Container</h4>
-      <p>A container can reduce its maximum width to more naturally accomodate a single column of text</p>
-      <div class="ui info message">
-        A text container is a simpler markup alternative to using a grid with a single column, and is designed to have a reasonable maximum width for displaying flowing text
-      </div>
-    </div>
-
-    <div class="ui ignored code">
-      <div class="ui text container">
-      </div>
-    </div>
-  </div>
-
-  <div class="ui text container">
-    <h2 class="ui header">Header</h2>
-    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing
-    elit. Aenean commodo ligula eget dolor. Aenean massa
-    <strong>strong</strong>. Cum sociis natoque penatibus
-    et magnis dis parturient montes, nascetur ridiculus
-    mus. Donec quam felis, ultricies nec, pellentesque
-    eu, pretium quis, sem. Nulla consequat massa quis
-    enim. Donec pede justo, fringilla vel, aliquet nec,
-    vulputate eget, arcu. In enim justo, rhoncus ut,
-    imperdiet a, venenatis vitae, justo. Nullam dictum
-    felis eu pede <a href="#">link</a>
-    mollis pretium. Integer tincidunt. Cras dapibus.
-    Vivamus elementum semper nisi. Aenean vulputate
-    eleifend tellus. Aenean leo ligula, porttitor eu,
-    consequat vitae, eleifend ac, enim. Aliquam lorem ante,
-    dapibus in, viverra quis, feugiat a, tellus. Phasellus
-    viverra nulla ut metus varius laoreet. Quisque rutrum.
-    Aenean imperdiet. Etiam ultricies nisi vel augue.
-    Curabitur ullamcorper ultricies nisi.</p>
-    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing
-    elit. Aenean commodo ligula eget dolor. Aenean massa
-    <strong>strong</strong>. Cum sociis natoque penatibus
-    et magnis dis parturient montes, nascetur ridiculus
-    mus. Donec quam felis, ultricies nec, pellentesque
-    eu, pretium quis, sem. Nulla consequat massa quis
-    enim. Donec pede justo, fringilla vel, aliquet nec,
-    vulputate eget, arcu. In enim justo, rhoncus ut,
-    imperdiet a, venenatis vitae, justo. Nullam dictum
-    felis eu pede <a href="#">link</a>
-    mollis pretium. Integer tincidunt. Cras dapibus.
-    Vivamus elementum semper nisi. Aenean vulputate
-    eleifend tellus. Aenean leo ligula, porttitor eu,
-    consequat vitae, eleifend ac, enim. Aliquam lorem ante,
-    dapibus in, viverra quis, feugiat a, tellus. Phasellus
-    viverra nulla ut metus varius laoreet. Quisque rutrum.
-    Aenean imperdiet. Etiam ultricies nisi vel augue.
-    Curabitur ullamcorper ultricies nisi.</p>
-  </div>
-
-  <div class="ui main container">
-
-
-    <h2 class="ui dividing header">Variations</h2>
-
-    <div class="no example">
-      <h4 class="ui header">Text Alignment</h4>
-      <p>A container can specify its text alignment</p>
-
-    </div>
-
-    <div class="ui ignored code">
-      <div class="ui left aligned container">
-        <p></p>
-      </div>
-      <div class="ui center aligned container">
-        <p></p>
-      </div>
-      <div class="ui right aligned container">
-        <p></p>
-      </div>
-      <div class="ui justified container">
-        <p></p>
-      </div>
-    </div>
-
-    <div class="ui left aligned container">
-      Left Aligned
-    </div>
-    <div class="ui center aligned container">
-      Center Aligned
-    </div>
-    <div class="ui right aligned container">
-      Right Aligned
-    </div>
-    <div class="ui justified container">
-      <b>Justified</b>
-      <div class="ui divider"></div>
-      <p>Lorem ipsum dolor sit amet, consectetuer adipiscing
-      elit. Aenean commodo ligula eget dolor. Aenean massa
-      <strong>strong</strong>. Cum sociis natoque penatibus
-      et magnis dis parturient montes, nascetur ridiculus
-      mus. Donec quam felis, ultricies nec, pellentesque
-      eu, pretium quis, sem. Nulla consequat massa quis
-      enim. Donec pede justo, fringilla vel, aliquet nec,
-      vulputate eget, arcu. In enim justo, rhoncus ut,
-      imperdiet a, venenatis vitae, justo. Nullam dictum
-      felis eu pede <a href="#">link</a>
-      mollis pretium. Integer tincidunt. Cras dapibus.
-      Vivamus elementum semper nisi. Aenean vulputate
-      eleifend tellus. Aenean leo ligula, porttitor eu,
-      consequat vitae, eleifend ac, enim. Aliquam lorem ante,
-      dapibus in, viverra quis, feugiat a, tellus. Phasellus
-      viverra nulla ut metus varius laoreet. Quisque rutrum.
-      Aenean imperdiet. Etiam ultricies nisi vel augue.
-      Curabitur ullamcorper ultricies nisi.</p>
-      <p>Lorem ipsum dolor sit amet, consectetuer adipiscing
-      elit. Aenean commodo ligula eget dolor. Aenean massa
-      <strong>strong</strong>. Cum sociis natoque penatibus
-      et magnis dis parturient montes, nascetur ridiculus
-      mus. Donec quam felis, ultricies nec, pellentesque
-      eu, pretium quis, sem. Nulla consequat massa quis
-      enim. Donec pede justo, fringilla vel, aliquet nec,
-      vulputate eget, arcu. In enim justo, rhoncus ut,
-      imperdiet a, venenatis vitae, justo. Nullam dictum
-      felis eu pede <a href="#">link</a>
-      mollis pretium. Integer tincidunt. Cras dapibus.
-      Vivamus elementum semper nisi. Aenean vulputate
-      eleifend tellus. Aenean leo ligula, porttitor eu,
-      consequat vitae, eleifend ac, enim. Aliquam lorem ante,
-      dapibus in, viverra quis, feugiat a, tellus. Phasellus
-      viverra nulla ut metus varius laoreet. Quisque rutrum.
-      Aenean imperdiet. Etiam ultricies nisi vel augue.
-      Curabitur ullamcorper ultricies nisi.</p>
-    </div>
-
-    <div class="no example">
-      <h4 class="ui header">Fluid</h4>
-      <p>A fluid container has no maximum width</p>
-      <div class="ui info message">Fluid containers are useful for setting text alignment, or other variations on unstyled content</div>
-
-      <div class="ui ignored code">
-        <div class="ui fluid container">
-          Fluid
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <div class="ui fluid container">
-    <h2 class="ui header">Dogs Roles with Humans</h2>
-    <p>Domestic dogs inherited complex behaviors, such as bite inhibition, from their wolf ancestors, which would have been pack hunters with complex body language. These sophisticated forms of social cognition and communication may account for their trainability, playfulness, and ability to fit into human households and social situations, and these attributes have given dogs a relationship with humans that has enabled them to become one of the most successful species on the planet today.</p>
-    <p>The dogs' value to early human hunter-gatherers led to them quickly becoming ubiquitous across world cultures. Dogs perform many roles for people, such as hunting, herding, pulling loads, protection, assisting police and military, companionship, and, more recently, aiding handicapped individuals. This impact on human society has given them the nickname "man's best friend" in the Western world. In some cultures, however, dogs are also a source of meat.</p>
-  </div>
-
-  <div class="ui main container"></div>
 
 </div>
+  </div>
+</div>
+<!-- End introduction part -->
+<!-- material part -->
+<div class="ui tab" data-tab="material">
+
+  <div class="ui main container">
+
+    <h2 class="ui dividing header">课程资料</h2>
+
+      <h3 class="ui header">Week 1: OpenMP基础</a></h3>
+      <p><a href="#">pdf</a></p>
+      <p><a href="#">pdf</a></p>
+
+  </div>
+</div>
 <!-- End material part -->
+<!-- disscus part -->
+<div class="ui tab" data-tab="disscus">
+
+  <div class="ui main container">
+
+    <h2 class="ui dividing header">课程讨论</h2>
+
+      <div class="ui comments">
+          <h3 class="ui dividing header">讨论</h3>
+            <div class="comment">
+            <a class="avatar">
+            <img src="/images/avatar/small/matt.jpg">
+            </a>
+          <div class="content">
+          <a class="author">Matt</a>
+          <div class="metadata">
+          <span class="date">今天下午 5:42</span>
+          </div>
+      <div class="text">太赞了！ </div>
+      <div class="actions">
+        <a class="reply">Reply</a>
+      </div>
+    </div>
+  </div>
+
+  <form class="ui reply form">
+    <div class="field">
+      <textarea></textarea>
+    </div>
+    <div class="ui blue labeled submit icon button"><i class="icon edit"></i>回复</div>
+  </form>
+</div>
+
+  </div>
+</div>
+<!-- end disscus part -->
+
       </div>
 
 </body>
