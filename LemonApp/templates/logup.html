@@ -43,6 +43,23 @@
       $('.ui.form')
         .form({
           fields: {
+            username: {
+              identifier  : 'username',
+              rules: [
+                {
+                  type   : 'empty',
+                  prompt : 'Please enter your username'
+                },
+                {
+                  type   : 'length[3]',
+                  prompt : 'Your username must be at least 3 characters'
+                },
+                {
+                  type   : 'maxLength[20]',
+                  prompt : 'Your username must be at most 20 characters'
+                }
+              ]
+            },
             email: {
               identifier  : 'email',
               rules: [
@@ -64,8 +81,21 @@
                   prompt : 'Please enter your password'
                 },
                 {
-                  type   : 'length[6]',
+                  type   : 'minLength[6]',
                   prompt : 'Your password must be at least 6 characters'
+                },
+                {
+                  type   : 'maxLength[20]',
+                  prompt : 'Your password must be at most 20 characters'
+                }
+              ]
+            },
+            confirm_password: {
+              identifier  : 'confirm_password',
+              rules: [
+                {
+                  type   : 'empty',
+                  prompt : 'Please confirm your password'
                 }
               ]
             }
@@ -115,36 +145,31 @@
        注册
       </div>
     </h2>
-    <form class="ui large form">
+   <form action="/signup" method="post" class="ui large form">
+    {% csrf_token %}
       <div class="ui stacked segment">
         <div class="field">
           <div class="ui left icon input">
             <i class="user icon"></i>
-            <input type="text" name="Username" placeholder="用户名:">
-          </div>
-        </div>
-        <div class="field">
-          <div class="ui left icon input">
-            <i class="lock icon"></i>
-            <input type="password" name="password" placeholder="密码">
-          </div>
-        </div>
-        <div class="field">
-          <div class="ui left icon input">
-            <i class="lock icon"></i>
-            <input type="password" name="password" placeholder="确认密码">
+            {{ form.username }}
           </div>
         </div>
         <div class="field">
           <div class="ui left icon input">
             <i class="mail icon"></i>
-            <input type="text" name="email" placeholder="邮箱">
+            {{ form.email }}
           </div>
         </div>
         <div class="field">
           <div class="ui left icon input">
-            <i class="call icon"></i>
-            <input type="text" name="phone" placeholder="手机号码">
+            <i class="lock icon"></i>
+            {{ form.password }}
+          </div>
+        </div>
+        <div class="field">
+          <div class="ui left icon input">
+            <i class="lock icon"></i>
+            {{ form.confirm_password }}
           </div>
         </div>
         <div class="ui fluid large teal submit button">注册</div>
