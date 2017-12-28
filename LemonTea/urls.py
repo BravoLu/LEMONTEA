@@ -21,6 +21,7 @@ from django.conf.urls.static import static
 
 
 urlpatterns = [
+	url(r'^school', views.school, name='school'),
     url(r'^admin', admin.site.urls, name="admin"),
     url(r'^$', views.home, name="home"),
     url(r'^loginORsignup$', views.loginORsignup, name="loginORsignup"),

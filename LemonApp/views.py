@@ -7,7 +7,7 @@ import os
 # Create your views here.
 def home(request):
 	#return render(request, 'login.html', locals())
-	return render(request, 'HelloSemantic.html')
+	return render(request, 'index.html')
 
 def loginORsignup(request):
 	if request.method == 'POST':
@@ -84,7 +84,7 @@ def shop(request):
 
 def course(request):
 	context = {}
-	return render(request,'courseui.html',context)
+	return render(request,'course.html',context)
 
 def study(request):
 	context = {}
@@ -97,3 +97,7 @@ def share(request):
 def logout_view(request):
 	logout(request)
 	return redirect('home')
+
+def school(request):
+	context = {}
+	return render(request,'school.html',context)

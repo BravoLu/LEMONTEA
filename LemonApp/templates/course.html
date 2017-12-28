@@ -20,8 +20,8 @@
         });
         $('.menu .item').tab();
      });
-
     </script>
+
 
     <style type="text/css">
     body {
@@ -36,6 +36,9 @@
     .column {
       max-width: 450px;
     }
+    p.spec {
+      color:black;
+    }
     </style>
  
 
@@ -46,37 +49,10 @@
 
 <body>
   <!-- header menu-->
-    <div class="ui inverted main menu">
-        <div class="ui  container">
-            <div class="header item"><i class = "lemon icon"></i>Lemon Tea</div>
-            <a href="index" class="item">主页</a>
-            <a class="item" href="identity">个人中心</a>
-            <a class="item" href="shop">资源购买专区</a>
-            <a class="item" href="study">学习社区</a>
-            <div class="ui dropdown item" tabindex="0">
-                学校专区<i class="dropdown icon"></i>
-                <div class="menu" tabindex="-1">
-                    <div class="item" href="#">中山大学</div>
-                    <div class="item">敬请期待</div>
-                    <div class="item">敬请期待</div>
-                    <div class="divider"></div>
-                </div>
-            </div>
-            <a class="item" href="share">资源共享专区</a>
-            <div class="right menu">
-                <div class="item">
-                    <div class="ui transparent inverted icon input">
-                        <i class="search icon"></i>
-                        <input type="text" placeholder="Search">
-                    </div>
-                </div>
-                <a class="active item">登录/注册</a>
-            </div>
-        </div>
-    </div>
+    {% include "HeaderMenu.html"%}
 <!-- mainContainer -->
   <div class = "ui main container">
-    <h5 class = "ui header" >学校专区>中山大学>所有课程>高性能程序设计基础:</h5>
+    <h5 class = "ui header" ><a href="#">>学校专区<a href="school">>中山大学<a href="#">>所有课程<a href="#">>高性能程序设计基础:</h5>
       <div class="ui raised very padded text container segment">
         <h2 class="ui header">高性能程序设计基础</h2>
         <p>
@@ -98,7 +74,7 @@
 
           <div class="introduction">
 
-            <h3 class="ui header"><a href="#">Week 1: OpenMP基础</a></h3>
+            <h3 class="ui header"><a href="course">Week 1: OpenMP基础</a></h3>
 
             <p>这节课主要讲了OpenMP的基本语法</p>
 
