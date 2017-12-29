@@ -23,7 +23,7 @@ class SignupForm (forms.ModelForm):
 			UserModel._default_manager.get(username = username)
 		except UserModel.DoesNotExist:
 			return username
-		raise forms.ValidationError("This username has  been registered")
+		raise forms.ValidationError("This username has been registered")
 
 class  LoginForm (forms.Form):
 
