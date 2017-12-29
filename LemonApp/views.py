@@ -6,6 +6,8 @@ from LemonApp.models import Course, ChapterList, PPTList
 import os
 
 # Create your views here.
+def testpage(request):
+	return render(request,'personal-setting.html')
 def home(request):
 	#return render(request, 'login.html', locals())
 	return render(request, 'index.html')
@@ -22,7 +24,7 @@ def signup(request):
 			user.save()
 			auth_user = authenticate(username=username,password=password)
 			auth_login(request,auth_user)
-			return redirect("home")
+			return redirect("identity")
 	else:
 		form = SignupForm(auto_id="%s")
 	return render(request, "logup.html", locals())
@@ -33,7 +35,7 @@ def login(request):
 		if form.is_valid():		
 			user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])			
 			auth_login(request,user)
-			return redirect("home")
+			return redirect("identity")
 		else:
 			print(form.errors)
 	else:
@@ -54,7 +56,10 @@ def create(request):
 
 def identity(request):
 	context = {}
-	return render(request, 'personal-info.html', context)
+	if request.user.id:
+		return render(request, 'personal-info.html', context)
+	else:
+		return redirect("login")
 
 def shop(request):
 	context = {}

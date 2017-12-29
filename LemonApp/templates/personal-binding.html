@@ -1,0 +1,37 @@
+{%include "head.html"%}
+
+<body>
+    {% include "HeaderMenu.html"%}
+    <div class="ui main container">
+        <div class="ui internally celled grid">
+            <!--第一列-->
+            <div class="four wide column">
+                <div class="ui vertical menu">
+                    <a class="active teal header item">账户设置 </a>                    
+                    <a class="item">基本信息 </a> 
+                    <a class="item">个人动态 <div class="ui label">51</div></a>
+                    <a class="active item">绑定账户 </a>                 
+                </div>
+            </div>
+            <!--第2列-->
+            <div class="ten wide column">
+                <h2 class="ui header">绑定账户</h2>
+                <div class="ui divider"></div>
+                <p>
+                    <h4 class="ui header">证件号:</h4>
+                    
+                    <div class="ui input">
+                        <input type="text" placeholder="请输入学生证或教师证号">
+                    </div>
+                </p>
+                
+                
+                <p>
+                    <button class="ui primary button" style="margin-top:60px;margin-left:100px">绑定</button>
+            </div>
+            <!--第3列-->
+            
+        </div>
+    </div>
+</body>
+</html>

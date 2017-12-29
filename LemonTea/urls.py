@@ -40,5 +40,6 @@ urlpatterns = [
     url(r'^create_course$',views.create_course, name="create_course"),
     url(r'^add_chapter$',views.add_chapter, name="add_chapter"),
     url(r'^add_ppt$',views.add_ppt, name="add_ppt"),
+    url(r'^testpage$',views.testpage, name="testpage"),
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
