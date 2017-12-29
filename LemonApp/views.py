@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
-from LemonApp.forms import SignupForm, LoginForm
+from LemonApp.forms import SignupForm, LoginForm, CourseForm, ChapterForm, PPTForm
 from django.contrib.auth import get_user_model
 from django.contrib.auth import authenticate,login as auth_login, logout 
+from LemonApp.models import Course, ChapterList, PPTList
 import os
 
 # Create your views here.
@@ -33,6 +34,8 @@ def login(request):
 			user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])			
 			auth_login(request,user)
 			return redirect("home")
+		else:
+			print(form.errors)
 	else:
 		form = LoginForm(auto_id="%s")
 	return render(request, "login.html", locals())
@@ -74,8 +77,8 @@ def logout_view(request):
 	return redirect('home')
 
 def school(request):
-	context = {}
-	return render(request,'school.html',context)
+	CourseList = Course.objects.all()
+	return render(request,'school.html', locals())
 
 def community(request):
 	context = {}
@@ -84,3 +87,28 @@ def community(request):
 def page(request):
 	context = {}
 	return render(request,'page.html',context)
+
+def create_course(request):
+	if request.method == 'POST':
+		form = CourseForm(request.POST, request.FILES, auto_id="%s")
+		if form.is_valid():
+			course_identifier = form.cleaned_data["course_identifier"]
+			title = form.cleaned_data["title"]
+			image = form.cleaned_data["image"]
+			description = form.cleaned_data["description"]
+			teacher = form.cleaned_data["teacher"]
+			if(image):
+				course = Course(course_identifier=course_identifier,title=title,image=image,description=description,teacher=teacher)
+			else:
+				course = Course(course_identifier=course_identifier,title=title,description=description,teacher=teacher)
+			course.save()
+			return redirect("school")
+	else:
+		form = CourseForm(auto_id="%s")
+	return render(request, "create_course.html", locals())
+
+def add_chapter(request):
+	pass
+
+def add_ppt(request):
+	pass

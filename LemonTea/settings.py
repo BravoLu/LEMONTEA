@@ -120,4 +120,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+MEDIA_URL = '/LemonApp/media/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'LemonApp/media')
+
 AUTH_USER_MODEL = 'LemonApp.Account'

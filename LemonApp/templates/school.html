@@ -95,7 +95,7 @@
   <h5 class="ui header">学校专区><a href="school">中山大学</a>>所有课程:</h5>
 
 <div class="ui two column doubling stackable grid container">
-
+{% for course in CourseList %}
   <div class="column">
 
 <div class="ui items">
@@ -104,17 +104,17 @@
 
     <div class="image">
 
-      <img src="../static/images/HighPerformance.png">
+      <a href="course"><img src= "LemonApp/media/{{ course.image }}" style="height:120px;width:180px;object-fit:cover;"></a>
 
     </div>
 
     <div class="content">
 
-      <a href="course" class="header">高性能计算程序设计基础</a>
+      <a href="course" class="header">{{ course.title }}</a>
 
       <div class="meta">
 
-        <span>讲授OpenMP、PThreads和MPI的编程方法</span>
+        <span>{{ course.description }}</span>
 
       </div>
 
@@ -124,7 +124,9 @@
 
       </div>
 
-      <div class="extra">授课老师：吴俊峰 </div>
+      <div class="extra">授课老师：{{ course.teacher }} </div>
+
+      <div class="extra">课程号：{{ course.course_identifier }} </div>
 
     </div>
 
@@ -133,8 +135,8 @@
 </div>
 
   </div>
-
-  <div class="column">
+{% endfor %}
+<div class="column">
 
 <div class="ui items">
 
@@ -142,27 +144,13 @@
 
     <div class="image">
 
-      <img src="../static/images/HighPerformance.png">
+      <a href="create_course"><img src= "LemonApp/media/CoursePhoto/create.jpg" style="height:120px;width:180px;object-fit:cover;"></a>
 
     </div>
 
     <div class="content">
 
-      <a class="header">高性能计算程序设计基础</a>
-
-      <div class="meta">
-
-        <span>讲授OpenMP、PThreads和MPI的编程方法</span>
-
-      </div>
-
-      <div class="description">
-
-        <p></p>
-
-      </div>
-
-      <div class="extra">授课老师：吴俊峰 </div>
+      <a href="create_course" class="header">新建课程</a>
 
     </div>
 
@@ -172,43 +160,6 @@
 
   </div>
 
-  <div class="column">
-
-<div class="ui items">
-
-  <div class="item">
-
-    <div class="image">
-
-      <img src="../static/images/HighPerformance.png">
-
-    </div>
-
-    <div class="content">
-
-      <a class="header">高性能计算程序设计基础</a>
-
-      <div class="meta">
-
-        <span>讲授OpenMP、PThreads和MPI的编程方法</span>
-
-      </div>
-
-      <div class="description">
-
-        <p></p>
-
-      </div>
-
-      <div class="extra">授课老师：吴俊峰 </div>
-
-    </div>
-
-  </div>
-
-</div>
-
-  </div>
 
   <div class="column">
 
