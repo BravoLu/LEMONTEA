@@ -24,7 +24,7 @@ def signup(request):
 			return redirect("home")
 	else:
 		form = SignupForm(auto_id="%s")
-		return render(request, "logup.html", locals())
+	return render(request, "logup.html", locals())
 
 def login(request):
 	if request.method =='POST':
@@ -35,7 +35,7 @@ def login(request):
 			return redirect("home")
 	else:
 		form = LoginForm(auto_id="%s")
-		return render(request, "login.html", locals())
+	return render(request, "login.html", locals())
 
 def elements(request):
 	return render(request,'elements.html')
