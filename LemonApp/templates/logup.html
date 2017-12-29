@@ -153,6 +153,15 @@
       </div>
 
       <div class="ui error message"></div>
+      {% if form.username.errors %}
+        {% for i in form.username.errors %}
+          <div class="ui message">
+            <span style="color:red">  
+            {{i|escape}}
+            </span>
+          </div>
+        {% endfor%}
+      {% endif%}
 
     </form>
 
