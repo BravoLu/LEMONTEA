@@ -23,14 +23,7 @@ class SignupForm (forms.ModelForm):
 			UserModel._default_manager.get(username = username)
 		except UserModel.DoesNotExist:
 			return username
-		raise forms.ValidationError("有人已经注册了这个用户名")
-
-	def clean_confirm_password(self):
-		password = self.cleaned_data.get("password",False)
-		confirm_password = self.cleaned_data["confirm_password"]
-		if  not( password == confirm_password):
-			raise forms.ValidationError("确认密码和密码不一致")
-		return confirm_password
+		raise forms.ValidationError("This username has  been registered")
 
 class  LoginForm (forms.Form):
 
@@ -43,5 +36,5 @@ class  LoginForm (forms.Form):
 		user = authenticate(username=username,password= password)
 
 		if user is None:
-			raise forms.ValidationError("用户名或密码错误")
+			raise forms.ValidationError("Usename or password is wrong")
 		return password
