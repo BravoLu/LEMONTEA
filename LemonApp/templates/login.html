@@ -166,8 +166,16 @@
         </div>
         <div class="ui fluid large teal submit button">登录</div>
       </div>
-
-      <div class="ui error message"></div>
+		<div class="ui error message"></div>
+      {% if form.password.errors %}
+              {% for i in form.password.errors %}
+                    <div class="ui message">
+              			<span>	
+                			{{i|escape}}
+                  		</span>
+            		</div>
+				{% endfor%}
+            {% endif%}
 
     </form>
 
