@@ -7,7 +7,9 @@
 
 <head>
 
-    <title>Lemon Tea!</title>
+
+    <title>College-Courses</title>
+
 
     <meta charset="utf-8" />
 
@@ -86,13 +88,13 @@
 
 
 <body>
-
+<!-- header menu-->
 	{% include "HeaderMenu.html"%}
 <!-- MainBody -->
 
 <div class = "ui main container">
 
-  <h5 class="ui header">学校专区><a href="school">中山大学</a>>所有课程:</h5>
+  <h5 class="ui header"><a href="#">>学校专区>><a href="/school/">中山大学</a>>所有课程:</h5>
 
 <div class="ui two column doubling stackable grid container">
 {% for course in CourseList %}
@@ -104,13 +106,13 @@
 
     <div class="image">
 
-      <a href="course"><img src= "LemonApp/media/{{ course.image }}" style="height:120px;width:180px;object-fit:cover;"></a>
+      <a href="course/{{ course.id }}/"><img src= "/LemonApp/media/{{ course.image }}" style="height:120px;width:180px;object-fit:cover;"></a>
 
     </div>
 
     <div class="content">
 
-      <a href="course" class="header">{{ course.title }}</a>
+      <a href="course/{{ course.id }}/" class="header">{{ course.title }}</a>
 
       <div class="meta">
 
@@ -143,9 +145,7 @@
   <div class="item">
 
     <div class="image">
-
-      <a href="create_course"><button class="ui button" style="height:120px;width:180px;object-fit:cover;"">新建课程<i class="plus icon" style="margin-left:28px;margin-top:40px;font-size:70px"></i></button></a>
-
+      <a href="create_course/"><button class="ui button" style="height:120px;width:180px;object-fit:cover;"">新建课程<i class="plus icon" style="margin-left:28px;margin-top:40px;font-size:70px"></i></button></a>
     </div>
 
 

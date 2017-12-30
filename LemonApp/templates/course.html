@@ -1,16 +1,16 @@
-
+{% load static %}
 <!DOCTYPE html>
 <html>
 
 <head>
-    <title>Hello Semantic!</title>
+    <title>{{ course.title }}</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     
-    <script src="../static/js/jquery.min.js"></script>
-    <script src="../static/js/menu.js"></script>
-    <link rel="stylesheet" type="text/css" href="../static/semantic.css">
-    <script src="../static/semantic.min.js"></script>
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/menu.js' %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'semantic.css' %}">
+    <script src="{% static 'semantic.min.js' %}"></script>
 
     <script>
     $(document).ready(function() {
@@ -53,13 +53,14 @@
     {% include "HeaderMenu.html"%}
 <!-- mainContainer -->
   <div class = "ui main container" style= "width:80rem">
-    <h5 class = "ui header" ><a href="#">>学校专区<a href="school">>中山大学<a href="#">>所有课程<a href="#">>高性能程序设计基础:</h5>
+    <h5 class = "ui header"><a href="#">>学校专区><a href="/school/">>中山大学课程</a>>{{ course.title }}:</h5>
       <div class="ui raised very padded text container segment" style= "width:75rem">
-        <h2 class="ui header">高性能程序设计基础</h2>
+        <h2 class="ui header">{{ course.title }}</h2>
         <p>
-          讲授OpenMP、PThreads和MPI的编程方法
+          {{ course.description }}
         </p>
-        <img src="../static/images/HighPerformance.png">
+
+          <img src= "/LemonApp/media/{{ course.image }}" style="height:120px;width:180px;object-fit:cover;"></a>
 
       <div class="ui three item stackable tabs menu">
         <a class="active item" data-tab="introduction">课程表</a>
@@ -74,14 +75,14 @@
           <h2 class="ui dividing header">课程表</h2>
 
           <div class="introduction">
-
-            <h3 class="ui header"><a href="course">Week 1: OpenMP基础</a></h3>
-
-            <p>这节课主要讲了OpenMP的基本语法</p>
-
-</div>
-  </div>
-</div>
+            {% for chapter in chapter_list %}
+              <h3 class="ui header">Lecture {{ chapter.chapter_order }}：{{ chapter.title }}</h3>
+              <p>{{ chapter.description }}</p>
+            {% endfor %}
+            <h3 class="ui header"><a href="add_chapter/">(按钮)添加章节</a></h3>
+          </div>
+        </div>
+      </div>
 <!-- End introduction part -->
 <!-- material part -->
 <div class="ui tab" data-tab="material">
@@ -89,11 +90,14 @@
   <div class="ui main container">
 
     <h2 class="ui dividing header">课程资料</h2>
-
-      <h3 class="ui header">Week 1: OpenMP基础</a></h3>
-      <p><a href="#">pdf</a></p>
-      <p><a href="#">pdf</a></p>
-
+      {% for chapter in chapter_list %}
+        <h3 class="ui header">Lecture {{ chapter.chapter_order }}：{{ chapter.title }} <a href="chapter/{{ chapter.id }}/add_ppt/">(按钮)添加PPT</a></h3>
+        {%for ppt in ppt_list %} 
+          {% if ppt.chapter_id.id == chapter.id %}
+            <p><a href="chapter/{{ chapter.id }}/ppt/{{ ppt.id }}/">PPT{{ ppt.ppt_order }}: {{ ppt.title }}</a> <a href="/LemonApp/media/{{ ppt.file }}">(按钮)下载</a></p>
+          {% endif %}
+        {% endfor %}
+      {% endfor %}
   </div>
 </div>
 <!-- End material part -->
