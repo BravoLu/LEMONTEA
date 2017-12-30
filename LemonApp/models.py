@@ -2,8 +2,8 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 # Create your models here.
 class Account(AbstractUser):
-    #face = models.ImageField("头像", upload_to="UserPhoto/", null=True, default="UserPhoto/default.png")
-    #permission = models.IntegerField("权限类型", null=True)
+    face = models.ImageField("头像", upload_to="UserPhoto/", null=True, default="UserPhoto/default.png")
+    permission = models.IntegerField("权限类型", null=True) #数值越大权限越高
     class Meta:
         db_table = "Account"
 

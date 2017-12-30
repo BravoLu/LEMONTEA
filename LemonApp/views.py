@@ -25,7 +25,9 @@ def signup(request):
 			user.save()
 			auth_user = authenticate(username=username,password=password)
 			auth_login(request,auth_user)
-			old_path = path[0:path.rfind('/')+1]
+			print(path.rfind('signup'))
+			old_path = path[0:path.rfind('signup')]
+			print(path, old_path)
 			return redirect(old_path)
 	else:
 		form = SignupForm(auto_id="%s")
@@ -38,7 +40,7 @@ def login(request):
 		if form.is_valid():		
 			user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])			
 			auth_login(request,user)
-			old_path = path[0:path.rfind('/')+1]
+			old_path = path[0:path.rfind('login')]
 			return redirect(old_path)
 	else:
 		form = LoginForm(auto_id="%s")
@@ -91,7 +93,9 @@ def share(request):
 
 def logout_view(request):
 	logout(request)
-	return redirect('home')
+	path = request.path
+	old_path = path[0:path.rfind('logout')]
+	return redirect(old_path)
 
 def school(request):
 	CourseList = Course.objects.all()
@@ -120,7 +124,7 @@ def create_course(request):
 			else:
 				course = Course(course_identifier=course_identifier,title=title,description=description,teacher=teacher)
 			course.save()
-			old_path = path[0:path.rfind('/')+1]
+			old_path = path[0:path.rfind('create_course')]
 			return redirect(old_path)
 	else:
 		form = CourseForm(auto_id="%s")
