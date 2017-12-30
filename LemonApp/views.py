@@ -7,7 +7,9 @@ import os
 
 # Create your views here.
 def testpage(request):
-	return render(request,'personal-setting.html')
+	college_list = College.objects.all()
+	return render(request,'personal-setting.html', locals())
+
 def home(request):
 	college_list = College.objects.all()
 	#return render(request, 'login.html', locals())

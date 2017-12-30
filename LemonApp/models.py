@@ -71,3 +71,25 @@ class PPTImage(models.Model):
 
     def __str__(self):
         return self.image_order
+
+class CourseComment(models.Model):
+    couse_id = models.ForeignKey(Course, on_delete=models.CASCADE)
+    account_id = models.ForeignKey(Account, on_delete=models.CASCADE)
+    comment_order = models.IntegerField("评论顺序")
+    content = models.TextField("评论内容")
+    class Meta:
+        db_table = "CourseComment"
+
+    def __str__(self):
+        return "comment"
+
+class PPTComment(models.Model):
+    ppt_image_id = models.ForeignKey(PPTImage, on_delete=models.CASCADE)
+    account_id = models.ForeignKey(Account, on_delete=models.CASCADE)
+    comment_order = models.IntegerField("评论顺序")
+    content = models.TextField("评论内容")
+    class Meta:
+        db_table = "PPTComment"
+
+    def __str__(self):
+        return "comment"
