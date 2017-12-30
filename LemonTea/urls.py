@@ -21,24 +21,21 @@ from django.conf.urls.static import static
 
 
 urlpatterns = [
-	url(r'^school', views.school, name='school'),
-    url(r'^admin', admin.site.urls, name="admin"),
+	url(r'^school/$', views.school, name='school'),
+    url(r'^admin/', admin.site.urls, name="admin"),
     url(r'^$', views.home, name="home"),
-    url(r'^login$', views.login, name="login"),
-    url(r'^signup$', views.signup, name="signup"),
+    url(r'login$', views.login, name="login"),
+    url(r'signup$', views.signup, name="signup"),
     url(r'^logout$', views.logout_view, name="logout"),
-    url(r'^share$', views.share, name="share"),
-    url(r'^study$', views.study, name="study"),
-    url(r'^course$', views.course, name="course"),
-    url(r'^shop$', views.shop, name="shop"),
-    url(r'^identity$', views.identity, name="identity"),
-    url(r'^elements$', views.elements, name="elements"),
-    url(r'^generic$', views.generic, name="generic"),
-    url(r'^create$', views.create, name="create"),
+    url(r'^share', views.share, name="share"),
+    url(r'^study', views.study, name="study"),
+    url(r'^course/[0-9]+/$', views.course, name="course"),
+    url(r'^shop', views.shop, name="shop"),
+    url(r'^identity', views.identity, name="identity"),
     url(r'^community', views.community ,name='community'),
     url(r'^page',views.page, name="page"),
     url(r'^create_course$',views.create_course, name="create_course"),
     url(r'^add_chapter$',views.add_chapter, name="add_chapter"),
     url(r'^add_ppt$',views.add_ppt, name="add_ppt"),
     
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

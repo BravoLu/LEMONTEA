@@ -22,20 +22,23 @@ def signup(request):
 			user.save()
 			auth_user = authenticate(username=username,password=password)
 			auth_login(request,auth_user)
-			return redirect("home")
+			path = request.path
+			old_path = path[0:path.rfind('/')+1]
+			return redirect(old_path)
 	else:
 		form = SignupForm(auto_id="%s")
 	return render(request, "logup.html", locals())
 
 def login(request):
+	print(1)
 	if request.method =='POST':
 		form = LoginForm(data=request.POST, auto_id="%s")			
 		if form.is_valid():		
 			user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])			
 			auth_login(request,user)
-			return redirect("home")
-		else:
-			print(form.errors)
+			path = request.path
+			old_path = path[0:path.rfind('/')+1]
+			return redirect(old_path)
 	else:
 		form = LoginForm(auto_id="%s")
 	return render(request, "login.html", locals())
@@ -45,9 +48,6 @@ def elements(request):
 
 def generic(request):
 	return render(request,'generic.html')
-	
-# def home(request):
-# 	return render(request,'index.html')
 
 def create(request):
 	return render(request,'create.html')
@@ -61,8 +61,21 @@ def shop(request):
 	return render(request,'shop.html',context)
 
 def course(request):
-	context = {}
-	return render(request,'course.html',context)
+	path = request.path
+	URL_list = path.split('/')
+	course_id = URL_list[2]
+	course = Course.objects.filter(id=course_id)[0]
+	chapter_list = ChapterList.objects.filter(course_id=course_id).order_by("chapter_order")
+	chapter_id_list = [chapter.id for chapter in chapter_list]
+	ppt_list = []
+	for charter_id in chapter_id_list:
+		temp_list = PPTList.objects.filter(chapter_id=charter_id).order_by("ppt_order")
+		print(type(temp_list))
+		ppt_list.extend(temp_list)
+	#for chapter in chapter_list:
+	for i in ppt_list:
+		print(type(i))
+	return render(request,'course.html', locals())
 
 def study(request):
 	context = {}

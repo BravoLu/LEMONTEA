@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 # Create your models here.
 class Account(AbstractUser):
+    #face = models.ImageField("头像", upload_to="UserPhoto/", null=True, default="UserPhoto/default.png")
+    #permission = models.IntegerField("权限类型", null=True)
     class Meta:
         db_table = "Account"
 
@@ -13,7 +15,7 @@ class Course(models.Model):
     course_order = models.IntegerField("课程编号", null=True)
     course_identifier = models.CharField("课程号", max_length=50)
     title = models.CharField("课程名称", max_length=50)
-    image = models.ImageField(upload_to="CoursePhoto/", null=True, default="CoursePhoto/default.png")
+    image = models.ImageField("课程图片", upload_to="CoursePhoto/", null=True, default="CoursePhoto/default.png")
     description = models.TextField("课程介绍")
     teacher = models.CharField("授课老师", max_length=50)
     class Meta:
@@ -39,7 +41,7 @@ class PPTList(models.Model):
     chapter_id = models.ForeignKey(ChapterList, on_delete=models.CASCADE)
     ppt_order = models.IntegerField("PPT编号")
     title = models.CharField("PPT标题", max_length=50)
-    path = models.CharField("PPT路径", max_length=100)
+    file = models.FileField("PPT文件", upload_to="PPT/")
     class Meta:
         unique_together = ("id", "course_id", "chapter_id")
         db_table = "PPTList"

@@ -86,7 +86,7 @@
 
 
 <body>
-
+<!-- header menu-->
 	{% include "HeaderMenu.html"%}
 <!-- MainBody -->
 
@@ -104,13 +104,13 @@
 
     <div class="image">
 
-      <a href="course"><img src= "LemonApp/media/{{ course.image }}" style="height:120px;width:180px;object-fit:cover;"></a>
+      <a href="/course/{{ course.id }}"><img src= "/LemonApp/media/{{ course.image }}" style="height:120px;width:180px;object-fit:cover;"></a>
 
     </div>
 
     <div class="content">
 
-      <a href="course" class="header">{{ course.title }}</a>
+      <a href="/course/{{ course.id }}/" class="header">{{ course.title }}</a>
 
       <div class="meta">
 
@@ -144,13 +144,13 @@
 
     <div class="image">
 
-      <a href="create_course"><img src= "LemonApp/media/CoursePhoto/create.jpg" style="height:120px;width:180px;object-fit:cover;"></a>
+      <a href="create_course"><img src= "/LemonApp/media/CoursePhoto/create.jpg" style="height:120px;width:180px;object-fit:cover;"></a>
 
     </div>
 
     <div class="content">
 
-      <a href="create_course" class="header">新建课程</a>
+      <a href="/create_course" class="header">新建课程</a>
 
     </div>
 
