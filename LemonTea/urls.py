@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.conf.urls import url
+from django.conf.urls import url,include
 from LemonApp import views
 from django.conf import settings
 from django.conf.urls.static import static
@@ -40,5 +40,6 @@ urlpatterns = [
     url(r'^create_course$',views.create_course, name="create_course"),
     url(r'^add_chapter$',views.add_chapter, name="add_chapter"),
     url(r'^add_ppt$',views.add_ppt, name="add_ppt"),
+    url(r'^forum/',include('forum.urls')),
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

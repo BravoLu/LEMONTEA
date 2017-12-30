@@ -1,0 +1,182 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Hello Semantic!</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    
+    <link rel="stylesheet" type="text/css" href="../static/semantic.css">
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.js"></script>
+    <script src="../static/semantic.js"></script>
+    <script>
+    $(document).ready(function() {
+        // 鼠标放到 dropdown 时显示下拉菜单，默认只有点击后才显示
+        $('.dropdown.item').dropdown({
+            on: 'hover'
+        });
+    });
+    </script>
+
+    
+    <script src="assets/library/jquery.min.js"></script>
+    <script src="../static/components/form.js"></script>
+    <script src="../static/components/transition.js"></script>
+
+    <style type="text/css">
+    body {
+      background-color: #DADADA;
+    }
+    body > .grid {
+      height: 100%;
+    }
+    .image {
+      margin-top: -100px;
+    }
+    .column {
+      max-width: 450px;
+    }
+    </style>
+  <script>
+  $(document)
+    .ready(function() {
+      $('.ui.form')
+        .form({
+          fields: {
+            email: {
+              identifier  : 'email',
+              rules: [
+                {
+                  type   : 'empty',
+                  prompt : 'Please enter your e-mail'
+                },
+                {
+                  type   : 'email',
+                  prompt : 'Please enter a valid e-mail'
+                }
+              ]
+            },
+            password: {
+              identifier  : 'password',
+              rules: [
+                {
+                  type   : 'empty',
+                  prompt : 'Please enter your password'
+                },
+                {
+                  type   : 'length[6]',
+                  prompt : 'Your password must be at least 6 characters'
+                }
+              ]
+            }
+          }
+        })
+      ;
+    })
+    ;
+  </script>
+</head>
+
+<body>
+	<!-- header menu-->
+    <div class="ui inverted main menu">
+        <div class="ui  container">
+            <div class="header item"><i class = "lemon icon"></i>Lemon Tea</div>
+            <a href="index" class="item">主页</a>
+            <a class="item" href="identity">个人中心</a>
+            <a class="item" href="shop">资源购买专区</a>
+            <a class="item" href="study">学习社区</a>
+            <div class="ui dropdown item" tabindex="0">
+                学校专区<i class="dropdown icon"></i>
+                <div class="menu" tabindex="-1">
+                    <div class="item" href="#">中山大学</div>
+                    <div class="item">敬请期待</div>
+                    <div class="item">敬请期待</div>
+                    <div class="divider"></div>
+                </div>
+            </div>
+            <a class="item" href="share">资源共享专区</a>
+            <div class="right menu">
+                <div class="item">
+                    <div class="ui transparent inverted icon input">
+                        <i class="search icon"></i>
+                        <input type="text" placeholder="Search">
+                    </div>
+                </div>
+                <a class="active item">登录/注册</a>
+            </div>
+        </div>
+    </div>
+<!-- MainBody -->
+<div class = "ui main container">
+  <h5 class="ui header">学校专区>中山大学>所有课程:</h5>
+<div class="ui two column doubling stackable grid container">
+  <div class="column">
+<div class="ui items">
+  <div class="item">
+    <div class="image">
+      <img src="../static/images/HighPerformance.png">
+    </div>
+    <div class="content">
+      <a class="header">高性能计算程序设计基础</a>
+      <div class="meta">
+        <span>讲授OpenMP、PThreads和MPI的编程方法</span>
+      </div>
+      <div class="description">
+        <p></p>
+      </div>
+      <div class="extra">授课老师：吴俊峰 </div>
+    </div>
+  </div>
+</div>
+  </div>
+  <div class="column">
+<div class="ui items">
+  <div class="item">
+    <div class="image">
+      <img src="../static/images/HighPerformance.png">
+    </div>
+    <div class="content">
+      <a class="header">高性能计算程序设计基础</a>
+      <div class="meta">
+        <span>讲授OpenMP、PThreads和MPI的编程方法</span>
+      </div>
+      <div class="description">
+        <p></p>
+      </div>
+      <div class="extra">授课老师：吴俊峰 </div>
+    </div>
+  </div>
+</div>
+  </div>
+  <div class="column">
+<div class="ui items">
+  <div class="item">
+    <div class="image">
+      <img src="../static/images/HighPerformance.png">
+    </div>
+    <div class="content">
+      <a class="header">高性能计算程序设计基础</a>
+      <div class="meta">
+        <span>讲授OpenMP、PThreads和MPI的编程方法</span>
+      </div>
+      <div class="description">
+        <p></p>
+      </div>
+      <div class="extra">授课老师：吴俊峰 </div>
+    </div>
+  </div>
+</div>
+  </div>
+  <div class="column">
+    <p></p>
+    <p></p>
+  </div>
+</div>
+
+</div>
+<!-- End MainBody -->
+</body>
+    
+</html>

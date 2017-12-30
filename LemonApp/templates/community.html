@@ -1,7 +1,11 @@
 {%include "head.html"%}
 <body>
 	{% include "HeaderMenu.html"%}
-	<div class = "ui main container">
+  <div class ="ui main container">
+	<div class = "ui grid">
+      <button class="ui primary button" style="margin-top:10px;margin-left:75rem" ><i class="write icon"></i><a href="{% url 'create_forums' %}" style="text-decoration:none">发帖</a></button>
+  </div>
+  <div class = "ui divider" style="margin-top:30px"></div>
 <!-- part I -->
 	<div class="ui styled fluid accordion">
   <div class="title"><i class="dropdown icon"></i>What is a dog? </div>
@@ -26,6 +30,7 @@
 </div>
 <!-- End Part I -->
 </div>
+
 <div class="ui wide skyscraper test ad" data-text="广告"></div>
 </body>
 
