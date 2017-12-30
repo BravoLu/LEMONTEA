@@ -58,5 +58,4 @@ class ChapterForm (forms.Form):
 	description = forms.CharField(required=False, widget=forms.Textarea(attrs={'placeholder':'章节描述'}))
 
 class PPTForm (forms.Form):
-	title = forms.CharField(required=False, widget=forms.TextInput(attrs={'placeholder':'ppt标题'}))
 	file = forms.FileField(required=False, widget=forms.FileInput(attrs={'placeholder':'选择ppt文件'}))

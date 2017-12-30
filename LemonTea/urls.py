@@ -36,7 +36,7 @@ urlpatterns = [
     url(r'^school/create_course/$',views.create_course, name="create_course"),
     url(r'^school/course/[0-9]+/$', views.course, name="course"),
     url(r'^school/course/[0-9]+/add_chapter/$',views.add_chapter, name="add_chapter"),
-    url(r'^school/course/[0-9]+/chapter/[0-9]+/ppt/[0-9]+/$',views.add_ppt, name="add_ppt"),
+    url(r'^school/course/[0-9]+/chapter/[0-9]+/ppt/[0-9]+/$',views.show_ppt, name="show_ppt"),
     url(r'^school/course/[0-9]+/chapter/[0-9]+/add_ppt/$',views.add_ppt, name="add_ppt"),
     url(r'^testpage$',views.testpage, name="testpage"),
     

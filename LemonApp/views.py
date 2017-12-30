@@ -46,14 +46,12 @@ def login(request):
 		form = LoginForm(auto_id="%s")
 	return render(request, "login.html", locals())
 
-def elements(request):
-	return render(request,'elements.html')
 
-def generic(request):
-	return render(request,'generic.html')
-
-def create(request):
-	return render(request,'create.html')
+def logout_view(request):
+	logout(request)
+	path = request.path
+	old_path = path[0:path.rfind('logout')]
+	return redirect(old_path)
 
 def identity(request):
 	context = {}
@@ -65,6 +63,27 @@ def identity(request):
 def shop(request):
 	context = {}
 	return render(request,'shop.html',context)
+
+def study(request):
+	context = {}
+	return render(request,'study.html',context)
+
+def share(request):
+	context = {}
+	return render(request,'share.html',context)	
+
+
+def school(request):
+	CourseList = Course.objects.all()
+	return render(request,'school.html', locals())
+
+def community(request):
+	context = {}
+	return render(request,'community.html',context)
+
+def page(request):
+	context = {}
+	return render(request,'page.html',context)
 
 def course(request):
 	path = request.path
@@ -78,36 +97,7 @@ def course(request):
 		temp_list = PPTList.objects.filter(chapter_id=charter_id).order_by("ppt_order")
 		print(type(temp_list))
 		ppt_list.extend(temp_list)
-	#for chapter in chapter_list:
-	for i in ppt_list:
-		print(type(i))
 	return render(request,'course.html', locals())
-
-def study(request):
-	context = {}
-	return render(request,'study.html',context)
-
-def share(request):
-	context = {}
-	return render(request,'share.html',context)	
-
-def logout_view(request):
-	logout(request)
-	path = request.path
-	old_path = path[0:path.rfind('logout')]
-	return redirect(old_path)
-
-def school(request):
-	CourseList = Course.objects.all()
-	return render(request,'school.html', locals())
-
-def community(request):
-	context = {}
-	return render(request,'community.html',context)
-
-def page(request):
-	context = {}
-	return render(request,'page.html',context)
 
 def create_course(request):
 	path = request.path
@@ -155,17 +145,18 @@ def add_ppt(request):
 		form = PPTForm(request.POST, request.FILES, auto_id="%s")
 		if form.is_valid():
 			URL_list = path.split('/')
-			course_id = int(URL_list[3])
 			chapter_id = int(URL_list[5])
-			course = Course.objects.filter(id=course_id)[0]
 			chapter = ChapterList.objects.filter(id=chapter_id)[0]
 			ppt_order = PPTList.objects.filter(chapter_id=chapter).count() + 1
-			title = form.cleaned_data["title"]
+			title = str(form.cleaned_data["file"])
 			file = form.cleaned_data["file"]
-			ppt = PPTList(course_id=course, chapter_id=chapter, ppt_order=ppt_order, title=title, file=file)
+			ppt = PPTList(chapter_id=chapter, ppt_order=ppt_order, title=title, file=file)
 			ppt.save()
 			old_path = path[0:path.rfind('chapter')]
 			return redirect(old_path)
 	else:
 		form = PPTForm(auto_id="%s")
 	return render(request, "add_ppt.html", locals())
+
+def show_ppt(request):
+	pass
