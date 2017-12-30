@@ -3,7 +3,7 @@
 <html>
 
 <head>
-    <title>Hello Semantic!</title>
+    <title>{{ course.title }}</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     
@@ -79,7 +79,7 @@
               <h3 class="ui header">第{{ chapter.chapter_order }}章：{{ chapter.title }}</h3>
               <p>{{ chapter.description }}</p>
             {% endfor %}
-            <h3 class="ui header" href='add_chapter'>新建章节</h3>
+            <h3 class="ui header"><a href="add_chapter/">(按钮)添加章节</a></h3>
           </div>
         </div>
       </div>
@@ -91,10 +91,10 @@
 
     <h2 class="ui dividing header">课程资料</h2>
       {% for chapter in chapter_list %}
-        <h3 class="ui header">第{{ chapter.chapter_order }}章：{{ chapter.title }}</h3>
+        <h3 class="ui header">第{{ chapter.chapter_order }}章：{{ chapter.title }} <a href="chapter/{{ chapter.id }}/add_ppt/">添加PPT</a></h3>
         {%for ppt in ppt_list %} 
-          {% if ppt.chapter_id == chapter.id %}
-            <p><a href="{{ ppt.id }}/">{{ ppt.ppt_order }}. {{ ppt.title }}</a></p>
+          {% if ppt.chapter_id.id == chapter.id %}
+            <p><a href="chapter/{{ chapter.id }}/ppt/{{ ppt.id }}/">{{ ppt.ppt_order }}. {{ ppt.title }}</a></p>
             <p><a href="/LemonApp/media/{{ ppt.file }}">下载</a></p>
           {% endif %}
         {% endfor %}

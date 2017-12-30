@@ -71,7 +71,7 @@ def course(request):
 	URL_list = path.split('/')
 	course_id = int(URL_list[3])
 	course = Course.objects.filter(id=course_id)[0]
-	chapter_list = ChapterList.objects.filter(course_id=course_id).order_by("chapter_order")
+	chapter_list = ChapterList.objects.filter(course_id=course).order_by("chapter_order")
 	chapter_id_list = [chapter.id for chapter in chapter_list]
 	ppt_list = []
 	for charter_id in chapter_id_list:
@@ -131,7 +131,41 @@ def create_course(request):
 	return render(request, "create_course.html", locals())
 
 def add_chapter(request):
-	pass
+	path = request.path
+	if request.method == 'POST':
+		form = ChapterForm(data=request.POST, auto_id="%s")
+		if form.is_valid():
+			URL_list = path.split('/')
+			course_id = int(URL_list[3])
+			course = Course.objects.filter(id=course_id)[0]
+			chapter_order = ChapterList.objects.filter(course_id=course).count() + 1
+			title = form.cleaned_data["title"]
+			description = form.cleaned_data["description"]
+			chapter = ChapterList(course_id=course, chapter_order=chapter_order, title=title, description=description)
+			chapter.save()
+			old_path = path[0:path.rfind('add_chapter')]
+			return redirect(old_path)
+	else:
+		form = ChapterForm(auto_id="%s")
+	return render(request, "add_chapter.html", locals())
 
 def add_ppt(request):
-	pass
+	path = request.path
+	if request.method == 'POST':
+		form = PPTForm(request.POST, request.FILES, auto_id="%s")
+		if form.is_valid():
+			URL_list = path.split('/')
+			course_id = int(URL_list[3])
+			chapter_id = int(URL_list[5])
+			course = Course.objects.filter(id=course_id)[0]
+			chapter = ChapterList.objects.filter(id=chapter_id)[0]
+			ppt_order = PPTList.objects.filter(chapter_id=chapter).count() + 1
+			title = form.cleaned_data["title"]
+			file = form.cleaned_data["file"]
+			ppt = PPTList(course_id=course, chapter_id=chapter, ppt_order=ppt_order, title=title, file=file)
+			ppt.save()
+			old_path = path[0:path.rfind('chapter')]
+			return redirect(old_path)
+	else:
+		form = PPTForm(auto_id="%s")
+	return render(request, "add_ppt.html", locals())
