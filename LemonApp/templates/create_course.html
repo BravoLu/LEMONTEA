@@ -136,10 +136,10 @@
       <div class="ui error message"></div>
 
     </form>
-    {% if form.course_identifier.errors %}
+    {% if form.image.errors %}
     <div class="ui error message">
       <ul class="list">
-        {% for i in form.course_identifier.errors %}
+        {% for i in form.image.errors %}
           <li>{{i|escape}}</li>
         {% endfor%}
       </ul>

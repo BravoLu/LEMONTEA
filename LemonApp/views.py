@@ -2,18 +2,20 @@ from django.shortcuts import render, redirect
 from LemonApp.forms import SignupForm, LoginForm, CourseForm, ChapterForm, PPTForm
 from django.contrib.auth import get_user_model
 from django.contrib.auth import authenticate,login as auth_login, logout 
-from LemonApp.models import Course, ChapterList, PPTList
+from LemonApp.models import College, Course, ChapterList, PPTList
 import os
 
 # Create your views here.
 def testpage(request):
 	return render(request,'personal-setting.html')
 def home(request):
+	college_list = College.objects.all()
 	#return render(request, 'login.html', locals())
-	return render(request, 'index.html')
+	return render(request, 'index.html', locals())
 
 def signup(request):
 	path = request.path
+	college_list = College.objects.all()
 	if request.method == 'POST':
 		form = SignupForm(data=request.POST,auto_id="%s")
 		if form.is_valid():
@@ -35,6 +37,7 @@ def signup(request):
 
 def login(request):
 	path = request.path
+	college_list = College.objects.all()
 	if request.method =='POST':
 		form = LoginForm(data=request.POST, auto_id="%s")			
 		if form.is_valid():		
@@ -54,41 +57,54 @@ def logout_view(request):
 	return redirect(old_path)
 
 def identity(request):
-	context = {}
+	college_list = College.objects.all()
 	if request.user.id:
-		return render(request, 'personal-info.html', context)
+		return render(request, 'personal-info.html', locals())
 	else:
 		return redirect("login")
 
 def shop(request):
-	context = {}
-	return render(request,'shop.html',context)
+	college_list = College.objects.all()
+	return render(request,'shop.html',locals())
 
 def study(request):
-	context = {}
-	return render(request,'study.html',context)
+	college_list = College.objects.all()
+	return render(request,'study.html',locals())
 
 def share(request):
-	context = {}
-	return render(request,'share.html',context)	
+	college_list = College.objects.all()
+	return render(request,'share.html',locals())	
 
 
-def school(request):
-	CourseList = Course.objects.all()
-	return render(request,'school.html', locals())
 
 def community(request):
-	context = {}
-	return render(request,'community.html',context)
+	college_list = College.objects.all()
+	return render(request,'community.html',locals())
 
 def page(request):
-	context = {}
-	return render(request,'page.html',context)
+	college_list = College.objects.all()
+	return render(request,'page.html',locals())
+
+def colleges(request):
+	college_list = College.objects.all()
+	return render(request,'colleges.html', locals())
+	
+def courses(request):
+	path = request.path
+	college_list = College.objects.all()
+	URL_list = path.split('/')
+	college_id = int(URL_list[2])
+	college = College.objects.filter(id=college_id)[0]
+	CourseList = Course.objects.filter(college_id=college)
+	return render(request,'courses.html', locals())
 
 def course(request):
 	path = request.path
+	college_list = College.objects.all()
 	URL_list = path.split('/')
-	course_id = int(URL_list[3])
+	college_id = int(URL_list[2])
+	college = College.objects.filter(id=college_id)[0]
+	course_id = int(URL_list[4])
 	course = Course.objects.filter(id=course_id)[0]
 	chapter_list = ChapterList.objects.filter(course_id=course).order_by("chapter_order")
 	chapter_id_list = [chapter.id for chapter in chapter_list]
@@ -101,18 +117,28 @@ def course(request):
 
 def create_course(request):
 	path = request.path
+	if not request.user.id:
+		old_path = path[0:path.rfind('create_course')]
+		return redirect(old_path)
+	college_list = College.objects.all()
 	if request.method == 'POST':
 		form = CourseForm(request.POST, request.FILES, auto_id="%s")
 		if form.is_valid():
+			UserModel = get_user_model()
+			URL_list = path.split('/')
+			college_id = int(URL_list[2])
+			creator_id = request.user.id
+			college = College.objects.filter(id=college_id)[0]
+			creator = UserModel.objects.filter(id=creator_id)[0]
 			course_identifier = form.cleaned_data["course_identifier"]
 			title = form.cleaned_data["title"]
 			image = form.cleaned_data["image"]
 			description = form.cleaned_data["description"]
 			teacher = form.cleaned_data["teacher"]
-			if(image):
-				course = Course(course_identifier=course_identifier,title=title,image=image,description=description,teacher=teacher)
+			if image:
+				course = Course(college_id=college,creator_id=creator,course_identifier=course_identifier,title=title,image=image,description=description,teacher=teacher)
 			else:
-				course = Course(course_identifier=course_identifier,title=title,description=description,teacher=teacher)
+				course = Course(college_id=college,creator_id=creator,course_identifier=course_identifier,title=title,description=description,teacher=teacher)
 			course.save()
 			old_path = path[0:path.rfind('create_course')]
 			return redirect(old_path)
@@ -122,11 +148,15 @@ def create_course(request):
 
 def add_chapter(request):
 	path = request.path
+	if not request.user.id:
+		old_path = path[0:path.rfind('add_chapter')]
+		return redirect(old_path)
+	college_list = College.objects.all()
 	if request.method == 'POST':
 		form = ChapterForm(data=request.POST, auto_id="%s")
 		if form.is_valid():
 			URL_list = path.split('/')
-			course_id = int(URL_list[3])
+			course_id = int(URL_list[4])
 			course = Course.objects.filter(id=course_id)[0]
 			chapter_order = ChapterList.objects.filter(course_id=course).count() + 1
 			title = form.cleaned_data["title"]
@@ -141,11 +171,15 @@ def add_chapter(request):
 
 def add_ppt(request):
 	path = request.path
+	if not request.user.id:
+		old_path = path[0:path.rfind('chapter')]
+		return redirect(old_path)
+	college_list = College.objects.all()
 	if request.method == 'POST':
 		form = PPTForm(request.POST, request.FILES, auto_id="%s")
 		if form.is_valid():
 			URL_list = path.split('/')
-			chapter_id = int(URL_list[5])
+			chapter_id = int(URL_list[6])
 			chapter = ChapterList.objects.filter(id=chapter_id)[0]
 			ppt_order = PPTList.objects.filter(chapter_id=chapter).count() + 1
 			title = str(form.cleaned_data["file"])
@@ -159,4 +193,5 @@ def add_ppt(request):
 	return render(request, "add_ppt.html", locals())
 
 def show_ppt(request):
+	college_list = College.objects.all()
 	pass

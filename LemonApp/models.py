@@ -3,15 +3,27 @@ from django.contrib.auth.models import AbstractUser
 # Create your models here.
 class Account(AbstractUser):
     face = models.ImageField("头像", upload_to="UserPhoto/", null=True, default="UserPhoto/default.png")
-    permission = models.IntegerField("权限类型", null=True) #数值越大权限越高
+    permission = models.IntegerField("权限类型", default=0) #数值越大权限越高
     class Meta:
         db_table = "Account"
 
     def __str__(self):
         return self.username
 
+class College(models.Model):
+    name = models.CharField("大学名字", max_length=100)
+    english_name = models.CharField("英文名字", max_length=100)
+    image = models.ImageField("大学图片", upload_to="CollegePhoto/", null=True, default="CollegePhoto/default.png")
+    description = models.TextField("大学介绍")
+    class Meta:
+        db_table = "College"
+
+    def __str__(self):
+        return self.name
+
 class Course(models.Model):
-    college_name = models.CharField("大学", max_length=50, null=True)
+    college_id = models.ForeignKey(College, on_delete=models.CASCADE)
+    creator_id = models.ForeignKey(Account, on_delete=models.CASCADE)
     course_order = models.IntegerField("课程编号", null=True)
     course_identifier = models.CharField("课程号", max_length=50)
     title = models.CharField("课程名称", max_length=50)
@@ -19,6 +31,7 @@ class Course(models.Model):
     description = models.TextField("课程介绍")
     teacher = models.CharField("授课老师", max_length=50)
     class Meta:
+        unique_together = ("id", "college_id", "creator_id")
         db_table = "Course"
 
     def __str__(self):

@@ -21,7 +21,6 @@ from django.conf.urls.static import static
 
 
 urlpatterns = [
-	url(r'^school/$', views.school, name='school'),
     url(r'^admin/', admin.site.urls, name="admin"),
     url(r'^$', views.home, name="home"),
     url(r'login$', views.login, name="login"),
@@ -33,11 +32,13 @@ urlpatterns = [
     url(r'^identity', views.identity, name="identity"),
     url(r'^community', views.community ,name='community'),
     url(r'^page',views.page, name="page"),
-    url(r'^school/create_course/$',views.create_course, name="create_course"),
-    url(r'^school/course/[0-9]+/$', views.course, name="course"),
-    url(r'^school/course/[0-9]+/add_chapter/$',views.add_chapter, name="add_chapter"),
-    url(r'^school/course/[0-9]+/chapter/[0-9]+/ppt/[0-9]+/$',views.show_ppt, name="show_ppt"),
-    url(r'^school/course/[0-9]+/chapter/[0-9]+/add_ppt/$',views.add_ppt, name="add_ppt"),
+    url(r'^school/$', views.colleges, name='colleges'),
+    url(r'^school/[0-9]+/$', views.courses, name='courses'),
+    url(r'^school/[0-9]+/create_course/$',views.create_course, name="create_course"),
+    url(r'^school/[0-9]+/course/[0-9]+/$', views.course, name="course"),
+    url(r'^school/[0-9]+/course/[0-9]+/add_chapter/$',views.add_chapter, name="add_chapter"),
+    url(r'^school/[0-9]+/course/[0-9]+/chapter/[0-9]+/ppt/[0-9]+/$',views.show_ppt, name="show_ppt"),
+    url(r'^school/[0-9]+/course/[0-9]+/chapter/[0-9]+/add_ppt/$',views.add_ppt, name="add_ppt"),
     url(r'^testpage$',views.testpage, name="testpage"),
     
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,4 +1,4 @@
-
+{% load static %}
 <!DOCTYPE html>
 
 <html>
@@ -15,11 +15,11 @@
 
     
 
-    <link rel="stylesheet" type="text/css" href="../static/semantic.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'semantic.css' %}">
 
     <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.js"></script>
 
-    <script src="../static/semantic.js"></script>
+    <script src="{% static 'semantic.js' %}"></script>
 
     <script>
 
@@ -43,9 +43,9 @@
 
     <script src="assets/library/jquery.min.js"></script>
 
-    <script src="../static/components/form.js"></script>
+    <script src="{% static 'components/form.js' %}"></script>
 
-    <script src="../static/components/transition.js"></script>
+    <script src="{% static 'components/transition.js' %}"></script>
 
 
 
@@ -92,7 +92,7 @@
 
 <div class = "ui main container">
 
-  <h5 class="ui header"><a href="#">>学校专区>><a href="/school/">中山大学</a>>所有课程:</h5>
+  <h5 class="ui header">><a href="/school/">学校专区</a>>{{ college.name }}</h5>
 
 <div class="ui two column doubling stackable grid container">
 {% for course in CourseList %}
