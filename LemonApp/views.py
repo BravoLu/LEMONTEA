@@ -195,3 +195,4 @@ def add_ppt(request):
 def show_ppt(request):
 	college_list = College.objects.all()
 	pass
+

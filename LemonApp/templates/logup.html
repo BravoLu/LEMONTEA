@@ -3,7 +3,8 @@
 <html>
 
 <head>
-    <title>Sign up</title>
+    <title>注册!</title>
+
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     
@@ -36,9 +37,6 @@
     }
     .column {
       max-width: 450px;
-    }
-    p.spec {
-      color:black;
     }
     </style>
   <script>
@@ -157,16 +155,8 @@
       </div>
 
       <div class="ui error message"></div>
+
     </form>
-    {% if form.username.errors %}
-    <div class="ui error message">
-      <ul class="list">
-        {% for i in form.username.errors %}
-          <li>{{i|escape}}</li>
-        {% endfor%}
-      </ul>
-    </div>
-    {% endif%}
 
 
   </div>
