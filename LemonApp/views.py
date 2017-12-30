@@ -6,6 +6,8 @@ from LemonApp.models import Course, ChapterList, PPTList
 import os
 
 # Create your views here.
+def testpage(request):
+	return render(request,'personal-setting.html')
 def home(request):
 	#return render(request, 'login.html', locals())
 	return render(request, 'index.html')
@@ -54,7 +56,10 @@ def create(request):
 
 def identity(request):
 	context = {}
-	return render(request, 'personal-info.html', context)
+	if request.user.id:
+		return render(request, 'personal-info.html', context)
+	else:
+		return redirect("login")
 
 def shop(request):
 	context = {}
