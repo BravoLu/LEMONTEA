@@ -101,7 +101,7 @@
        新建课程
       </div>
     </h2>
-   <form action="/create_course" method="post" class="ui large form" enctype="multipart/form-data">
+   <form action="{{ path }}" method="post" class="ui large form" enctype="multipart/form-data">
     {% csrf_token %}
       <div class="ui stacked segment">
         <div class="field">

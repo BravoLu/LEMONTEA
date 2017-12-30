@@ -13,6 +13,7 @@ def home(request):
 	return render(request, 'index.html')
 
 def signup(request):
+	path = request.path
 	if request.method == 'POST':
 		form = SignupForm(data=request.POST,auto_id="%s")
 		if form.is_valid():
@@ -24,7 +25,6 @@ def signup(request):
 			user.save()
 			auth_user = authenticate(username=username,password=password)
 			auth_login(request,auth_user)
-			path = request.path
 			old_path = path[0:path.rfind('/')+1]
 			return redirect(old_path)
 	else:
@@ -32,13 +32,12 @@ def signup(request):
 	return render(request, "logup.html", locals())
 
 def login(request):
-	print(1)
+	path = request.path
 	if request.method =='POST':
 		form = LoginForm(data=request.POST, auto_id="%s")			
 		if form.is_valid():		
 			user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])			
 			auth_login(request,user)
-			path = request.path
 			old_path = path[0:path.rfind('/')+1]
 			return redirect(old_path)
 	else:
@@ -68,7 +67,7 @@ def shop(request):
 def course(request):
 	path = request.path
 	URL_list = path.split('/')
-	course_id = URL_list[2]
+	course_id = int(URL_list[3])
 	course = Course.objects.filter(id=course_id)[0]
 	chapter_list = ChapterList.objects.filter(course_id=course_id).order_by("chapter_order")
 	chapter_id_list = [chapter.id for chapter in chapter_list]
@@ -107,6 +106,7 @@ def page(request):
 	return render(request,'page.html',context)
 
 def create_course(request):
+	path = request.path
 	if request.method == 'POST':
 		form = CourseForm(request.POST, request.FILES, auto_id="%s")
 		if form.is_valid():
@@ -120,7 +120,8 @@ def create_course(request):
 			else:
 				course = Course(course_identifier=course_identifier,title=title,description=description,teacher=teacher)
 			course.save()
-			return redirect("school")
+			old_path = path[0:path.rfind('/')+1]
+			return redirect(old_path)
 	else:
 		form = CourseForm(auto_id="%s")
 	return render(request, "create_course.html", locals())
