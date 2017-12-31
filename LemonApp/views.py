@@ -218,78 +218,116 @@ def download(request):
 		download_path = path[path.find("LemonApp")-1:]
 		return redirect(download_path)
 
-def tips(request):
+def tips(request): #验证权限
 	path = request.path
 	URL_list = path.split('/')
+	if not request.user.id:
+		return 1 #1-未登录
+
 	if "identity" in path:
-		if not request.user.id:
-			return 1 #1-未登录
-		else:
-			return 0 #0-通过验证
+		return 0 #0-通过验证
 
 	if "colleges" in path:
-		if not request.user.id:
-			return 1 #1-未登录
-		elif request.user.permission <= 1:
+		if request.user.permission <= 1:
 			return 2 #2-不是学生/老师
 		else:
 			return 0 #0-通过验证
 
 	if "college" in path:
-		if not request.user.id: #没登陆或不是学生/老师
-			return 1 #1-未登录
-		if request.user.permission <= 1:
-			return 2 #2-不是学生/老师
-		if College.objects.filter(id=int(URL_list[2])).count() == 0: #没有这个院校
-			return 3 #3-没有这个院校
-		if int(URL_list[2]) != request.user.college_id: #自己不属于此院校
-			return 4 #4-自己不属于此院校
+		if request.user.permission < 10: #非管理员
+			if request.user.permission <= 1:
+				return 2 #2-不是学生/老师
+			if College.objects.filter(id=int(URL_list[2])).count() == 0: #没有这个院校
+				return 3 #3-没有这个院校
+			if int(URL_list[2]) != request.user.college_id: #自己不属于此院校
+				return 4 #4-自己不属于此院校
 
-		if "create_course" in path:
-			if request.user.permission <= 2:
-				return 5 #5-没权限创建课程
-			else:
+			if "create_course" in path:
+				if request.user.permission <= 2:
+					return 5 #5-没权限创建课程
+				else:
+					return 0 #0-通过验证	
+
+			if "course" in path:
+				if Course.objects.filter(id=int(URL_list[4])).count() == 0: #没有这个课程
+					return 6 #6-没有这个课程
+
+				if "add_chapter" in path:
+					if Course.objects.get(id=int(URL_list[4])).creator_id != request.user.id: #课程不属于自己
+						return 7 #7-没权限添加章节
+					else:
+						return 0 #0-通过验证
+
+				if "chapter" in path:
+					if ChapterList.objects.filter(id=int(URL_list[6])).count == 0: #没有这个章节
+						return 8 #8-没有这个章节
+
+					if "add_ppt" in path:
+						if Course.objects.get(id=int(URL_list[4])).creator_id != request.user.id:#课程不属于自己
+							return 9 #9-没权限添加ppt
+						else:
+							return 0 #0-通过验证
+
+					if "ppt" in path:
+						if PPTList.objects.filter(id=int(URL_list[8])).count == 0: #没有这个PPT
+							return 10 #10-没有这个PPT
+						else:
+							return 0 #0-通过验证
+					else:
+						return 0 #0-通过验证
+				else:
+					return 0 #0-通过验证
+
+			if "LemonApp" in path:
+				if PPTList.objects.filter(id=int(URL_list[3])).count == 0: #没有这个PPT
+					return 10 #10-没有这个PPT
+				else:
+					return 0 #0-通过验证
+			
+			return 0 #0-通过验证
+
+		else: #管理员
+			if College.objects.filter(id=int(URL_list[2])).count() == 0: #没有这个院校
+				return 3 #3-没有这个院校
+
+			if "create_course" in path:
 				return 0 #0-通过验证	
 
-		if "course" in path:
-			if Course.objects.filter(id=int(URL_list[4])).count() == 0: #没有这个课程
-				return 6 #6-没有这个课程
-			if "add_chapter" in path:
-				if Course.objects.get(id=int(URL_list[4])).creator_id != request.user.id: #课程不属于自己
-					return 7 #7-没权限添加章节
+			if "course" in path:
+				if Course.objects.filter(id=int(URL_list[4])).count() == 0: #没有这个课程
+					return 6 #6-没有这个课程
+
+				if "add_chapter" in path:
+					return 0 #0-通过验证
+
+				if "chapter" in path:
+					if ChapterList.objects.filter(id=int(URL_list[6])).count == 0: #没有这个章节
+						return 8 #8-没有这个章节
+
+					if "add_ppt" in path:
+						return 0 #0-通过验证
+
+					if "ppt" in path:
+						if PPTList.objects.filter(id=int(URL_list[8])).count == 0: #没有这个PPT
+							return 10 #10-没有这个PPT
+						else:
+							return 0 #0-通过验证
+					else:
+						return 0 #0-通过验证
 				else:
 					return 0 #0-通过验证
 
-			if "chapter" in path:
-				if ChapterList.objects.filter(id=int(URL_list[6])).count == 0: #没有这个章节
-					return 8 #8-没有这个章节
-				if "add_ppt" in path:
-					if Course.objects.get(id=int(URL_list[4])).creator_id != request.user.id:#课程不属于自己
-						return 9 #9-没权限添加ppt
-					else:
-						return 0 #0-通过验证
-
-				if "ppt" in path:
-					if PPTList.objects.filter(id=int(URL_list[8])).count == 0: #没有这个PPT
-						return 10 #10-没有这个PPT
-					else:
-						return 0 #0-通过验证
+			if "LemonApp" in path:
+				if PPTList.objects.filter(id=int(URL_list[3])).count == 0: #没有这个PPT
+					return 10 #10-没有这个PPT
 				else:
 					return 0 #0-通过验证
-			else:
-				return 0 #0-通过验证
-
-		if "LemonApp" in path:
-			if PPTList.objects.filter(id=int(URL_list[3])).count == 0: #没有这个PPT
-				return 10 #10-没有这个PPT
-			else:
-				return 0 #0-通过验证
-		
-		return 0 #0-通过验证
-
-
-
 			
+			return 0 #0-通过验证
+
+
+
+				
 
 
 
