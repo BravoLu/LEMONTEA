@@ -4,12 +4,24 @@
 {% load humanize %}
 <body>
 	{% include "HeaderMenu.html"%}
+
 	<div class = "ui main container">
 		<!-- 帖子主题 -->
-		<div class="ui segment" id="example1">
-    		<div class="ui sticky" >
-      			<h3 class="ui header">{{ article.title }}</h3>
-
+      <div class="ui breadcrumb">
+    <a class="section" href = "{% url 'create_forums' %}"> <<返回 </a>
+      </div>
+		    <div class="ui segment" id="example1">
+    		  <div class="ui sticky" >
+            <a class = "avatar" style="float:left">
+              <img src = " /LemonApp/media/{{ article.createuser.face }}">
+            </a>
+            <div class = "content" >
+              <a class = "author" >{{article.create_user.username}}</a>
+              <div clas="metadata">
+              <i class = "calendar icon"></i><span class = "date"> {{article.create_date|naturaltime}}</span>
+              </div>
+      			</div>
+            <h3 class="ui header">{{ article.title }}</h3>
       			<p>{{ article.get_content_as_markdown|safe }}</p>
     		</div>
    		</div>
