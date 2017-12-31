@@ -3,15 +3,49 @@ from django.contrib.auth.models import AbstractUser
 # Create your models here.
 class Account(AbstractUser):
     face = models.ImageField("头像", upload_to="UserPhoto/", null=True, default="UserPhoto/default.png")
-    permission = models.IntegerField("权限类型", null=True) #数值越大权限越高
+    permission = models.IntegerField("权限类型", default=0) #数值越大权限越高
+    college_id = models.IntegerField("所属大学", default=-1)
+    IDcard = models.CharField("学号或教工号", max_length=50, default="-1")
     class Meta:
         db_table = "Account"
 
     def __str__(self):
         return self.username
 
+class College(models.Model):
+    name = models.CharField("大学名字", max_length=100)
+    english_name = models.CharField("英文名字", max_length=100)
+    image = models.ImageField("大学图片", upload_to="CollegePhoto/", null=True, default="CollegePhoto/default.png")
+    description = models.TextField("大学介绍")
+    class Meta:
+        db_table = "College"
+
+    def __str__(self):
+        return self.name
+
+class TeacherInformation(models.Model):
+    college_id = models.ForeignKey(College, on_delete=models.CASCADE)
+    TeacherID = models.CharField("教工号", max_length=50)
+
+    class Meta:
+        db_table = "TeacherInformation"
+
+    def __str__(self):
+        return self.TeacherID
+
+class StudentInformation(models.Model):
+    college_id = models.ForeignKey(College, on_delete=models.CASCADE)
+    StudentID = models.CharField("学号", max_length=50)
+
+    class Meta:
+        db_table = "StudentInformation"
+
+    def __str__(self):
+        return self.StudentID
+
 class Course(models.Model):
-    college_name = models.CharField("大学", max_length=50, null=True)
+    college_id = models.ForeignKey(College, on_delete=models.CASCADE)
+    creator_id = models.ForeignKey(Account, on_delete=models.CASCADE)
     course_order = models.IntegerField("课程编号", null=True)
     course_identifier = models.CharField("课程号", max_length=50)
     title = models.CharField("课程名称", max_length=50)
@@ -19,6 +53,7 @@ class Course(models.Model):
     description = models.TextField("课程介绍")
     teacher = models.CharField("授课老师", max_length=50)
     class Meta:
+        unique_together = ("id", "college_id", "creator_id")
         db_table = "Course"
 
     def __str__(self):
@@ -58,3 +93,25 @@ class PPTImage(models.Model):
 
     def __str__(self):
         return self.image_order
+
+class CourseComment(models.Model):
+    couse_id = models.ForeignKey(Course, on_delete=models.CASCADE)
+    account_id = models.ForeignKey(Account, on_delete=models.CASCADE)
+    comment_order = models.IntegerField("评论顺序")
+    content = models.TextField("评论内容")
+    class Meta:
+        db_table = "CourseComment"
+
+    def __str__(self):
+        return "comment"
+
+class PPTComment(models.Model):
+    ppt_image_id = models.ForeignKey(PPTImage, on_delete=models.CASCADE)
+    account_id = models.ForeignKey(Account, on_delete=models.CASCADE)
+    comment_order = models.IntegerField("评论顺序")
+    content = models.TextField("评论内容")
+    class Meta:
+        db_table = "PPTComment"
+
+    def __str__(self):
+        return "comment"

@@ -3,7 +3,7 @@
 <html>
 
 <head>
-    <title>注册!</title>
+    <title>提示!</title>
 
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -26,9 +26,6 @@
     <script src="{% static 'components/transition.js' %}"></script>
 
     <style type="text/css">
-    body {
-      background-color: #DADADA;
-    }
     body > .grid {
       height: 100%;
     }
@@ -122,51 +119,57 @@
 <!-- mainBODY -->
     <div class="ui middle aligned center aligned grid">
   <div class="column">
-    <h2 class="ui teal image header">
-      <div class="content icon">
-       注册
-      </div>
-    </h2>
-   <form action="{{ path }}" method="post" class="ui large form">
-    {% csrf_token %}
-      <div class="ui stacked segment">
-        <div class="field">
-          <div class="ui left icon input">
-            <i class="user icon"></i>
-            {{ form.username }}
-          </div>
-        </div>
-        <div class="field">
-          <div class="ui left icon input">
-            <i class="mail icon"></i>
-            {{ form.email }}
-          </div>
-        </div>
-        <div class="field">
-          <div class="ui left icon input">
-            <i class="lock icon"></i>
-            {{ form.password }}
-          </div>
-        </div>
-        <div class="field">
-          <div class="ui left icon input">
-            <i class="lock icon"></i>
-            {{ form.confirm_password }}
-          </div>
-        </div>
-        <div class="ui fluid large teal submit button">注册</div>
-      </div>
-      <div class="ui error message"></div>
-    </form>
-    {% if form.username.errors %}
+    {% if error_type %}
       <div class="ui error message">
-        <ul class="list">
-          {% for i in form.username.errors %}
-            <li>{{i|escape}}</li>
-          {% endfor%}
-        </ul>
+        <h2>提示</h2>
+        {%if error_type == 1 %}
+          <ul class="list">
+            <li><h3>若已有账号, 请先登陆</h3></li>
+            <li><h3>若没有账号, 请先注册</h3></li>
+          </ul>
+        {% elif error_type == 2 %}
+          <h4>本专区只对合作院校的学生和老师开放, 如果您是以下院校的学生或老师, 请先进入个人中心绑定学号/教工号</h4>
+          <ul class="list">
+            {% for college in college_list %}
+              <li><h4>{{ college.name }}</h4></li>
+            {% endfor %}
+          </ul>
+        {% elif error_type == 3 %}
+          <ul class="list">
+            <li><h3>抱歉，您访问的院校不存在</h3></li>
+          </ul>
+        {% elif error_type == 4 %}
+          <ul class="list">
+            <li><h3>抱歉，您没有权限访问此院校</h3></li>
+            <li><h3>如果您是此院校的学生或老师, 请先进入个人中心绑定学号/教工号</h3></li>
+          </ul>
+        {% elif error_type == 5 %}
+          <ul class="list">
+            <li><h3>抱歉，在此您没有权限创建课程</h3></li>
+          </ul>
+        {% elif error_type == 6 %}
+          <ul class="list">
+            <li><h3>抱歉，您访问的课程不存在</h3></li>
+          </ul>
+        {% elif error_type == 7 %}
+          <ul class="list">
+            <li><h3>抱歉，在此您没有权限添加章节</h3></li>
+          </ul>
+        {% elif error_type == 8 %}
+          <ul class="list">
+            <li><h3>抱歉，您访问的章节不存在</h3></li>
+          </ul>
+        {% elif error_type == 9 %}
+          <ul class="list">
+            <li><h3>抱歉，在此您没有权限添加ppt</h3></li>
+          </ul>
+        {% elif error_type == 10 %}
+          <ul class="list">
+            <li><h3>抱歉，您访问的ppt不存在</h3></li>
+          </ul>
+        {% endif %}
       </div>
-    {% endif%}
+    {% endif %}
 
 
   </div>
