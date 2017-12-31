@@ -58,7 +58,8 @@ def logout_view(request):
 
 def identity(request):
 	college_list = College.objects.all()
-	if tips(request) == False:
+	error_type = tips(request)
+	if error_type > 0:
 		return render(request,'tips.html', locals())
 	return render(request, 'personal-info.html', locals())
 
@@ -86,13 +87,15 @@ def page(request):
 
 def colleges(request):
 	college_list = College.objects.all()
-	if tips(request) == False:
+	error_type = tips(request)
+	if error_type > 0:
 		return render(request,'tips.html', locals())
 	return render(request,'colleges.html', locals())
 	
 def courses(request):
 	college_list = College.objects.all()
-	if tips(request) == False:
+	error_type = tips(request)
+	if error_type > 0:
 		return render(request,'tips.html', locals())
 	path = request.path
 	URL_list = path.split('/')
@@ -103,7 +106,8 @@ def courses(request):
 
 def course(request):
 	college_list = College.objects.all()
-	if tips(request) == False:
+	error_type = tips(request)
+	if error_type > 0:
 		return render(request,'tips.html', locals())
 	path = request.path
 	URL_list = path.split('/')
@@ -122,7 +126,8 @@ def course(request):
 
 def create_course(request):
 	college_list = College.objects.all()
-	if tips(request) == False:
+	error_type = tips(request)
+	if error_type > 0:
 		return render(request,'tips.html', locals())
 	path = request.path
 	if request.method == 'POST':
@@ -152,7 +157,8 @@ def create_course(request):
 
 def add_chapter(request):
 	college_list = College.objects.all()
-	if tips(request) == False:
+	error_type = tips(request)
+	if error_type > 0:
 		return render(request,'tips.html', locals())
 	path = request.path
 	if request.method == 'POST':
@@ -174,7 +180,8 @@ def add_chapter(request):
 
 def add_ppt(request):
 	college_list = College.objects.all()
-	if tips(request) == False:
+	error_type = tips(request)
+	if error_type > 0:
 		return render(request,'tips.html', locals())
 	path = request.path
 	if request.method == 'POST':
@@ -196,20 +203,95 @@ def add_ppt(request):
 
 def show_ppt(request):
 	college_list = College.objects.all()
-	if tips(request) == False:
+	error_type = tips(request)
+	if error_type > 0:
 		return render(request,'tips.html', locals())
 	pass
 
+def download(request):
+	college_list = College.objects.all()
+	error_type = tips(request)
+	if error_type > 0:
+		return render(request,'tips.html', locals())
+	else:
+		path = request.path
+		download_path = path[path.find("LemonApp")-1:]
+		return redirect(download_path)
+
 def tips(request):
 	path = request.path
+	URL_list = path.split('/')
 	if "identity" in path:
 		if not request.user.id:
-			return False
+			return 1 #1-未登录
 		else:
-			return True
-	elif "colleges" in path:
-		if (not request.user.id) or (request.user.permission <= 1):
-			return False
+			return 0 #0-通过验证
+
+	if "colleges" in path:
+		if not request.user.id:
+			return 1 #1-未登录
+		elif request.user.permission <= 1:
+			return 2 #2-不是学生/老师
 		else:
-			return True
+			return 0 #0-通过验证
+
+	if "college" in path:
+		if not request.user.id: #没登陆或不是学生/老师
+			return 1 #1-未登录
+		if request.user.permission <= 1:
+			return 2 #2-不是学生/老师
+		if College.objects.filter(id=int(URL_list[2])).count() == 0: #没有这个院校
+			return 3 #3-没有这个院校
+		if int(URL_list[2]) != request.user.college_id: #自己不属于此院校
+			return 4 #4-自己不属于此院校
+
+		if "create_course" in path:
+			if request.user.permission <= 2:
+				return 5 #5-没权限创建课程
+			else:
+				return 0 #0-通过验证	
+
+		if "course" in path:
+			if Course.objects.filter(id=int(URL_list[4])).count() == 0: #没有这个课程
+				return 6 #6-没有这个课程
+			if "add_chapter" in path:
+				if Course.objects.get(id=int(URL_list[4])).creator_id != request.user.id: #课程不属于自己
+					return 7 #7-没权限添加章节
+				else:
+					return 0 #0-通过验证
+
+			if "chapter" in path:
+				if ChapterList.objects.filter(id=int(URL_list[6])).count == 0: #没有这个章节
+					return 8 #8-没有这个章节
+				if "add_ppt" in path:
+					if Course.objects.get(id=int(URL_list[4])).creator_id != request.user.id:#课程不属于自己
+						return 9 #9-没权限添加ppt
+					else:
+						return 0 #0-通过验证
+
+				if "ppt" in path:
+					if PPTList.objects.filter(id=int(URL_list[8])).count == 0: #没有这个PPT
+						return 10 #10-没有这个PPT
+					else:
+						return 0 #0-通过验证
+				else:
+					return 0 #0-通过验证
+			else:
+				return 0 #0-通过验证
+
+		if "LemonApp" in path:
+			if PPTList.objects.filter(id=int(URL_list[3])).count == 0: #没有这个PPT
+				return 10 #10-没有这个PPT
+			else:
+				return 0 #0-通过验证
+		
+		return 0 #0-通过验证
+
+
+
+			
+
+
+
+
 

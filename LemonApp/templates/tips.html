@@ -119,23 +119,54 @@
 <!-- mainBODY -->
     <div class="ui middle aligned center aligned grid">
   <div class="column">
-    {% if not request.user.id %}
+    {% if error_type %}
       <div class="ui error message">
         <h3>提示</h3>
-        <ul class="list">
-          <li><h3>若已有账号, 请先登陆</h3></li>
-          <li><h3>若没有账号, 请先注册</h3></li>
-        </ul>
-      </div>
-    {% elif request.user.permission <= 1 %}
-      <div class="ui error message">
-        <h3>提示</h3>
-        <h4>本专区只对合作院校的学生和老师开放, 如果您是以下院校的学生或老师, 请先进入个人中心绑定学号/教工号</h4>
-        <ul class="list">
-        {% for college in college_list %}
-          <li><h5>{{ college.name }}</h5></li>
-        {% endfor %}
-        </ul>
+        {%if error_type == 1 %}
+          <ul class="list">
+            <li><h3>若已有账号, 请先登陆</h3></li>
+            <li><h3>若没有账号, 请先注册</h3></li>
+          </ul>
+        {% elif error_type == 2 %}
+          <h4>本专区只对合作院校的学生和老师开放, 如果您是以下院校的学生或老师, 请先进入个人中心绑定学号/教工号</h4>
+          <ul class="list">
+            {% for college in college_list %}
+              <li><h5>{{ college.name }}</h5></li>
+            {% endfor %}
+          </ul>
+        {% elif error_type == 3 %}
+          <ul class="list">
+            <li><h3>抱歉，您访问的院校不存在</h3></li>
+          </ul>
+        {% elif error_type == 4 %}
+          <ul class="list">
+            <li><h3>抱歉，您没有权限访问此院校</h3></li>
+          </ul>
+        {% elif error_type == 5 %}
+          <ul class="list">
+            <li><h3>抱歉，在此您没有权限创建课程</h3></li>
+          </ul>
+        {% elif error_type == 6 %}
+          <ul class="list">
+            <li><h3>抱歉，您访问的课程不存在</h3></li>
+          </ul>
+        {% elif error_type == 7 %}
+          <ul class="list">
+            <li><h3>抱歉，在此您没有权限添加章节</h3></li>
+          </ul>
+        {% elif error_type == 8 %}
+          <ul class="list">
+            <li><h3>抱歉，您访问的章节不存在</h3></li>
+          </ul>
+        {% elif error_type == 9 %}
+          <ul class="list">
+            <li><h3>抱歉，在此您没有权限添加ppt</h3></li>
+          </ul>
+        {% elif error_type == 10 %}
+          <ul class="list">
+            <li><h3>抱歉，您访问的ppt不存在</h3></li>
+          </ul>
+        {% endif %}
       </div>
     {% endif %}
 
