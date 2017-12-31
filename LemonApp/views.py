@@ -29,9 +29,7 @@ def signup(request):
 			user.save()
 			auth_user = authenticate(username=username,password=password)
 			auth_login(request,auth_user)
-			print(path.rfind('signup'))
-			old_path = path[0:path.rfind('signup')]
-			print(path, old_path)
+			old_path = path[0:path.find('signup')]
 			return redirect(old_path)
 	else:
 		form = SignupForm(auto_id="%s")
@@ -45,7 +43,7 @@ def login(request):
 		if form.is_valid():		
 			user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])			
 			auth_login(request,user)
-			old_path = path[0:path.rfind('login')]
+			old_path = path[0:path.find('login')]
 			return redirect(old_path)
 	else:
 		form = LoginForm(auto_id="%s")
@@ -55,15 +53,14 @@ def login(request):
 def logout_view(request):
 	logout(request)
 	path = request.path
-	old_path = path[0:path.rfind('logout')]
+	old_path = path[0:path.find('logout')]
 	return redirect(old_path)
 
 def identity(request):
 	college_list = College.objects.all()
-	if request.user.id:
-		return render(request, 'personal-info.html', locals())
-	else:
-		return redirect("login")
+	if tips(request) == False:
+		return render(request,'tips.html', locals())
+	return render(request, 'personal-info.html', locals())
 
 def shop(request):
 	college_list = College.objects.all()
@@ -89,11 +86,15 @@ def page(request):
 
 def colleges(request):
 	college_list = College.objects.all()
+	if tips(request) == False:
+		return render(request,'tips.html', locals())
 	return render(request,'colleges.html', locals())
 	
 def courses(request):
-	path = request.path
 	college_list = College.objects.all()
+	if tips(request) == False:
+		return render(request,'tips.html', locals())
+	path = request.path
 	URL_list = path.split('/')
 	college_id = int(URL_list[2])
 	college = College.objects.filter(id=college_id)[0]
@@ -101,8 +102,10 @@ def courses(request):
 	return render(request,'courses.html', locals())
 
 def course(request):
-	path = request.path
 	college_list = College.objects.all()
+	if tips(request) == False:
+		return render(request,'tips.html', locals())
+	path = request.path
 	URL_list = path.split('/')
 	college_id = int(URL_list[2])
 	college = College.objects.filter(id=college_id)[0]
@@ -118,11 +121,10 @@ def course(request):
 	return render(request,'course.html', locals())
 
 def create_course(request):
-	path = request.path
-	if not request.user.id:
-		old_path = path[0:path.rfind('create_course')]
-		return redirect(old_path)
 	college_list = College.objects.all()
+	if tips(request) == False:
+		return render(request,'tips.html', locals())
+	path = request.path
 	if request.method == 'POST':
 		form = CourseForm(request.POST, request.FILES, auto_id="%s")
 		if form.is_valid():
@@ -142,18 +144,17 @@ def create_course(request):
 			else:
 				course = Course(college_id=college,creator_id=creator,course_identifier=course_identifier,title=title,description=description,teacher=teacher)
 			course.save()
-			old_path = path[0:path.rfind('create_course')]
+			old_path = path[0:path.find('create_course')]
 			return redirect(old_path)
 	else:
 		form = CourseForm(auto_id="%s")
 	return render(request, "create_course.html", locals())
 
 def add_chapter(request):
-	path = request.path
-	if not request.user.id:
-		old_path = path[0:path.rfind('add_chapter')]
-		return redirect(old_path)
 	college_list = College.objects.all()
+	if tips(request) == False:
+		return render(request,'tips.html', locals())
+	path = request.path
 	if request.method == 'POST':
 		form = ChapterForm(data=request.POST, auto_id="%s")
 		if form.is_valid():
@@ -165,18 +166,17 @@ def add_chapter(request):
 			description = form.cleaned_data["description"]
 			chapter = ChapterList(course_id=course, chapter_order=chapter_order, title=title, description=description)
 			chapter.save()
-			old_path = path[0:path.rfind('add_chapter')]
+			old_path = path[0:path.find('add_chapter')]
 			return redirect(old_path)
 	else:
 		form = ChapterForm(auto_id="%s")
 	return render(request, "add_chapter.html", locals())
 
 def add_ppt(request):
-	path = request.path
-	if not request.user.id:
-		old_path = path[0:path.rfind('chapter')]
-		return redirect(old_path)
 	college_list = College.objects.all()
+	if tips(request) == False:
+		return render(request,'tips.html', locals())
+	path = request.path
 	if request.method == 'POST':
 		form = PPTForm(request.POST, request.FILES, auto_id="%s")
 		if form.is_valid():
@@ -188,7 +188,7 @@ def add_ppt(request):
 			file = form.cleaned_data["file"]
 			ppt = PPTList(chapter_id=chapter, ppt_order=ppt_order, title=title, file=file)
 			ppt.save()
-			old_path = path[0:path.rfind('chapter')]
+			old_path = path[0:path.find('chapter')]
 			return redirect(old_path)
 	else:
 		form = PPTForm(auto_id="%s")
@@ -196,5 +196,12 @@ def add_ppt(request):
 
 def show_ppt(request):
 	college_list = College.objects.all()
+	if tips(request) == False:
+		return render(request,'tips.html', locals())
 	pass
 
+def tips(request):
+	if (not request.user.id) or (request.user.permission <= 1):
+		return False
+	else:
+		return True

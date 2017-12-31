@@ -137,13 +137,13 @@
 
     </form>
     {% if form.image.errors %}
-    <div class="ui error message">
-      <ul class="list">
-        {% for i in form.image.errors %}
-          <li>{{i|escape}}</li>
-        {% endfor%}
-      </ul>
-    </div>
+      <div class="ui error message">
+        <ul class="list">
+          {% for i in form.image.errors %}
+            <li>{{i|escape}}</li>
+          {% endfor%}
+        </ul>
+      </div>
     {% endif%}
 
   </div>

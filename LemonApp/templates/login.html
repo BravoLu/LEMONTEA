@@ -147,13 +147,13 @@
     <div class="ui error message"></div>
     </form>
     {% if form.password.errors %}
-    <div class="ui error message">
-      <ul class="list">
-        {% for i in form.password.errors %}
-          <li>{{i|escape}}</li>
-        {% endfor%}
-      </ul>
-    </div>
+      <div class="ui error message">
+        <ul class="list">
+          {% for i in form.password.errors %}
+            <li>{{i|escape}}</li>
+          {% endfor%}
+        </ul>
+      </div>
     {% endif%}
 
 

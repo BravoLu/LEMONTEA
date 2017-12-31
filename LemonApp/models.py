@@ -4,6 +4,8 @@ from django.contrib.auth.models import AbstractUser
 class Account(AbstractUser):
     face = models.ImageField("头像", upload_to="UserPhoto/", null=True, default="UserPhoto/default.png")
     permission = models.IntegerField("权限类型", default=0) #数值越大权限越高
+    college_id = models.IntegerField("所属大学", default=-1)
+    IDcard = models.CharField("学号或教工号", max_length=50, default="-1")
     class Meta:
         db_table = "Account"
 
@@ -20,6 +22,26 @@ class College(models.Model):
 
     def __str__(self):
         return self.name
+
+class TeacherInformation(models.Model):
+    college_id = models.ForeignKey(College, on_delete=models.CASCADE)
+    TeacherID = models.CharField("教工号", max_length=50)
+
+    class Meta:
+        db_table = "TeacherInformation"
+
+    def __str__(self):
+        return self.TeacherID
+
+class StudentInformation(models.Model):
+    college_id = models.ForeignKey(College, on_delete=models.CASCADE)
+    StudentID = models.CharField("学号", max_length=50)
+
+    class Meta:
+        db_table = "StudentInformation"
+
+    def __str__(self):
+        return self.StudentID
 
 class Course(models.Model):
     college_id = models.ForeignKey(College, on_delete=models.CASCADE)
