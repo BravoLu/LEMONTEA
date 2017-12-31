@@ -130,12 +130,21 @@
             {{ form.teacher }}
           </div>
         </div>
-        <div class="ui fluid large teal submit button">新建课程</div>
+        <div class="ui primary submit button">新建课程</div>
       </div>
 
       <div class="ui error message"></div>
 
     </form>
+    {% if form.course_identifier.errors %}
+      <div class="ui error message">
+        <ul class="list">
+          {% for i in form.course_identifier.errors %}
+            <li>{{i|escape}}</li>
+          {% endfor%}
+        </ul>
+      </div>
+    {% endif%}
     {% if form.image.errors %}
       <div class="ui error message">
         <ul class="list">

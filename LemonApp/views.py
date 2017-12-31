@@ -1,14 +1,47 @@
 from django.shortcuts import render, redirect
-from LemonApp.forms import SignupForm, LoginForm, CourseForm, ChapterForm, PPTForm
+from LemonApp.forms import SignupForm, LoginForm, CourseForm, ChapterForm, PPTForm, ModifyInfoForm
 from django.contrib.auth import get_user_model
 from django.contrib.auth import authenticate,login as auth_login, logout 
 from LemonApp.models import College, Course, ChapterList, PPTList
 import os
 
 # Create your views here.
-def testpage(request):
+def identity(request):
 	college_list = College.objects.all()
-	return render(request,'personal-setting.html', locals())
+	error_type = tips(request)
+	if error_type > 0:
+		return render(request,'tips.html', locals())
+	if request.user.college_id != -1:
+		college = College.objects.filter(id=request.user.college_id)[0]
+		college_name = college.name
+	else:
+		college_name = "未绑定"
+	return render(request, 'personal-info.html', locals())
+
+def modify_info(request):
+	path = request.path
+	college_list = College.objects.all()
+	error_type = tips(request)
+	if error_type > 0:
+		return render(request,'tips.html', locals())
+	if request.method == 'POST':
+		form = ModifyInfoForm(data=request.POST,auto_id="%s")
+		if form.is_valid():
+			UserModel = get_user_model()
+			username = form.cleaned_data['username']
+			email = form.cleaned_data['email']
+			user = UserModel._default_manager.get(username=request.user.username)
+			user.username = username
+			user.email = email
+			user.save()
+			old_path = path[0:path.find('modify_info')]
+			return redirect(old_path)
+	else:
+		form = ModifyInfoForm(auto_id="%s")
+	return render(request, "personal-setting.html", locals())
+
+def bind_college(request):
+	return render(request, "personal-binding.html", locals())
 
 def home(request):
 	college_list = College.objects.all()
@@ -55,13 +88,6 @@ def logout_view(request):
 	path = request.path
 	old_path = path[0:path.find('logout')]
 	return redirect(old_path)
-
-def identity(request):
-	college_list = College.objects.all()
-	error_type = tips(request)
-	if error_type > 0:
-		return render(request,'tips.html', locals())
-	return render(request, 'personal-info.html', locals())
 
 def shop(request):
 	college_list = College.objects.all()
@@ -147,6 +173,8 @@ def create_course(request):
 			course.save()
 			old_path = path[0:path.find('create_course')]
 			return redirect(old_path)
+		else:
+			print(form.errors)
 	else:
 		form = CourseForm(auto_id="%s")
 	return render(request, "create_course.html", locals())

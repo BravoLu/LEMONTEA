@@ -1,3 +1,4 @@
+{% load static %}
 {%include "head.html"%}
 
 <body>
@@ -11,43 +12,47 @@
                     <a class="active item">基本信息 </a> 
                     
                     <a class="item">个人动态 <div class="ui label">51</div></a>
-                    <a class="item">绑定账户 </a>                 
+                    <a class="item" href="bind_college">绑定账户 </a>                 
                 </div>
             </div>
             <!--第2列-->
             <div class="six wide column">
                 <h2 class="ui header">基础信息</h2>
                 <div class="ui divider"></div>
-                <p>
-                    <h4 class="ui header">用户名:</h4>
-                    <i class="user icon"></i>
-                    <div class="ui input">
-                        <input type="text" placeholder="用户名">
-                    </div>
-                </p>
-                <p>
-                    <h4 class="ui header">Email:</h4>
-                    <i class="mail icon"></i>
-                    <div class="ui input">
-                        <input type="text" placeholder="邮箱">
-                    </div>
-                </p>
-                <h4 class="ui header">学校:</h4>
-                <i class="student icon"></i>
-                <div class="ui input">
-                    <input type="text" placeholder="学校">
-                </div>
-                
-                <p>
-                    <button class="ui primary button" style="margin-top:60px;margin-left:100px">保存修改</button>
-                    <button class="ui button">取消修改</button>
-                </p>
+                <form action="{{ path }}" method="post" class="ui large form">
+                {% csrf_token %}
+                    <p>
+                        <h4 class="ui header">用户名:</h4>
+                        <i class="user icon"></i>
+                        <div class="ui input">
+                            {{ form.username }}
+                        </div>
+                    </p>
+                    <p>
+                        <h4 class="ui header">Email:</h4>
+                        <i class="mail icon"></i>
+                        <div class="ui input">
+                            {{ form.email }}
+                        </div>
+                    </p>
+                    <button class="ui primary submit button" style="margin-top:60px;margin-left:100px">保存修改</button>
+                    <button class="ui button"><a href="/identity/">取消修改</a></button>
+                </form>
+                {% if form.username.errors %}
+                  <div class="ui error message">
+                    <ul class="list">
+                      {% for i in form.username.errors %}
+                        <li>{{i|escape}}</li>
+                      {% endfor%}
+                    </ul>
+                  </div>
+                {% endif%}
             </div>
             <!--第3列-->
             <div class="six wide column">
                 <div class="ui segment">
                     <a href="#" class="ui centered medium image">
-                        <img src="../static/images/face.jpg">
+                        <img src="/LemonApp/media/{{ request.user.face }}">
                     </a>
                 </div>
                 <input type="file" placeholder="" style="margin:20px"></input>

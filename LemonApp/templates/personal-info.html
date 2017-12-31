@@ -1,3 +1,4 @@
+{% load static %}
 {%include "head.html"%}
 
 <body>
@@ -6,12 +7,12 @@
         <div class="ui internally celled grid">
             <!--第一列-->
             <div class="three wide column">
-                <a href="#" class="ui medium image"><img src="../static/images/face.jpg"></a>
+                <a href="#" class="ui medium image"><img src="/LemonApp/media/{{ request.user.face }}"></a>
                 <div class="ui labeled button" tabindex="0" style="margin:20px">
                     <div class="ui red button"><i class="heart icon"></i> Like </div>
                     <a class="ui basic red left pointing label">0</a>
                 </div>
-                <a href="/testpage" class="ui button" tabindex="0" style="margin:19px">设置个人信息</a>
+                <a href="modify_info" class="ui button" tabindex="0" style="margin:19px">设置个人信息</a>
             </div>
             <!--second column-->
             <div class="six wide column">
@@ -20,17 +21,17 @@
 
                 <div class="ui segment">
                     <div class="content">
-                        <h4 class="header"><i class="user icon"></i>用户名:   {{request.user.username}}</h4>
+                        <h4 class="header"><i class="user icon"></i>用户名:   {{ request.user.username }}</h4>
                     </div>
                 </div>
                 <div class="ui segment">
                     <div class="content">
-                        <h4 class="header"> <i class="mail icon"></i>邮箱:   {{request.user.username}}</h4>
+                        <h4 class="header"> <i class="mail icon"></i>邮箱:   {{ request.user.email }}</h4>
                     </div>
                 </div>
                 <div class="ui segment">
                     <div class="content">
-                        <h4 class="header"><i class="student icon"></i>学校:   {{request.user.username}}</h4>
+                        <h4 class="header"><i class="student icon"></i>学校:   {{ college_name }}</h4>
                     </div>
                 </div>
             </div>

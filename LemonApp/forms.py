@@ -5,13 +5,17 @@ from django.contrib.auth import authenticate
 from LemonApp.models import Course, ChapterList, PPTList
 
 class SignupForm (forms.Form):
-	username = forms.CharField(required=False, widget=forms.TextInput(attrs={'placeholder':'用户名'}))
+	username = forms.CharField(
+		required=True, min_length=3, max_length=20, widget=forms.TextInput(attrs={'placeholder':'用户名'}))
 
-	email = forms.EmailField(required=False, widget=forms.TextInput(attrs={'placeholder':'邮箱'}))
+	email = forms.EmailField(
+		required=True, widget=forms.EmailInput(attrs={'placeholder':'邮箱'}))
 
-	password = forms.CharField(required=False, widget = forms.PasswordInput(attrs={'placeholder':'密码'}))
+	password = forms.CharField(
+		required=True, min_length=6, max_length=20, widget = forms.PasswordInput(attrs={'placeholder':'密码'}))
 
-	confirm_password = forms.CharField(required=False, widget = forms.PasswordInput(attrs={'placeholder':'确认密码'}))
+	confirm_password = forms.CharField(
+		required=True, min_length=6, max_length=20, widget = forms.PasswordInput(attrs={'placeholder':'确认密码'}))
 
 	def clean_username(self):
 		UserModel = get_user_model()
@@ -23,8 +27,10 @@ class SignupForm (forms.Form):
 		raise forms.ValidationError("This username has been registered")
 
 class  LoginForm (forms.Form):
-	username = forms.CharField(required=False, widget=forms.TextInput(attrs={'placeholder':'用户名'}))
-	password = forms.CharField(required=False, widget=forms.PasswordInput(attrs={'placeholder':'密码'}))
+	username = forms.CharField(
+		required=True, min_length=3, max_length=20, widget=forms.TextInput(attrs={'placeholder':'用户名'}))
+	password = forms.CharField(
+		required=True, min_length=6, max_length=20, widget=forms.PasswordInput(attrs={'placeholder':'密码'}))
 	
 	def clean_password(self):
 		username = self.cleaned_data["username"]
@@ -35,15 +41,20 @@ class  LoginForm (forms.Form):
 		return password
 
 class CourseForm (forms.Form):
-	course_identifier = forms.CharField(required=False, widget=forms.TextInput(attrs={'placeholder':'课程号'}))
+	course_identifier = forms.CharField(
+		required=True, max_length=20, widget=forms.TextInput(attrs={'placeholder':'课程号'}))
 
-	title = forms.CharField(required=False, widget=forms.TextInput(attrs={'placeholder':'课程名称'}))
+	title = forms.CharField(
+		required=True, max_length=50, widget=forms.TextInput(attrs={'placeholder':'课程名称'}))
 
-	image = forms.ImageField(required=False, widget=forms.ClearableFileInput(attrs={'placeholder':'选择课程图片'}))
+	image = forms.ImageField(
+		required=False, widget=forms.ClearableFileInput(attrs={'placeholder':'选择课程图片'}))
 
-	description = forms.CharField(required=False, widget=forms.Textarea(attrs={'placeholder':'课程描述'}))
+	description = forms.CharField(
+		required=True, max_length=200, widget=forms.Textarea(attrs={'placeholder':'课程描述'}))
 
-	teacher = forms.CharField(required=False, widget = forms.TextInput(attrs={'placeholder':'授课老师'}))
+	teacher = forms.CharField(
+		required=True, max_length=20, widget = forms.TextInput(attrs={'placeholder':'授课老师'}))
 
 	def clean_course_identifier(self):
 		course_identifier = self.cleaned_data["course_identifier"]
@@ -53,9 +64,27 @@ class CourseForm (forms.Form):
 		return course_identifier
 
 class ChapterForm (forms.Form):
-	title = forms.CharField(required=False, widget=forms.TextInput(attrs={'placeholder':'章节标题'}))
+	title = forms.CharField(
+		required=True, max_length=20, widget=forms.TextInput(attrs={'placeholder':'章节标题'}))
 
-	description = forms.CharField(required=False, widget=forms.Textarea(attrs={'placeholder':'章节描述'}))
+	description = forms.CharField(
+		required=True, max_length=200, widget=forms.Textarea(attrs={'placeholder':'章节描述'}))
 
 class PPTForm (forms.Form):
-	file = forms.FileField(required=False, widget=forms.FileInput(attrs={'placeholder':'选择ppt文件'}))
+	file = forms.FileField(
+		required=True, widget=forms.FileInput(attrs={'placeholder':'选择ppt文件'}))
+
+class ModifyInfoForm (forms.Form):
+	username = forms.CharField(
+		required=True, min_length=3, max_length=20, widget=forms.TextInput(attrs={'placeholder':'用户名'}))
+	email = forms.EmailField(
+		required=True, widget=forms.EmailInput(attrs={'placeholder':'邮箱'}))
+
+	def clean_username(self):
+		UserModel = get_user_model()
+		username = self.cleaned_data["username"]
+		try:
+			UserModel._default_manager.get(username = username)
+		except UserModel.DoesNotExist:
+			return username
+		raise forms.ValidationError("This username has been registered")
