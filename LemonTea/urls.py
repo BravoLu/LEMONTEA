@@ -29,7 +29,9 @@ urlpatterns = [
     url(r'^share', views.share, name="share"),
     url(r'^study', views.study, name="study"),
     url(r'^shop', views.shop, name="shop"),
-    url(r'^identity', views.identity, name="identity"),
+    url(r'^identity/$', views.identity, name="identity"),
+    url(r'^identity/modify_info$', views.modify_info, name="modify_info"),
+    url(r'^identity/bind_college$', views.bind_college, name="bind_college"),
     url(r'^community', views.community ,name='community'),
     url(r'^page',views.page, name="page"),
     url(r'^forum/',include('forum.urls')),
@@ -41,7 +43,5 @@ urlpatterns = [
     url(r'^college/[0-9]+/course/[0-9]+/chapter/[0-9]+/ppt/[0-9]+/$',views.show_ppt, name="show_ppt"),
     url(r'^college/[0-9]+/course/[0-9]+/chapter/[0-9]+/add_ppt/$',views.add_ppt, name="add_ppt"),
     url(r'^college/[0-9]+/downloadppt/[0-9]+$', views.download, name='download'),
-    url(r'^testpage$',views.testpage, name="testpage"),
-
     
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
