@@ -201,7 +201,15 @@ def show_ppt(request):
 	pass
 
 def tips(request):
-	if (not request.user.id) or (request.user.permission <= 1):
-		return False
-	else:
-		return True
+	path = request.path
+	if "identity" in path:
+		if not request.user.id:
+			return False
+		else:
+			return True
+	elif "colleges" in path:
+		if (not request.user.id) or (request.user.permission <= 1):
+			return False
+		else:
+			return True
+

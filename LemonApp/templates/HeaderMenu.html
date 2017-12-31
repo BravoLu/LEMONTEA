@@ -17,11 +17,11 @@
                     <div class="divider"></div>
                 </div>
             </div>
-            <div class="ui dropdown item" tabindex="0"><a href="/school/">
+            <div class="ui dropdown item" tabindex="0"><a href="/colleges/">
                 学校专区</a><i class="dropdown icon"></i>
                 <div class="menu" tabindex="-1">
                     {% for college in college_list %}
-                    <div class="item"><a href="/school/{{ college.id }}/"><p class="spec">{{ college.name }}</p></a></div>
+                    <div class="item"><a href="/college/{{ college.id }}/"><p class="spec">{{ college.name }}</p></a></div>
                     {% endfor %}
                     <div class="item"><a href="#"><p class="spec">敬请期待</p></a></div>
                     <div class="divider"></div>
