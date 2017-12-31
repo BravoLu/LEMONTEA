@@ -1,6 +1,6 @@
 from django import forms
 
-from forum.models import Article
+from forum.models import Article,ArticleComment
 
 class ArticleForm(forms.ModelForm):
 	# status = forms.CharField(widget=forms.HiddenInput())
@@ -14,3 +14,12 @@ class ArticleForm(forms.ModelForm):
 	class Meta:
 		model = Article
 		fields = ['title','content']
+
+
+class CommentForm(forms.ModelForm):
+	comment = forms.CharField(
+		widget = forms.Textarea(attrs={'class':'form-control'}),
+		max_length=500)
+	class Meta:
+		model = ArticleComment
+		fields = ['comment']

@@ -8,7 +8,7 @@ from django.template.loader import render_to_string
 from django.urls import reverse_lazy
 
 import markdown
-from forum.forms import ArticleForm
+from forum.forms import ArticleForm,CommentForm
 from forum.models import Article, ArticleComment
 from forum.decorators import ajax_required
 
@@ -45,7 +45,6 @@ def CreateArticle(request):
 		if form.is_valid():
 			title = form.cleaned_data["title"]
 			content = form.cleaned_data["content"]
-
 			status = 'P'
 			create_user = request.user
 			update_user = request.user
@@ -138,15 +137,18 @@ def preview(request):
 @login_required
 # @ajax_required
 def comment(request):
+	path = request.path
 	if request.method == 'POST':
-		article_id = request.POST.get('article')
-		article = Article.objects.get(pk=article_id)
-		comment = request.POST.get('comment')
-		comment = comment.strip()
-		if len(comment) > 0:
-			article_comment = ArticleComment(user=request.user,aticles=article,comment=comment)
-			article_comment.save()
+		form = CommentForm(data=request.POST, auto_id="%s")
+		if form.is_valid():
+			article_id = request.POST.get('article')
+			article = Article.objects.get(pk=article_id)
+			comment = form.cleaned_data["comment"]
+			if len(comment) > 0:
+				article_comment = ArticleComment(user=request.user,article=article,comment=comment)
+				article_comment.save()
 
-		return render(request,'page.html',{'article':article})
-	else:
-		return HttpResponseBadRequest()
+				return render(request,'page.html',{'article':article})
+
+
+

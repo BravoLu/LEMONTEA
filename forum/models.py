@@ -18,15 +18,14 @@ class Article(models.Model):
 		(DRAFT,'Draft'),
 		(PUBLISHED,'Published'),
 	)
-
+	update_date = models.DateTimeField(auto_now=True,null=True)
 	title = models.CharField(max_length=255,null=False,unique=True)
-	slug = AutoSlugField(populate_from='title')
+	slug = AutoSlugField(populate_from='update_date')
 	# tags = TaggableManager()
 	content = models.TextField(max_length=4000)
 	status = models.CharField(max_length=1, choices=STATUS, default=DRAFT)
 	create_user = models.ForeignKey(Account,on_delete=models.CASCADE)
 	create_date = models.DateTimeField(auto_now_add=True,null=True)
-	update_date = models.DateTimeField(auto_now=True,null=True)
 	update_user = models.ForeignKey(Account,null=True,blank=True,
 									related_name="+",on_delete=models.CASCADE)
 

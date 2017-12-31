@@ -9,9 +9,7 @@
 		<div class="ui segment" id="example1">
     		<div class="ui sticky" >
       			<h3 class="ui header">{{ article.title }}</h3>
-      			    <div class="image">
-      					<img src="../static/images/HighPerformance.png">
-    				</div>
+
       			<p>{{ article.get_content_as_markdown|safe }}</p>
     		</div>
    		</div>
@@ -42,11 +40,11 @@
 
   		<form action="{% url 'comment' %}" method="post" class="ui reply form">
          {% csrf_token %}
-          <input type = "hidden" name="article" value="{{ article.pk }}">
-    		    <div class="field" style="width:80rem">
-      			<textarea placeholder ="{% trans 'Write a comment...' %}" name="comment" id="comment"></textarea>
+          <input type="hidden" name="article" value="{{ article.pk }}">
+    		    <div class="field" style="width:80rem">                
+      			   <textarea placeholder ="{% trans 'Write a comment...' %}" name="comment" id="comment"></textarea>
     		    </div>
-    		<button class="ui blue labeled submit icon button"><i class="icon edit"></i>回复</button>
+    		<button  class="ui blue labeled submit icon button"><i class="icon edit"></i>回复</button>
   		</form>
 </div>
 
