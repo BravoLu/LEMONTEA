@@ -40,7 +40,7 @@ urlpatterns = [
     url(r'^college/[0-9]+/course/[0-9]+/add_chapter/$',views.add_chapter, name="add_chapter"),
     url(r'^college/[0-9]+/course/[0-9]+/chapter/[0-9]+/ppt/[0-9]+/$',views.show_ppt, name="show_ppt"),
     url(r'^college/[0-9]+/course/[0-9]+/chapter/[0-9]+/add_ppt/$',views.add_ppt, name="add_ppt"),
-    url(r'^college/[0-9]+/[0-9]+/LemonApp/media/', views.download, name='download'),
+    url(r'^college/[0-9]+/downloadppt/[0-9]+$', views.download, name='download'),
     url(r'^testpage$',views.testpage, name="testpage"),
 
     

@@ -94,7 +94,7 @@
         <h3 class="ui header">Lecture {{ chapter.chapter_order }}：{{ chapter.title }} <a href="chapter/{{ chapter.id }}/add_ppt/">(按钮)添加PPT</a></h3>
         {%for ppt in ppt_list %} 
           {% if ppt.chapter_id.id == chapter.id %}
-            <p><a href="chapter/{{ chapter.id }}/ppt/{{ ppt.id }}/">PPT{{ ppt.ppt_order }}: {{ ppt.title }}</a> <a href="/college/{{ college.id }}/{{ ppt.id }}/LemonApp/media/{{ ppt.file }}">(按钮)下载</a></p>
+            <p><a href="chapter/{{ chapter.id }}/ppt/{{ ppt.id }}/">PPT{{ ppt.ppt_order }}: {{ ppt.title }}</a> <a href="/college/{{ college.id }}/downloadppt/{{ ppt.id }}">(按钮)下载</a></p>
           {% endif %}
         {% endfor %}
       {% endfor %}

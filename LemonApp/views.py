@@ -120,7 +120,6 @@ def course(request):
 	ppt_list = []
 	for charter_id in chapter_id_list:
 		temp_list = PPTList.objects.filter(chapter_id=charter_id).order_by("ppt_order")
-		print(type(temp_list))
 		ppt_list.extend(temp_list)
 	return render(request,'course.html', locals())
 
@@ -215,8 +214,13 @@ def download(request):
 		return render(request,'tips.html', locals())
 	else:
 		path = request.path
-		download_path = path[path.find("LemonApp")-1:]
+		URL_list = path.split('/')
+		download_path = str(PPTList.objects.get(id=int(URL_list[4])).file)
+		download_path = "/LemonApp/media/" + download_path
 		return redirect(download_path)
+
+def goback(request):
+	pass
 
 def tips(request): #验证权限
 	path = request.path
@@ -228,10 +232,10 @@ def tips(request): #验证权限
 		return 0 #0-通过验证
 
 	if "colleges" in path:
-		if request.user.permission <= 1:
-			return 2 #2-不是学生/老师
-		else:
-			return 0 #0-通过验证
+		# if request.user.permission <= 1:
+		# 	return 2 #2-不是学生/老师
+		# else:
+		return 0 #0-通过验证
 
 	if "college" in path:
 		if request.user.permission < 10: #非管理员
@@ -253,7 +257,7 @@ def tips(request): #验证权限
 					return 6 #6-没有这个课程
 
 				if "add_chapter" in path:
-					if Course.objects.get(id=int(URL_list[4])).creator_id != request.user.id: #课程不属于自己
+					if Course.objects.get(id=int(URL_list[4])).creator_id.id != request.user.id: #课程不属于自己
 						return 7 #7-没权限添加章节
 					else:
 						return 0 #0-通过验证
@@ -263,7 +267,7 @@ def tips(request): #验证权限
 						return 8 #8-没有这个章节
 
 					if "add_ppt" in path:
-						if Course.objects.get(id=int(URL_list[4])).creator_id != request.user.id:#课程不属于自己
+						if Course.objects.get(id=int(URL_list[4])).creator_id.id != request.user.id:#课程不属于自己
 							return 9 #9-没权限添加ppt
 						else:
 							return 0 #0-通过验证
@@ -317,14 +321,13 @@ def tips(request): #验证权限
 				else:
 					return 0 #0-通过验证
 
-			if "LemonApp" in path:
-				if PPTList.objects.filter(id=int(URL_list[3])).count == 0: #没有这个PPT
+			if "downloadppt" in path:
+				if PPTList.objects.filter(id=int(URL_list[4])).count() == 0: #没有这个PPT
 					return 10 #10-没有这个PPT
 				else:
 					return 0 #0-通过验证
 			
 			return 0 #0-通过验证
-
 
 
 				
