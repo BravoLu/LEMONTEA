@@ -1,9 +1,9 @@
 from django import forms
 
-from forum.models import Forum
+from forum.models import Article
 
-class ForumForm(forms.ModelForm):
-	status = forms.CharField(widget=forms.HiddenInput())
+class ArticleForm(forms.ModelForm):
+	# status = forms.CharField(widget=forms.HiddenInput())
 	title = forms.CharField(
 		widget=forms.TextInput(attrs={'class':'form-control'}),
 		max_length=255)
@@ -12,5 +12,5 @@ class ForumForm(forms.ModelForm):
 		max_length=4000)
 
 	class Meta:
-		model = Forum
-		fields = ['title','content','status']
+		model = Article
+		fields = ['title','content']

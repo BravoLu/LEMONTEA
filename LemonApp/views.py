@@ -77,9 +77,6 @@ def school(request):
 	CourseList = Course.objects.all()
 	return render(request,'school.html', locals())
 
-def community(request):
-	context = {}
-	return render(request,'community.html',context)
 
 def page(request):
 	context = {}

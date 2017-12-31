@@ -31,10 +31,9 @@ urlpatterns = [
     url(r'^study', views.study, name="study"),
     url(r'^shop', views.shop, name="shop"),
     url(r'^identity', views.identity, name="identity"),
-    url(r'^community', views.community ,name='community'),
     url(r'^page',views.page, name="page"),
 
-    url(r'^forum/',include('forum.urls')),
+    url(r'^community/',include('forum.urls')),
 
     url(r'^school/create_course/$',views.create_course, name="create_course"),
     url(r'^school/course/[0-9]+/$', views.course, name="course"),
