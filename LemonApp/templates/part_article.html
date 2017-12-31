@@ -1,0 +1,9 @@
+<div class = "ui styled fluid accordion">
+<div class="title"><i class="dropdown icon"></i>{{article.title}}</div>
+	<div class="content">
+		<p class = "transition hidden">
+				{{ article.get_content_as_markdown|safe }}
+			</p>
+		<p class = "transition hidden"><a href = "{% url 'article' article.slug %}">进入</a></p>
+	</div>
+</div>

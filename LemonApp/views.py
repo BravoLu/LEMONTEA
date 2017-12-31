@@ -103,9 +103,6 @@ def share(request):
 
 
 
-def community(request):
-	college_list = College.objects.all()
-	return render(request,'community.html',locals())
 
 def page(request):
 	college_list = College.objects.all()

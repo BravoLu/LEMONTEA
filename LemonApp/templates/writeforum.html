@@ -1,12 +1,14 @@
-{%include "head.html"%}
+{% load static %}
+{% load i18n %}
 
+{%include "head.html"%}
 <body>
 	{% include "HeaderMenu.html"%}
 	<div class = "ui main container">
 	  <div class = "ui breadcrumb">
-	  	<a class = "section" href="study">学习社区</a>
+	  	<a class = "section" href="/">学习社区</a>
 	  	<div class = "divider"> / </div>
-	  	<a class = "section" href="study">经济学</a>
+	  	<a class = "section" href="/">经济学</a>
 	  	<div class = "divider"> / </div>
 	  	<div class = "active section">发帖</div>
 	  </div>
@@ -14,12 +16,14 @@
 	  </div>
 	  	<div class = "ui divider" style="margin-top:40px">
 	  	</div>
-	  <h3 class = "ui header">标题</h3>
-	  	<div class="ui input foucs" style= "width:80rem">
-  			<input type="text" placeholder="标题">
-		</div>
-	  <h3 class = "ui header">内容</h3>
-		<div class="ui icon buttons">
+	  <form action="{% url 'write' %}" method="post">
+	  	{% csrf_token %}
+	  		<h3 class = "ui header">标题</h3>
+	  		<div class="ui input foucs" style= "width:80rem">
+  			<!-- <input type="text" placeholder="标题"> -->{{form.title}}
+			</div>
+	  		<h3 class = "ui header">内容</h3>
+<!-- 		<div class="ui icon buttons">
   			<button class="ui button"><i class="align left icon"></i></button>
   			<button class="ui button"><i class="align center icon"></i></button>
   			<button class="ui button"><i class="align right icon"></i></button>
@@ -29,18 +33,23 @@
   			<button class="ui button"><i class="bold icon"></i></button>
   			<button class="ui button"><i class="underline icon"></i></button>
   			<button class="ui button"><i class="text width icon"></i></button>
-		</div>
+		</div> -->
 		<div class = "field" style="margin-top:20px">
-			<textarea style="width:80rem;height:25rem"></textarea>
-		</div>
-		<h3 class = "ui header">标签</h3>
-		<div class="ui input foucs" style= "width:80rem">
-  			<input type="text" placeholder="Tags">
+			<style>
+			textarea{
+				width:80rem;
+				height:25rem;
+			}
+		    </style>
+			 {{form.content}}
+			}
 		</div>
 
-		<button class="ui primary button" style="margin-top:10px;margin-bottom:50px" ><i class="write icon"></i>发帖</button>
-		<button class="ui  button" style="margin-top:10px;margin-bottom:20px;" ><i class="folder  icon"></i>保存草稿</button>
+
+		<button type="submit" class="ui primary button" style="margin-top:10px;margin-bottom:50px" ><i class="write icon"></i>发帖</button>
+<!-- 		<button class="ui  button" style="margin-top:10px;margin-bottom:20px;" ><i class="folder  icon"></i>保存草稿</button>
 		<button class="ui  button" style="margin-top:10px;margin-bottom:20px;" ><i class="unhide icon"></i>预览</button>
-		<button class="ui  button" style="margin-top:10px;margin-bottom:20px;" ><i class="remove icon"></i>取消</button>
+		<button class="ui  button" style="margin-top:10px;margin-bottom:20px;" ><i class="remove icon"></i>取消</button> -->
+	</form>
 </div>
 </body>

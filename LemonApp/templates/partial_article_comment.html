@@ -1,0 +1,16 @@
+{% load humanize %}
+
+                  <div class = "comment">
+                      <a class = "avatar">
+                        <img src = " /LemonApp/media/{{ comment.user.face }}">
+                      </a>
+                  <div class = "content">
+                      <a class = "author">{{comment.user.username}}</a>
+                      <div clas="metadata">
+                      <i class = "calendar icon"></i><span class = "date"> {{comment.date|naturaltime}}</span>
+                      </div>
+                  <div class = "text" style = "width:80rem"> {{comment.get_comment_as_markdown|safe}}</div>
+                  <div class = "actions">
+                    <a class = "reply" >回复</a>
+                  </div>
+                </div>
