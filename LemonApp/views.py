@@ -77,12 +77,6 @@ def share(request):
 
 
 
-<<<<<<< HEAD
-=======
-def community(request):
-	college_list = College.objects.all()
-	return render(request,'community.html',locals())
->>>>>>> 04357351aca7872914c1051dc4ed17d227185379
 
 def page(request):
 	college_list = College.objects.all()
