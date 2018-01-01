@@ -181,3 +181,22 @@ def comment(request):
 
 
 
+# @login_required
+# # @ajax_required
+# def comment(request):
+# 	path = request.path
+# 	if request.method == 'POST':
+# 		form = CommentForm(data=request.POST, auto_id="%s")
+# 		if form.is_valid():
+# 			article_id = request.POST.get('article')
+# 			article = Article.objects.get(pk=article_id)
+# 			comment = form.cleaned_data["comment"]
+# 			if len(comment) > 0:
+# 				article_comment = ArticleComment(user=request.user,article=article,comment=comment)
+# 				article_comment.save()
+# 			html = ''
+# 			for comment in article.get_comments():
+# 				html = '{0}{1}'.format(html, render_to_string('partial_article_comment.html',
+# 								{'comment':comment}))
+# 				# return render(request,'page.html',{'article':article})
+# 			return HttpRepsonse(html)
