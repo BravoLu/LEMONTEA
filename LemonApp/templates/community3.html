@@ -5,17 +5,16 @@
 	{% include "HeaderMenu.html"%}
   <div class ="ui main container">
 	<div class = "ui grid">
-      <button class="ui primary button" style="margin-top:10px;margin-left:75rem;width:100px" ><i class="write icon"></i><a href="/community/C/write" style="color:white">发帖</a></div>
+      <button class="ui primary button" style="margin-top:10px;margin-left:75rem;width:100px" ><i class="write icon"></i><a href="/community/E/write" style="color:white">发帖</a></div>
   </button>
   <div class = "ui divider" style="margin-top:30px"></div>
 <!-- part I -->
     {% for article in articles %}
       {% include 'part_article.html' with article=article%}
     {% empty %}
-      <h4 class="ui header">{% trans 'There is no published article yet' %}.<a href="/community/C/write">{% trans 'Be the first one to publish' %}!</a></h4>
+      <h4 class="ui header">{% trans 'There is no published article yet' %}.<a href="/community/E/write">{% trans 'Be the first one to publish' %}!</a></h4>
     {% endfor %}
 <!-- End Part I -->
 </div>
 
 </body>
-
