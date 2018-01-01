@@ -67,12 +67,12 @@ class EditArticle(LoginRequiredMixin, UpdateView):
 	form_class = ArticleForm
 	success_url = reverse_lazy('articles')
 
-@login_required
+
 def articles(request):
 	all_articles = Article.get_published()
 	return _articles(request, all_articles)
 
-@login_required
+
 def article(request,slug):
 	article = get_object_or_404(Article, slug=slug, status=Article.PUBLISHED)
 	return render(request, 'page.html', {'article':article})
