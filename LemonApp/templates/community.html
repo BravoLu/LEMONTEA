@@ -7,11 +7,11 @@
   <div class ="ui main container">
 	<div class = "ui grid">
     {% if request.user.id %}
-      <button class="ui primary button" style="margin-top:10px;margin-left:75rem;width:100px" ><i class="write icon"></i><a href="/community/C/write/" style="color:white">发帖</a></div>
+      <a  href="/community/C/write/" class="ui primary button" style="margin-top:10px;margin-left:75rem;width:100px;font:white" ><i class="write icon"></i>发帖</a>
     {% else %}
-      <button class="ui primary button" style="margin-top:10px;margin-left:75rem;width:100px" ><i class="write icon"></i><a href="/login" style="color:white">发帖</a></div>    
-  </button>
-    {% endif %} 
+          <a  href="login" class="ui primary button" style="margin-top:10px;margin-left:75rem;width:100px;font:white" ><i class="write icon"></i>发帖</a>
+  </div>
+  {% endif %}
   <div class = "ui divider" style="margin-top:30px"></div>
 <!-- part I -->
     {% for article in articles %}

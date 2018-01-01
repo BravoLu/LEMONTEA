@@ -20,8 +20,6 @@
     });
     </script>
 
-
-    <script src="assets/library/jquery.min.js"></script>
     <script src="{% static 'components/form.js' %}"></script>
     <script src="{% static 'components/transition.js' %}"></script>
 
@@ -74,7 +72,7 @@
           </ul>
         {% elif error_type == 5 %}
           <ul class="list">
-            <li><h3>抱歉，在此您没有权限创建课程</h3></li>
+            <li><h3>抱歉，您没有权限在此创建课程</h3></li>
           </ul>
         {% elif error_type == 6 %}
           <ul class="list">
@@ -82,7 +80,7 @@
           </ul>
         {% elif error_type == 7 %}
           <ul class="list">
-            <li><h3>抱歉，在此您没有权限添加章节</h3></li>
+            <li><h3>抱歉，您没有权限在此添加章节</h3></li>
           </ul>
         {% elif error_type == 8 %}
           <ul class="list">
@@ -90,13 +88,34 @@
           </ul>
         {% elif error_type == 9 %}
           <ul class="list">
-            <li><h3>抱歉，在此您没有权限添加ppt</h3></li>
+            <li><h3>抱歉，您没有权限在此添加ppt</h3></li>
           </ul>
         {% elif error_type == 10 %}
           <ul class="list">
             <li><h3>抱歉，您访问的ppt不存在</h3></li>
           </ul>
+        {% elif error_type == 11 %}
+          <ul class="list">
+            <li><h3>抱歉，您没有权限删除这个课程</h3></li>
+          </ul>
+        {% elif error_type == 12 %}
+          <ul class="list">
+            <li><h3>抱歉，您访问的评论不存在</h3></li>
+          </ul>
+        {% elif error_type == 13 %}
+          <ul class="list">
+            <li><h3>抱歉，您没有权限删除这条评论</h3></li>
+          </ul>
+        {% elif error_type == 14 %}
+          <ul class="list">
+            <li><h3>抱歉，您没有权限删除这个章节</h3></li>
+          </ul>
+        {% elif error_type == 15 %}
+          <ul class="list">
+            <li><h3>抱歉，您没有权限这个ppt</h3></li>
+          </ul>
         {% endif %}
+
       </div>
     {% endif %}
 

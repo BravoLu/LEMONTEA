@@ -50,7 +50,6 @@ def CreateArticle(request):
 	path = request.path
 	index = path.split('/')
 	iId = index[2]
-	print("ceshi",iId)
 	if request.method == 'POST':
 		form = ArticleForm(data=request.POST, auto_id="%s")
 		if form.is_valid():
