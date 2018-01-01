@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
-from LemonApp.forms import SignupForm, LoginForm, CourseForm, ChapterForm, PPTForm, ModifyInfoForm
+from LemonApp.forms import SignupForm, LoginForm, CourseForm, ChapterForm, PPTForm, ModifyInfoForm, BindForm
 from django.contrib.auth import get_user_model
 from django.contrib.auth import authenticate,login as auth_login, logout 
-from LemonApp.models import College, Course, ChapterList, PPTList
+from LemonApp.models import College, TeacherInformation, StudentInformation, Course, ChapterList, PPTList
 import os
 
 # Create your views here.
@@ -30,7 +30,7 @@ def modify_info(request):
 			UserModel = get_user_model()
 			username = form.cleaned_data['username']
 			email = form.cleaned_data['email']
-			user = UserModel._default_manager.get(username=request.user.username)
+			user = UserModel._default_manager.get(id=request.user.id)
 			user.username = username
 			user.email = email
 			user.save()
@@ -41,6 +41,37 @@ def modify_info(request):
 	return render(request, "personal-setting.html", locals())
 
 def bind_college(request):
+	path = request.path
+	college_list = College.objects.all()
+	error_type = tips(request)
+	if error_type > 0:
+		return render(request,'tips.html', locals())
+	if request.method == 'POST':
+		form = BindForm(data=request.POST,auto_id="%s")
+		if form.is_valid():
+			UserModel = get_user_model()
+			college = form.cleaned_data['college']
+			status = form.cleaned_data['status']
+			card_number = form.cleaned_data['card_number']
+			user = UserModel._default_manager.get(id=request.user.id)
+			user.college_id = college.id
+			user.permission = int(status) + 1
+			user.card_number = card_number
+			user.save()
+			if status == '1':
+				print(1)
+				information = StudentInformation.objects.filter(college_id=college.id, StudentID=card_number).update(is_bind=True)
+			else:
+				information = TeacherInformation.objects.filter(college_id=college.id, TeacherID=card_number).update(is_bind=True)
+			old_path = path[0:path.find('bind_college')]
+			return redirect(old_path)
+	else:
+		form = BindForm(auto_id="%s")
+		if request.user.college_id != -1:
+			college = College.objects.filter(id=request.user.college_id)[0]
+			college_name = college.name
+		else:
+			college_name = "未绑定"
 	return render(request, "personal-binding.html", locals())
 
 def home(request):
@@ -245,6 +276,9 @@ def download(request):
 		return redirect(download_path)
 
 def goback(request):
+	pass
+
+def testpage(request):
 	pass
 
 def tips(request): #验证权限

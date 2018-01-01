@@ -32,7 +32,6 @@ urlpatterns = [
     url(r'^identity/$', views.identity, name="identity"),
     url(r'^identity/modify_info$', views.modify_info, name="modify_info"),
     url(r'^identity/bind_college$', views.bind_college, name="bind_college"),
-    url(r'^community', views.community ,name='community'),
     url(r'^page',views.page, name="page"),
     url(r'^community/',include('forum.urls')),
     url(r'^colleges/$', views.colleges, name='colleges'),
