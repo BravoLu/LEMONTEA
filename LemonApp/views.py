@@ -296,9 +296,85 @@ def download(request):
 	else:
 		path = request.path
 		URL_list = path.split('/')
-		download_path = str(PPTList.objects.get(id=int(URL_list[4])).file)
+		download_path = str(PPTList.objects.get(id=int(URL_list[8])).file)
 		download_path = "/LemonApp/media/" + download_path
 		return redirect(download_path)
+
+def delete_course(request):
+	college_list = College.objects.all()
+	error_type = tips(request)
+	if error_type > 0:
+		return render(request,'tips.html', locals())
+	path = request.path
+	URL_list = path.split('/')
+	course_id = int(URL_list[4])
+	Course.objects.filter(id=course_id).delete()
+	old_path = path[0:path.find('course')]
+	return redirect(old_path)
+
+def delete_chapter(request):
+	college_list = College.objects.all()
+	error_type = tips(request)
+	if error_type > 0:
+		return render(request,'tips.html', locals())
+	path = request.path
+	URL_list = path.split('/')
+	course_id = int(URL_list[4])
+	course = Course.objects.filter(id=course_id)[0]
+	chapter_id = int(URL_list[6])
+	ChapterList.objects.filter(id=chapter_id).delete()
+	chapter_list = ChapterList.objects.filter(course_id=course).order_by("chapter_order")
+	count = 1
+	for chapter in chapter_list: #重新排序
+		chapter.chapter_order = count
+		chapter.save()
+		count += 1
+
+	old_path = path[0:path.find('chapter')]
+	return redirect(old_path)
+
+
+def delete_ppt(request):
+	college_list = College.objects.all()
+	error_type = tips(request)
+	if error_type > 0:
+		return render(request,'tips.html', locals())
+	path = request.path
+	URL_list = path.split('/')
+	chapter_id = int(URL_list[6])
+	chapter = ChapterList.objects.filter(id=chapter_id)[0]
+	ppt_id = int(URL_list[8])
+	PPTList.objects.filter(id=ppt_id).delete()
+	ppt_list = PPTList.objects.filter(chapter_id=chapter).order_by("ppt_order")
+	count = 1
+	for ppt in ppt_list: #重新排序
+		ppt.ppt_order = count
+		ppt.save()
+		count += 1
+
+	old_path = path[0:path.find('chapter')]
+	return redirect(old_path)
+
+def delete_comment(request):
+	college_list = College.objects.all()
+	error_type = tips(request)
+	if error_type > 0:
+		return render(request,'tips.html', locals())
+	path = request.path
+	URL_list = path.split('/')
+	course_id = int(URL_list[4])
+	course = Course.objects.filter(id=course_id)[0]
+	comment_id = int(URL_list[6])
+	CourseComment.objects.filter(id=comment_id).delete()
+	comment_list = CourseComment.objects.filter(course_id=course).order_by("comment_order")
+	count = 1
+	for comment in comment_list: #重新排序
+		comment.comment_order = count
+		comment.save()
+		count += 1
+
+	old_path = path[0:path.find('comment')]
+	return redirect(old_path)
 
 def goback(request):
 	path = request.path
@@ -306,6 +382,8 @@ def goback(request):
 	if path.rfind('/', 0, index) != -1:
 		old_path = path[0:path.rfind('/', 0, index)+1]
 	return redirect(old_path)
+
+
 
 def testpage(request):
 	pass
@@ -316,16 +394,16 @@ def tips(request): #验证权限
 	if not request.user.id:
 		return 1 #1-未登录
 
-	if "identity" in path:
+	if "/identity/" in path:
 		return 0 #0-通过验证
 
-	if "colleges" in path:
+	if "/colleges/" in path:
 		# if request.user.permission <= 1:
 		# 	return 2 #2-不是学生/老师
 		# else:
 		return 0 #0-通过验证
 
-	if "college" in path:
+	if "/college/" in path:
 		if request.user.permission < 10: #非管理员
 			if request.user.permission <= 1:
 				return 2 #2-不是学生/老师
@@ -334,96 +412,120 @@ def tips(request): #验证权限
 			if int(URL_list[2]) != request.user.college_id: #自己不属于此院校
 				return 4 #4-自己不属于此院校
 
-			if "create_course" in path:
+			if "/create_course/" in path:
 				if request.user.permission <= 2:
 					return 5 #5-没权限创建课程
 				else:
 					return 0 #0-通过验证	
 
-			if "course" in path:
+			if "/course/" in path:
 				if Course.objects.filter(id=int(URL_list[4])).count() == 0: #没有这个课程
 					return 6 #6-没有这个课程
 
-				if "add_chapter" in path:
+				if "/delete_course/" in path:
+					if Course.objects.get(id=int(URL_list[4])).creator_id.id != request.user.id: #课程不属于自己
+						return 11 #11-没权限删除课程
+					else:
+						return 0 #0-通过验证
+
+				if "/add_chapter/" in path:
 					if Course.objects.get(id=int(URL_list[4])).creator_id.id != request.user.id: #课程不属于自己
 						return 7 #7-没权限添加章节
 					else:
 						return 0 #0-通过验证
 
-				if "add_comment" in path:
+				if "/add_comment/" in path:
 					return 0 #0-通过验证
 
-				if "chapter" in path:
+				if "/delete_comment/" in path:
+					if CourseComment.objects.filter(id=int(URL_list[6])).count() == 0:
+						return 12 #12-没有这条评论
+					elif CourseComment.objects.get(id=int(URL_list[6])).account_id.id != request.user.id:
+						return 13 #13-评论不属于自己
+					else:
+						return 0 #0-通过验证
+
+				if "/chapter/" in path:
 					if ChapterList.objects.filter(id=int(URL_list[6])).count == 0: #没有这个章节
 						return 8 #8-没有这个章节
 
-					if "add_ppt" in path:
+					if "/delete_chapter/" in path:
+						if Course.objects.get(id=int(URL_list[4])).creator_id.id != request.user.id: #课程不属于自己
+							return 14 #14-没权限删除章节
+						else:
+							return 0 #0-通过验证
+
+					if "/add_ppt/" in path:
 						if Course.objects.get(id=int(URL_list[4])).creator_id.id != request.user.id:#课程不属于自己
 							return 9 #9-没权限添加ppt
 						else:
 							return 0 #0-通过验证
 
-					if "ppt" in path:
+					if "/ppt/" in path:
 						if PPTList.objects.filter(id=int(URL_list[8])).count == 0: #没有这个PPT
 							return 10 #10-没有这个PPT
-						else:
-							return 0 #0-通过验证
-					else:
+
+						if "/delete_ppt/" in path:
+							if Course.objects.get(id=int(URL_list[4])).creator_id.id != request.user.id:#课程不属于自己
+								return 15 #15-没权限删除ppt
+							else:
+								return 0 #0-通过验证
+
+						if "/downloadppt/" in path:
+							return 0
+
 						return 0 #0-通过验证
-				else:
+
 					return 0 #0-通过验证
 
-			if "LemonApp" in path:
-				if PPTList.objects.filter(id=int(URL_list[3])).count == 0: #没有这个PPT
-					return 10 #10-没有这个PPT
-				else:
-					return 0 #0-通过验证
-			
+				return 0 #0-通过验证
+
 			return 0 #0-通过验证
 
 		else: #管理员
 			if College.objects.filter(id=int(URL_list[2])).count() == 0: #没有这个院校
 				return 3 #3-没有这个院校
 
-			if "create_course" in path:
+			if "/create_course/" in path:
 				return 0 #0-通过验证	
 
-			if "course" in path:
+			if "/course/" in path:
 				if Course.objects.filter(id=int(URL_list[4])).count() == 0: #没有这个课程
 					return 6 #6-没有这个课程
 
-				if "add_chapter" in path:
+				if "/delete_course/" in path:
 					return 0 #0-通过验证
 
-				if "chapter" in path:
+				if "/add_chapter/" in path:
+					return 0 #0-通过验证
+
+				if "/add_comment/" in path:
+					return 0 #0-通过验证
+
+				if "/delete_comment/" in path:
+					if CourseComment.objects.filter(id=int(URL_list[6])).count() == 0:
+						return 12 #12-没有这条评论
+					else:
+						return 0 #0-通过验证
+
+				if "/chapter/" in path:
 					if ChapterList.objects.filter(id=int(URL_list[6])).count == 0: #没有这个章节
 						return 8 #8-没有这个章节
 
-					if "add_ppt" in path:
+					if "/delete_chapter/" in path:
 						return 0 #0-通过验证
 
-					if "ppt" in path:
+					if "/add_ppt/" in path:
+						return 0 #0-通过验证
+
+					if "/ppt/" in path:
 						if PPTList.objects.filter(id=int(URL_list[8])).count == 0: #没有这个PPT
 							return 10 #10-没有这个PPT
-						else:
+
+						if "/delete_ppt/" in path:
 							return 0 #0-通过验证
-					else:
-						return 0 #0-通过验证
-				else:
-					return 0 #0-通过验证
 
-			if "downloadppt" in path:
-				if PPTList.objects.filter(id=int(URL_list[4])).count() == 0: #没有这个PPT
-					return 10 #10-没有这个PPT
-				else:
-					return 0 #0-通过验证
-			
+						if "/downloadppt/" in path:
+							return 0
+
 			return 0 #0-通过验证
-
-
-				
-
-
-
-
-

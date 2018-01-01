@@ -40,10 +40,14 @@ urlpatterns = [
     url(r'^college/[0-9]+/$', views.courses, name='courses'),
     url(r'^college/[0-9]+/create_course/$',views.create_course, name="create_course"),
     url(r'^college/[0-9]+/course/[0-9]+/$', views.course, name="course"),
-    url(r'^college/[0-9]+/course/[0-9]+/add_chapter/$',views.add_chapter, name="add_chapter"),
-    url(r'^college/[0-9]+/course/[0-9]+/add_comment/$',views.add_comment, name="add_comment"),
-    url(r'^college/[0-9]+/course/[0-9]+/chapter/[0-9]+/ppt/[0-9]+/$',views.show_ppt, name="show_ppt"),
+    url(r'^college/[0-9]+/course/[0-9]+/delete_course/$', views.delete_course, name="delete_course"),
+    url(r'^college/[0-9]+/course/[0-9]+/add_chapter/$',views.add_chapter, name="add_chapter"),  
+    url(r'^college/[0-9]+/course/[0-9]+/add_comment/$',views.add_comment, name="add_comment"),  
+    url(r'^college/[0-9]+/course/[0-9]+/comment/[0-9]+/delete_comment/$', views.delete_comment, name="delete_comment"),
+    url(r'^college/[0-9]+/course/[0-9]+/chapter/[0-9]+/delete_chapter/$', views.delete_chapter, name="delete_chapter"),
     url(r'^college/[0-9]+/course/[0-9]+/chapter/[0-9]+/add_ppt/$',views.add_ppt, name="add_ppt"),
-    url(r'^college/[0-9]+/downloadppt/[0-9]+$', views.download, name='download'),
+    url(r'^college/[0-9]+/course/[0-9]+/chapter/[0-9]+/ppt/[0-9]+/$',views.show_ppt, name="show_ppt"),
+    url(r'^college/[0-9]+/course/[0-9]+/chapter/[0-9]+/ppt/[0-9]+/delete_ppt/$',views.delete_ppt, name="delete_ppt"),
+    url(r'^college/[0-9]+/course/[0-9]+/chapter/[0-9]+/ppt/[0-9]+/downloadppt/$', views.download, name='download'),
     
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
