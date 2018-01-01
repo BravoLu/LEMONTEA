@@ -5,8 +5,12 @@
 	{% include "HeaderMenu.html"%}
   <div class ="ui main container">
 	<div class = "ui grid">
-      <button class="ui primary button" style="margin-top:10px;margin-left:75rem;width:100px" ><i class="write icon"></i><a href="/community/E/write" style="color:white">发帖</a></div>
+    {% if request.user.id %}
+      <button class="ui primary button" style="margin-top:10px;margin-left:75rem;width:100px" ><i class="write icon"></i><a href="/community/E/write/" style="color:white">发帖</a></div>
+    {% else %}
+          <button class="ui primary button" style="margin-top:10px;margin-left:75rem;width:100px" ><i class="write icon"></i><a href="login" style="color:white">发帖</a></div>
   </button>
+  {% endif %}
   <div class = "ui divider" style="margin-top:30px"></div>
 <!-- part I -->
     {% for article in articles %}

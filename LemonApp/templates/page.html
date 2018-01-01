@@ -28,11 +28,11 @@
    		<!--  End 帖子主题-->
 		<div class="ui comments">
           <h3 class="ui dividing header" style="width:80rem">讨论</h3>
-
+            <div id="comment-list">
               {% for comment in article.get_comments %}
                 {% include 'partial_article_comment.html' with comment=comment %}
               {% endfor %}
-
+            </div>
 <!--             <div class="comment">
               <a class="avatar">
               <img src="/images/avatar/small/matt.jpg">
@@ -49,17 +49,33 @@
             </div> -->
 
  		 </div>
-
-  		<form action="{% url 'comment' %}" method="post" class="ui reply form">
+      {% if request.user.id %}
+  		<form action="{% url 'comment' %}" method ="post" id = "comment-form" class="ui reply form">
+      {% else %}
+      <form action="login" method="post" class ="ui reply form">
+      {% endif %}
          {% csrf_token %}
           <input type="hidden" name="article" value="{{ article.pk }}">
     		    <div class="field" style="width:80rem">                
-      			   <textarea placeholder ="{% trans 'Write a comment...' %}" name="comment" id="comment"></textarea>
+      			   <textarea placeholder ="{% trans 'Write a comment...' %}" name="comment"></textarea>
     		    </div>
-    		<button  class="ui blue labeled submit icon button"><i class="icon edit"></i>回复</button>
+    		<button id="comment-commit"  class="ui blue labeled submit icon button"><i class="icon edit"></i>回复</button>
   		</form>
 </div>
 
 	</div>
 </body>
+<!--       <script type="text/javascript">
+        $("#comment-commit").click(function(){
+        $.ajax({
+          url: '/community/comment'
+          data: $("#comment-form").serialize(),
+          cache: false,
+          type: 'post',
+          success: function(data){
+          $("#comment-list").html(data);
+          }
+        });
+        });
+        </script>> -->
 </html>
