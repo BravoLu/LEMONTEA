@@ -275,7 +275,6 @@ def add_ppt(request):
 			ppt_order = PPTList.objects.filter(chapter_id=chapter).count() + 1
 			title = str(form.cleaned_data["file"])
 			file = form.cleaned_data["file"]
-			print(file)
 			ppt = PPTList(chapter_id=chapter, ppt_order=ppt_order, title=title, file=file)
 			ppt.save()
 	old_path = path[0:path.find('chapter')]
