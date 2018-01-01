@@ -17,17 +17,61 @@
             <div class="ten wide column">
                 <h2 class="ui header">绑定账户</h2>
                 <div class="ui divider"></div>
-                <p>
-                    <h4 class="ui header">证件号:</h4>
-                    
-                    <div class="ui input">
-                        <input type="text" placeholder="请输入学生证或教师证号">
+                {% if request.user.card_number == "-1" %}
+                    <form action="{{ path }}" method="post" class="ui large form">
+                    {% csrf_token %}
+                    <p>
+                        <h4 class="ui header">大学:</h4>
+                        {{ form.college }}
+                        <h4 class="ui header">身份:</h4>
+                        {{ form.status }}
+                        <h4 class="ui header">证件号(学号/教工号):</h4>
+                        <div class="ui input">
+                            {{ form.card_number }}
+                        </div>
+                    </p>
+                        <button class="ui primary submit button" style="margin-top:60px;margin-left:100px">绑定</button>
+                    </form>
+                    {% if form.card_number.errors %}
+                      <div class="ui error message">
+                        <ul class="list">
+                          {% for i in form.card_number.errors %}
+                            <li>{{i|escape}}</li>
+                          {% endfor%}
+                        </ul>
+                      </div>
+                    {% endif%}
+                {% else %}
+                    <div class="ui segment">
+                        <div class="content">
+                            <h4 class="header"><i class="student icon"></i>学校:   {{ college_name }}</h4>
+                        </div>
                     </div>
-                </p>
-                
-                
-                <p>
-                    <button class="ui primary button" style="margin-top:60px;margin-left:100px">绑定</button>
+                    {% if request.user.permission == 2 %}
+                        <div class="ui segment">
+                            <div class="content">
+                                <h4 class="header"><i class="user icon"></i>身份:   学生</h4>
+                            </div>
+                        </div>
+                        <div class="ui segment">
+                            <div class="content">
+                                <h4 class="header"> <i class="mail icon"></i>学号:   {{ request.user.card_number }}</h4>
+                            </div>
+                        </div>
+                    {% elif request.user.permission == 3 %}
+                        <div class="ui segment">
+                            <div class="content">
+                                <h4 class="header"><i class="user icon"></i>身份:   老师</h4>
+                            </div>
+                        </div>
+                        <div class="ui segment">
+                            <div class="content">
+                                <h4 class="header"> <i class="mail icon"></i>教工号:   {{ request.user.card_number }}</h4>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endif %}
+
             </div>
             <!--第3列-->
             

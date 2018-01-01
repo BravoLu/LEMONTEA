@@ -39,78 +39,6 @@
       color:black;
     }
     </style>
-  <script>
-  $(document)
-    .ready(function() {
-      $('.ui.form')
-        .form({
-          fields: {
-            username: {
-              identifier  : 'username',
-              rules: [
-                {
-                  type   : 'empty',
-                  prompt : 'Please enter your username'
-                },
-                {
-                  type   : 'length[3]',
-                  prompt : 'Your username must be at least 3 characters'
-                },
-                {
-                  type   : 'maxLength[20]',
-                  prompt : 'Your username must be at most 20 characters'
-                }
-              ]
-            },
-            email: {
-              identifier  : 'email',
-              rules: [
-                {
-                  type   : 'empty',
-                  prompt : 'Please enter your e-mail'
-                },
-                {
-                  type   : 'email',
-                  prompt : 'Please enter a valid e-mail'
-                }
-              ]
-            },
-            password: {
-              identifier  : 'password',
-              rules: [
-                {
-                  type   : 'empty',
-                  prompt : 'Please enter your password'
-                },
-                {
-                  type   : 'minLength[6]',
-                  prompt : 'Your password must be at least 6 characters'
-                },
-                {
-                  type   : 'maxLength[20]',
-                  prompt : 'Your password must be at most 20 characters'
-                }
-              ]
-            },
-            confirm_password: {
-              identifier  : 'confirm_password',
-              rules: [
-                {
-                  type   : 'empty',
-                  prompt : 'Please confirm your password'
-                },
-                {
-                  type   : 'match[password]',
-                  prompt : 'Your two passwords are different'
-                }
-              ]
-            }
-          }
-        })
-      ;
-    })
-    ;
-  </script>
 </head>
 
 <body>
@@ -122,6 +50,7 @@
     {% if error_type %}
       <div class="ui error message">
         <h2>提示</h2>
+        <div class="ui divider"></div>
         {%if error_type == 1 %}
           <ul class="list">
             <li><h3>若已有账号, 请先登陆</h3></li>

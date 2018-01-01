@@ -2,7 +2,13 @@ from django import forms
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth import authenticate
-from LemonApp.models import Course, ChapterList, PPTList
+from LemonApp.models import College, TeacherInformation, StudentInformation, Course, ChapterList, PPTList
+
+STATUS_CHOICES = [
+	('','---------'),
+	('1', '学生'),
+	('2', '老师')
+]
 
 class SignupForm (forms.Form):
 	username = forms.CharField(
@@ -88,3 +94,32 @@ class ModifyInfoForm (forms.Form):
 		except UserModel.DoesNotExist:
 			return username
 		raise forms.ValidationError("This username has been registered")
+
+class BindForm (forms.Form):
+	college = forms.ModelChoiceField(
+		required=True, queryset=College.objects.all())
+
+	status = forms.ChoiceField(
+		required=True, choices=STATUS_CHOICES)
+
+	card_number = forms.CharField(
+		required=True, max_length=20, widget=forms.TextInput(attrs={'placeholder':'请输入学号或教师证号'}))
+
+	def clean_card_number(self):
+		college = self.cleaned_data["college"]
+		status = self.cleaned_data["status"]
+		card_number = self.cleaned_data["card_number"]
+		
+		if status == '1':
+			list1 = StudentInformation.objects.filter(college_id=college.id, StudentID=card_number)
+			if list1.count() == 0:
+				raise forms.ValidationError("This ID doesn't exists")
+			elif list1[0].is_bind == True:
+				raise forms.ValidationError("This ID has been binded")
+		else:
+			list1 = TeacherInformation.objects.filter(college_id=college.id, TeacherID=card_number)
+			if list1.count() == 0:
+				raise forms.ValidationError("This ID doesn't exists")
+			elif list1[0].is_bind == True:
+				raise forms.ValidationError("This ID has been binded")
+		return card_number
