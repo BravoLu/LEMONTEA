@@ -234,7 +234,7 @@
     <h2 class="ui dividing header">课程评论</h2>
 
     <div class="ui comments">
-          {% if comment_list.empty %}
+          {% if comment_list %}
               {% for course_comment in comment_list %}
                 <div class="comment">
                   <a class="avatar">
