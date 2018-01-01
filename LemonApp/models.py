@@ -3,7 +3,7 @@ from django.contrib.auth.models import AbstractUser
 # Create your models here.
 class Account(AbstractUser):
     face = models.ImageField("头像", upload_to="UserPhoto/", null=True, default="UserPhoto/default.png")
-    permission = models.IntegerField("权限类型", default=0) #数值越大权限越高
+    permission = models.IntegerField("权限类型", default=0) #数值越大权限越高,1为普通用户,2为学生,3为老师,10为管理员
     college_id = models.IntegerField("所属大学", default=-1)
     card_number = models.CharField("学号或教工号", max_length=50, default="-1")
     class Meta:
