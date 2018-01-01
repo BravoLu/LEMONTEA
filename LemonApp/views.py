@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from LemonApp.forms import SignupForm, LoginForm, CourseForm, ChapterForm, PPTForm, ModifyInfoForm, BindForm
 from django.contrib.auth import get_user_model
 from django.contrib.auth import authenticate,login as auth_login, logout 
-from LemonApp.models import College, TeacherInformation, StudentInformation, Course, ChapterList, PPTList
+from LemonApp.models import College, TeacherInformation, StudentInformation, Course, ChapterList, PPTList, CourseComment
 import os
 
 # Create your views here.
@@ -59,7 +59,6 @@ def bind_college(request):
 			user.card_number = card_number
 			user.save()
 			if status == '1':
-				print(1)
 				information = StudentInformation.objects.filter(college_id=college.id, StudentID=card_number).update(is_bind=True)
 			else:
 				information = TeacherInformation.objects.filter(college_id=college.id, TeacherID=card_number).update(is_bind=True)
@@ -74,9 +73,23 @@ def bind_college(request):
 			college_name = "未绑定"
 	return render(request, "personal-binding.html", locals())
 
+def change_face(request):
+	path = request.path
+	college_list = College.objects.all()
+	error_type = tips(request)
+	if error_type > 0:
+		return render(request,'tips.html', locals())
+	if request.method == 'POST':
+		image = request.FILES['face']
+		UserModel = get_user_model()
+		account = UserModel.objects.filter(id=request.user.id)[0]
+		account.face = image
+		account.save()
+	old_path = path[0:path.find('change_face')]
+	return redirect(old_path)
+
 def home(request):
 	college_list = College.objects.all()
-	#return render(request, 'login.html', locals())
 	return render(request, 'index.html', locals())
 
 def signup(request):
@@ -116,9 +129,7 @@ def login(request):
 
 def logout_view(request):
 	logout(request)
-	path = request.path
-	old_path = path[0:path.find('logout')]
-	return redirect(old_path)
+	return redirect("home")
 
 def shop(request):
 	college_list = College.objects.all()
@@ -131,9 +142,6 @@ def study(request):
 def share(request):
 	college_list = College.objects.all()
 	return render(request,'share.html',locals())	
-
-
-
 
 def page(request):
 	college_list = College.objects.all()
@@ -170,11 +178,13 @@ def course(request):
 	course_id = int(URL_list[4])
 	course = Course.objects.filter(id=course_id)[0]
 	chapter_list = ChapterList.objects.filter(course_id=course).order_by("chapter_order")
-	chapter_id_list = [chapter.id for chapter in chapter_list]
 	ppt_list = []
-	for charter_id in chapter_id_list:
-		temp_list = PPTList.objects.filter(chapter_id=charter_id).order_by("ppt_order")
+	for chapter in chapter_list:
+		temp_list = PPTList.objects.filter(chapter_id=chapter).order_by("ppt_order")
 		ppt_list.extend(temp_list)
+
+	comment_list = CourseComment.objects.filter(course_id=course).order_by("comment_order")
+
 	return render(request,'course.html', locals())
 
 def create_course(request):
@@ -204,8 +214,6 @@ def create_course(request):
 			course.save()
 			old_path = path[0:path.find('create_course')]
 			return redirect(old_path)
-		else:
-			print(form.errors)
 	else:
 		form = CourseForm(auto_id="%s")
 	return render(request, "create_course.html", locals())
@@ -227,11 +235,30 @@ def add_chapter(request):
 			description = form.cleaned_data["description"]
 			chapter = ChapterList(course_id=course, chapter_order=chapter_order, title=title, description=description)
 			chapter.save()
-			old_path = path[0:path.find('add_chapter')]
-			return redirect(old_path)
-	else:
-		form = ChapterForm(auto_id="%s")
-	return render(request, "add_chapter.html", locals())
+	old_path = path[0:path.find('add_chapter')]
+	return redirect(old_path)
+
+def add_comment(request):
+	college_list = College.objects.all()
+	error_type = tips(request)
+	if error_type > 0:
+		return render(request,'tips.html', locals())
+	if request.method == 'POST':
+		path = request.path
+		URL_list = path.split('/')
+
+		course_id = int(URL_list[4])
+		course = Course.objects.filter(id=course_id)[0]
+		account_id = request.user.id
+		UserModel = get_user_model()
+		account = UserModel.objects.filter(id=account_id)[0]
+
+		comment_order = CourseComment.objects.filter(course_id=course).count() + 1
+		content = request.POST['content']
+		comment = CourseComment(course_id=course, account_id=account, comment_order=comment_order, content=content)
+		comment.save()
+	old_path = path[0:path.find('add_comment')]
+	return redirect(old_path)
 
 def add_ppt(request):
 	college_list = College.objects.all()
@@ -248,13 +275,11 @@ def add_ppt(request):
 			ppt_order = PPTList.objects.filter(chapter_id=chapter).count() + 1
 			title = str(form.cleaned_data["file"])
 			file = form.cleaned_data["file"]
+			print(file)
 			ppt = PPTList(chapter_id=chapter, ppt_order=ppt_order, title=title, file=file)
 			ppt.save()
-			old_path = path[0:path.find('chapter')]
-			return redirect(old_path)
-	else:
-		form = PPTForm(auto_id="%s")
-	return render(request, "add_ppt.html", locals())
+	old_path = path[0:path.find('chapter')]
+	return redirect(old_path)
 
 def show_ppt(request):
 	college_list = College.objects.all()
@@ -276,7 +301,11 @@ def download(request):
 		return redirect(download_path)
 
 def goback(request):
-	pass
+	path = request.path
+	index = path.rfind('/')
+	if path.rfind('/', 0, index) != -1:
+		old_path = path[0:path.rfind('/', 0, index)+1]
+	return redirect(old_path)
 
 def testpage(request):
 	pass
@@ -320,6 +349,9 @@ def tips(request): #验证权限
 						return 7 #7-没权限添加章节
 					else:
 						return 0 #0-通过验证
+
+				if "add_comment" in path:
+					return 0 #0-通过验证
 
 				if "chapter" in path:
 					if ChapterList.objects.filter(id=int(URL_list[6])).count == 0: #没有这个章节

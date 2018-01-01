@@ -1,4 +1,5 @@
 {% load static %}
+{% load humanize %}
 <!DOCTYPE html>
 <html>
 
@@ -41,11 +42,54 @@
       color:black;
     }
     </style>
- 
-
-
-
-
+    <script>
+    $(document)
+      .ready(function() {
+        $('.ui.form')
+          .form({
+            fields: {
+              title: {
+                identifier  : 'title',
+                rules: [
+                  {
+                    type   : 'empty',
+                    prompt : 'Please enter the title'
+                  }
+                ]
+              },
+              description: {
+                identifier  : 'description',
+                rules: [
+                  {
+                    type   : 'empty',
+                    prompt : 'Please enter the description'
+                  }
+                ]
+              },
+              file: {
+                identifier  : 'file',
+                rules: [
+                  {
+                    type   : 'empty',
+                    prompt : 'Please select a ppt'
+                  }
+                ]
+              },
+              content: {
+                identifier  : 'content',
+                rules: [
+                  {
+                    type   : 'empty',
+                    prompt : 'Please enter the content'
+                  }
+                ]
+              }
+            }
+          })
+        ;
+      })
+      ;
+    </script>
 </head>
 
 <body>
@@ -77,9 +121,28 @@
           <div class="introduction">
             {% for chapter in chapter_list %}
               <h3 class="ui header">Lecture {{ chapter.chapter_order }}：{{ chapter.title }}</h3>
-              <p>{{ chapter.description }}</p>
+              <p>介绍: {{ chapter.description }}</p>
             {% endfor %}
-            <h3 class="ui header"><a href="add_chapter/">(按钮)添加章节</a></h3>
+            {% if request.user.permission >= 3 %}
+            <div class="ui dividing header"></div>
+            <h4>添加章节</h4>
+            <form action="add_chapter/" method="post" class="ui large form">
+              {% csrf_token %}
+              <div class="ui stacked segment">
+                <div class="field">
+                    <h5 class="ui header">章节标题:</h5>
+                    <input type="text" name="title" placeholder="章节标题" maxlength="20" required id="title" />
+                </div>
+                <div class="field">
+                    <h5 class="ui header">章节描述:</h5>
+                    <textarea name="description" cols="40" rows="3" placeholder="章节描述" maxlength="200" required id="description">
+</textarea>
+                </div>
+                <button class="tiny ui primary submit button" style="margin-left:450px">确定添加</button>
+              </div>
+              <div class="ui error message"></div>
+            </form>
+            {% endif %}
           </div>
         </div>
       </div>
@@ -91,12 +154,26 @@
 
     <h2 class="ui dividing header">课程资料</h2>
       {% for chapter in chapter_list %}
-        <h3 class="ui header">Lecture {{ chapter.chapter_order }}：{{ chapter.title }} <a href="chapter/{{ chapter.id }}/add_ppt/">(按钮)添加PPT</a></h3>
+        <h3 class="ui header">Lecture {{ chapter.chapter_order }}：{{ chapter.title }}</h3> 
         {%for ppt in ppt_list %} 
           {% if ppt.chapter_id.id == chapter.id %}
-            <p><a href="chapter/{{ chapter.id }}/ppt/{{ ppt.id }}/">PPT{{ ppt.ppt_order }}: {{ ppt.title }}</a> <a href="/college/{{ college.id }}/downloadppt/{{ ppt.id }}">(按钮)下载</a></p>
+            <p><a href="chapter/{{ chapter.id }}/ppt/{{ ppt.id }}/">PPT{{ ppt.ppt_order }}: {{ ppt.title }}</a> <a class="mini ui button" href="/college/{{ college.id }}/downloadppt/{{ ppt.id }}" style="margin-left:450px">下载</a></p>
           {% endif %}
         {% endfor %}
+        {% if request.user.permission >= 3 %}
+          <form action="chapter/{{ chapter.id }}/add_ppt/" method="post" class="ui large form" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="ui stacked segment">
+              <div class="field">
+                  <h5 class="ui header">选择ppt文件:</h5>
+                  <input type="file" name="file" placeholder="选择ppt文件" required id="file" />
+              </div>
+              <button class="tiny ui primary submit button" style="margin-left:450px">上传PPT</button>
+            </div>
+            <div class="ui error message"></div>
+          </form>
+        {% endif %}
+        <div class="ui dividing header"></div>
       {% endfor %}
   </div>
 </div>
@@ -109,28 +186,32 @@
     <h2 class="ui dividing header">课程评论</h2>
 
     <div class="ui comments">
-          <h3 class="ui dividing header">讨论</h3>
+          {% for course_comment in comment_list %}
             <div class="comment">
               <a class="avatar">
-              <img src="/images/avatar/small/matt.jpg">
+              <img src="/LemonApp/media/{{ course_comment.account_id.face }}">
               </a>
                 <div class="content">
-                  <a class="author">Matt</a>
+                  <div class="author">{{ course_comment.account_id.username }}</div>
                   <div class="metadata">
-                  <span class="date">今天下午 5:42</span>
+                  <span class="date">{{ course_comment.date|naturaltime }}</span>
                   </div>
-                <div class="text">太赞了！ </div>
-                <div class="actions">
-                  <a class="reply">Reply</a>
-                </div>
+                <div class="text">{{ course_comment.content }}</div>
             </div>
+            <div class="ui divider"></div>
+          {% endfor %}
        </div>
     </div>
-      <form class="ui reply form">
-        <div class="field">
-            <textarea></textarea>
+    <h3 class="ui dividing header">评论</h3>
+      <form action="add_comment/" method="post" class="ui large form">
+        {% csrf_token %}
+        <div class="ui stacked segment">
+          <div class="field">
+              <textarea name="content" cols="40" rows="6" placeholder="输入你的评论" maxlength="200" required id="content"></textarea>
+          </div>
+          <button class="ui primary submit button" style="margin-left:450px">发表评论</button>
         </div>
-        <div class="ui blue labeled submit icon button" style="margin-left:450px"><i class="icon edit"></i>发表评论</div>
+        <div class="ui error message"></div>
       </form>
 </div>
 <!-- end disscus part -->

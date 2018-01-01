@@ -1,5 +1,43 @@
 {%include "head.html"%}
-
+<script>
+$(document)
+  .ready(function() {
+    $('.ui.form')
+      .form({
+        fields: {
+          college: {
+            identifier  : 'college',
+            rules: [
+              {
+                type   : 'empty',
+                prompt : 'Please enter the college'
+              }
+            ]
+          },
+          status: {
+            identifier  : 'status',
+            rules: [
+              {
+                type   : 'empty',
+                prompt : 'Please enter the status'
+              }
+            ]
+          },
+          card_number: {
+            identifier  : 'card_number',
+            rules: [
+              {
+                type   : 'empty',
+                prompt : 'Please enter the card_number'
+              }
+            ]
+          }
+        }
+      })
+    ;
+  })
+  ;
+</script>
 <body>
     {% include "HeaderMenu.html"%}
     <div class="ui main container">
@@ -31,6 +69,7 @@
                         </div>
                     </p>
                         <button class="ui primary submit button" style="margin-top:60px;margin-left:100px">绑定</button>
+                        <div class="ui error message"></div>
                     </form>
                     {% if form.card_number.errors %}
                       <div class="ui error message">

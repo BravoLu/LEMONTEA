@@ -82,7 +82,7 @@ class PPTForm (forms.Form):
 
 class ModifyInfoForm (forms.Form):
 	username = forms.CharField(
-		required=True, min_length=3, max_length=20, widget=forms.TextInput(attrs={'placeholder':'用户名'}))
+		required=True, min_length=3, max_length=50, widget=forms.TextInput(attrs={'placeholder':'用户名'}))
 	email = forms.EmailField(
 		required=True, widget=forms.EmailInput(attrs={'placeholder':'邮箱'}))
 
@@ -103,13 +103,13 @@ class BindForm (forms.Form):
 		required=True, choices=STATUS_CHOICES)
 
 	card_number = forms.CharField(
-		required=True, max_length=20, widget=forms.TextInput(attrs={'placeholder':'请输入学号或教师证号'}))
+		required=True, max_length=50, widget=forms.TextInput(attrs={'placeholder':'请输入学号或教工号'}))
 
 	def clean_card_number(self):
 		college = self.cleaned_data["college"]
 		status = self.cleaned_data["status"]
 		card_number = self.cleaned_data["card_number"]
-		
+
 		if status == '1':
 			list1 = StudentInformation.objects.filter(college_id=college.id, StudentID=card_number)
 			if list1.count() == 0:
