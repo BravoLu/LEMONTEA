@@ -234,26 +234,32 @@
     <h2 class="ui dividing header">课程评论</h2>
 
     <div class="ui comments">
-          {% for course_comment in comment_list %}
+          {% if comment_list.empty %}
+              {% for course_comment in comment_list %}
+                <div class="comment">
+                  <a class="avatar">
+                  <img src="/LemonApp/media/{{ course_comment.account_id.face }}">
+                  </a>
+                    <div class="content">
+                      <div class="author">{{ course_comment.account_id.username }} 
+                      {% if request.user.permission >= 10 %}
+                        <a class="mini ui button" href="comment/{{ course_comment.id }}/delete_comment/" style="margin-left:350px">删除评论</a>
+                      {% elif request.user.id == course_comment.account_id.id %}
+                        <a class="mini ui button" href="comment/{{ course_comment.id }}/delete_comment/" style="margin-left:350px">删除评论</a>
+                      {% endif %}
+                      </div>
+                      <div class="metadata">
+                      <span class="date">{{ course_comment.date|naturaltime }}</span>
+                      </div>
+                    <div class="text">{{ course_comment.content }}</div>
+                </div>
+                <div class="ui divider"></div>
+              {% endfor %}
+          {% else %}
             <div class="comment">
-              <a class="avatar">
-              <img src="/LemonApp/media/{{ course_comment.account_id.face }}">
-              </a>
-                <div class="content">
-                  <div class="author">{{ course_comment.account_id.username }} 
-                  {% if request.user.permission >= 10 %}
-                    <a class="mini ui button" href="comment/{{ course_comment.id }}/delete_comment/" style="margin-left:350px">删除评论</a>
-                  {% elif request.user.id == course_comment.account_id.id %}
-                    <a class="mini ui button" href="comment/{{ course_comment.id }}/delete_comment/" style="margin-left:350px">删除评论</a>
-                  {% endif %}
-                  </div>
-                  <div class="metadata">
-                  <span class="date">{{ course_comment.date|naturaltime }}</span>
-                  </div>
-                <div class="text">{{ course_comment.content }}</div>
+              <p>暂无课程评论</p>
             </div>
-            <div class="ui divider"></div>
-          {% endfor %}
+          {% endif %}
        </div>
     </div>
     <h3 class="ui dividing header">评论</h3>
