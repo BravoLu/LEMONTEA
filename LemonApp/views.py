@@ -59,7 +59,6 @@ def bind_college(request):
 			user.card_number = card_number
 			user.save()
 			if status == '1':
-				print(1)
 				information = StudentInformation.objects.filter(college_id=college.id, StudentID=card_number).update(is_bind=True)
 			else:
 				information = TeacherInformation.objects.filter(college_id=college.id, TeacherID=card_number).update(is_bind=True)
@@ -73,6 +72,21 @@ def bind_college(request):
 		else:
 			college_name = "未绑定"
 	return render(request, "personal-binding.html", locals())
+
+def change_face(request):
+	path = request.path
+	college_list = College.objects.all()
+	error_type = tips(request)
+	if error_type > 0:
+		return render(request,'tips.html', locals())
+	if request.method == 'POST':
+		image = request.FILES['face']
+		UserModel = get_user_model()
+		account = UserModel.objects.filter(id=request.user.id)[0]
+		account.face = image
+		account.save()
+	old_path = path[0:path.find('change_face')]
+	return redirect(old_path)
 
 def home(request):
 	college_list = College.objects.all()
@@ -115,9 +129,7 @@ def login(request):
 
 def logout_view(request):
 	logout(request)
-	path = request.path
-	old_path = path[0:path.find('logout')]
-	return redirect(old_path)
+	return redirect("home")
 
 def shop(request):
 	college_list = College.objects.all()
@@ -223,8 +235,8 @@ def add_chapter(request):
 			description = form.cleaned_data["description"]
 			chapter = ChapterList(course_id=course, chapter_order=chapter_order, title=title, description=description)
 			chapter.save()
-		old_path = path[0:path.find('add_chapter')]
-		return redirect(old_path)
+	old_path = path[0:path.find('add_chapter')]
+	return redirect(old_path)
 
 def add_comment(request):
 	college_list = College.objects.all()
@@ -263,10 +275,11 @@ def add_ppt(request):
 			ppt_order = PPTList.objects.filter(chapter_id=chapter).count() + 1
 			title = str(form.cleaned_data["file"])
 			file = form.cleaned_data["file"]
+			print(file)
 			ppt = PPTList(chapter_id=chapter, ppt_order=ppt_order, title=title, file=file)
 			ppt.save()
-		old_path = path[0:path.find('chapter')]
-		return redirect(old_path)
+	old_path = path[0:path.find('chapter')]
+	return redirect(old_path)
 
 def show_ppt(request):
 	college_list = College.objects.all()
@@ -288,7 +301,11 @@ def download(request):
 		return redirect(download_path)
 
 def goback(request):
-	pass
+	path = request.path
+	index = path.rfind('/')
+	if path.rfind('/', 0, index) != -1:
+		old_path = path[0:path.rfind('/', 0, index)+1]
+	return redirect(old_path)
 
 def testpage(request):
 	pass

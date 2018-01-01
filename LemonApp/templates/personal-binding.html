@@ -1,5 +1,43 @@
 {%include "head.html"%}
-
+<script>
+$(document)
+  .ready(function() {
+    $('.ui.form')
+      .form({
+        fields: {
+          college: {
+            identifier  : 'college',
+            rules: [
+              {
+                type   : 'empty',
+                prompt : 'Please enter the college'
+              }
+            ]
+          },
+          status: {
+            identifier  : 'status',
+            rules: [
+              {
+                type   : 'empty',
+                prompt : 'Please enter the status'
+              }
+            ]
+          },
+          card_number: {
+            identifier  : 'card_number',
+            rules: [
+              {
+                type   : 'empty',
+                prompt : 'Please enter the card_number'
+              }
+            ]
+          }
+        }
+      })
+    ;
+  })
+  ;
+</script>
 <body>
     {% include "HeaderMenu.html"%}
     <div class="ui main container">
@@ -18,27 +56,6 @@
                 <h2 class="ui header">绑定账户</h2>
                 <div class="ui divider"></div>
                 {% if request.user.card_number == "-1" %}
-                    <script>
-                    $(document)
-                      .ready(function() {
-                        $('.ui.form')
-                          .form({
-                            fields: {
-                              card_number: {
-                                identifier  : 'card_number',
-                                rules: [
-                                  {
-                                    type   : 'empty',
-                                    prompt : 'Please enter the card_number'
-                                  }
-                                ]
-                              }
-                            }
-                          })
-                        ;
-                      })
-                      ;
-                    </script>
                     <form action="{{ path }}" method="post" class="ui large form">
                     {% csrf_token %}
                     <p>

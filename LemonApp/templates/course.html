@@ -42,6 +42,54 @@
       color:black;
     }
     </style>
+    <script>
+    $(document)
+      .ready(function() {
+        $('.ui.form')
+          .form({
+            fields: {
+              title: {
+                identifier  : 'title',
+                rules: [
+                  {
+                    type   : 'empty',
+                    prompt : 'Please enter the title'
+                  }
+                ]
+              },
+              description: {
+                identifier  : 'description',
+                rules: [
+                  {
+                    type   : 'empty',
+                    prompt : 'Please enter the description'
+                  }
+                ]
+              },
+              file: {
+                identifier  : 'file',
+                rules: [
+                  {
+                    type   : 'empty',
+                    prompt : 'Please select a ppt'
+                  }
+                ]
+              },
+              content: {
+                identifier  : 'content',
+                rules: [
+                  {
+                    type   : 'empty',
+                    prompt : 'Please enter the content'
+                  }
+                ]
+              }
+            }
+          })
+        ;
+      })
+      ;
+    </script>
 </head>
 
 <body>
@@ -78,37 +126,7 @@
             {% if request.user.permission >= 3 %}
             <div class="ui dividing header"></div>
             <h4>添加章节</h4>
-            <script>
-            $(document)
-              .ready(function() {
-                $('.ui.form')
-                  .form({
-                    fields: {
-                      title: {
-                        identifier  : 'title',
-                        rules: [
-                          {
-                            type   : 'empty',
-                            prompt : 'Please enter the title'
-                          }
-                        ]
-                      },
-                      description: {
-                        identifier  : 'description',
-                        rules: [
-                          {
-                            type   : 'empty',
-                            prompt : 'Please enter the description'
-                          }
-                        ]
-                      }
-                    }
-                  })
-                ;
-              })
-              ;
-            </script>
-            <form action="add_chapter/" method="post" class="ui form">
+            <form action="add_chapter/" method="post" class="ui large form">
               {% csrf_token %}
               <div class="ui stacked segment">
                 <div class="field">
@@ -143,7 +161,7 @@
           {% endif %}
         {% endfor %}
         {% if request.user.permission >= 3 %}
-          <form action="chapter/{{ chapter.id }}/add_ppt/" method="post" class="ui form" enctype="multipart/form-data">
+          <form action="chapter/{{ chapter.id }}/add_ppt/" method="post" class="ui large form" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="ui stacked segment">
               <div class="field">
@@ -152,6 +170,7 @@
               </div>
               <button class="tiny ui primary submit button" style="margin-left:450px">上传PPT</button>
             </div>
+            <div class="ui error message"></div>
           </form>
         {% endif %}
         <div class="ui dividing header"></div>
@@ -184,27 +203,6 @@
        </div>
     </div>
     <h3 class="ui dividing header">评论</h3>
-      <script>
-      $(document)
-        .ready(function() {
-          $('.ui.form')
-            .form({
-              fields: {
-                content: {
-                  identifier  : 'content',
-                  rules: [
-                    {
-                      type   : 'empty',
-                      prompt : 'Please enter the content'
-                    }
-                  ]
-                }
-              }
-            })
-          ;
-        })
-        ;
-      </script>
       <form action="add_comment/" method="post" class="ui large form">
         {% csrf_token %}
         <div class="ui stacked segment">

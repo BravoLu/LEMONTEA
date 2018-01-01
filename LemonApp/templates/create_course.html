@@ -41,123 +41,107 @@
       color:black;
     }
     </style>
-  <script>
-  $(document)
-    .ready(function() {
-      $('.ui.form')
-        .form({
-          fields: {
-            course_identifier: {
-              identifier  : 'course_identifier',
-              rules: [
-                {
-                  type   : 'empty',
-                  prompt : 'Please enter the course_id'
-                }
-              ]
-            },
-            title: {
-              identifier  : 'title',
-              rules: [
-                {
-                  type   : 'empty',
-                  prompt : 'Please enter the title'
-                }
-              ]
-            },
-            description: {
-              identifier  : 'description',
-              rules: [
-                {
-                  type   : 'empty',
-                  prompt : 'Please enter the description'
-                }
-              ]
-            },
-            teacher: {
-              identifier  : 'teacher',
-              rules: [
-                {
-                  type   : 'empty',
-                  prompt : "Please enter the teacher's name"
-                }
-              ]
-            }
-          }
-        })
-      ;
-    })
-    ;
-  </script>
-</head>
 
 <body>
-<!-- header menu-->
     {% include "HeaderMenu.html"%}
-<!-- mainBODY -->
-    <div class="ui middle aligned center aligned grid">
-  <div class="column">
-    <h2 class="ui teal image header">
-      <div class="content icon">
-       新建课程
+    <div class="ui main container">
+      <div class="ui internally celled grid">
+          <!--第一列-->
+          <div class="four wide column"></div>           
+          <!--第2列-->
+          <div class="six wide column">
+            <div class="ui stacked segment">
+              <h2 class="ui header" style="margin-left:140px">新建课程</h2>
+              <div class="ui divider"></div>
+              <script>
+              $(document)
+                .ready(function() {
+                  $('.ui.form')
+                    .form({
+                      fields: {
+                        course_identifier: {
+                          identifier  : 'course_identifier',
+                          rules: [
+                            {
+                              type   : 'empty',
+                              prompt : 'Please enter the course_id'
+                            }
+                          ]
+                        },
+                        title: {
+                          identifier  : 'title',
+                          rules: [
+                            {
+                              type   : 'empty',
+                              prompt : 'Please enter the title'
+                            }
+                          ]
+                        },
+                        description: {
+                          identifier  : 'description',
+                          rules: [
+                            {
+                              type   : 'empty',
+                              prompt : 'Please enter the description'
+                            }
+                          ]
+                        },
+                        teacher: {
+                          identifier  : 'teacher',
+                          rules: [
+                            {
+                              type   : 'empty',
+                              prompt : "Please enter the teacher's name"
+                            }
+                          ]
+                        }
+                      }
+                    })
+                  ;
+                })
+                ;
+              </script>
+              <form action="{{ path }}" method="post" class="ui form" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                  <div class="field">
+                      <h5 class="ui header">课程号:</h5>
+                      {{ form.course_identifier }}
+                  </div>
+                  <div class="field">
+                      <h5 class="ui header">课程标题:</h5>
+                      {{ form.title }}
+                  </div>
+                  <div class="field">
+                      <h5 class="ui header">课程封面(非必需):</h5>
+                      {{ form.image }}
+                  </div>
+                  <div class="field">
+                      <h5 class="ui header">课程描述:</h5>
+                      {{ form.description }}
+                  </div>
+                  <div class="field">
+                      <h5 class="ui header">老师:</h5>
+                      {{ form.teacher }}
+                  </div>
+                  <button class="ui primary submit button" style="margin-left:95px">创建课程</button>
+                  <a class="ui button" href="goback">取消</a>
+                <div class="ui error message"></div>
+              </form>
+              {% if form.course_identifier.errors %}
+                <div class="ui error message">
+                  <ul class="list">
+                    {% for i in form.course_identifier.errors %}
+                      <li>{{i|escape}}</li>
+                    {% endfor%}
+                  </ul>
+                </div>
+              {% endif%}
+            </div>
+          </div>
+          <!--第3列-->
+          <div class="six wide column"></div>
       </div>
-    </h2>
-   <form action="{{ path }}" method="post" class="ui large form" enctype="multipart/form-data">
-    {% csrf_token %}
-      <div class="ui stacked segment">
-        <div class="field">
-          <div class="ui left icon input">
-            {{ form.course_identifier }}
-          </div>
-        </div>
-        <div class="field">
-          <div class="ui left icon input">
-            {{ form.title }}
-          </div>
-        </div>
-        <div class="field">
-          <div class="ui left icon input">
-            {{ form.image }}
-          </div>
-        </div>
-        <div class="field">
-          <div class="ui left icon input">
-            {{ form.description }}
-          </div>
-        </div>
-        <div class="field">
-          <div class="ui left icon input">
-            {{ form.teacher }}
-          </div>
-        </div>
-        <div class="ui primary submit button">新建课程</div>
-      </div>
-
-      <div class="ui error message"></div>
-
-    </form>
-    {% if form.course_identifier.errors %}
-      <div class="ui error message">
-        <ul class="list">
-          {% for i in form.course_identifier.errors %}
-            <li>{{i|escape}}</li>
-          {% endfor%}
-        </ul>
-      </div>
-    {% endif%}
-    {% if form.image.errors %}
-      <div class="ui error message">
-        <ul class="list">
-          {% for i in form.image.errors %}
-            <li>{{i|escape}}</li>
-          {% endfor%}
-        </ul>
-      </div>
-    {% endif%}
-
-  </div>
-</div>
-<!-- ENDMainBody -->
+    </div>
 </body>
-    
 </html>
