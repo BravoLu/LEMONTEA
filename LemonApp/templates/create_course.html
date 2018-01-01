@@ -41,7 +41,54 @@
       color:black;
     }
     </style>
-
+	<script>
+	$(document)
+	.ready(function() {
+	  $('.ui.form')
+	    .form({
+	      fields: {
+	        course_identifier: {
+	          identifier  : 'course_identifier',
+	          rules: [
+	            {
+	              type   : 'empty',
+	              prompt : 'Please enter the course_id'
+	            }
+	          ]
+	        },
+	        title: {
+	          identifier  : 'title',
+	          rules: [
+	            {
+	              type   : 'empty',
+	              prompt : 'Please enter the title'
+	            }
+	          ]
+	        },
+	        description: {
+	          identifier  : 'description',
+	          rules: [
+	            {
+	              type   : 'empty',
+	              prompt : 'Please enter the description'
+	            }
+	          ]
+	        },
+	        teacher: {
+	          identifier  : 'teacher',
+	          rules: [
+	            {
+	              type   : 'empty',
+	              prompt : "Please enter the teacher's name"
+	            }
+	          ]
+	        }
+	      }
+	    })
+	  ;
+	})
+	;
+	</script>
 <body>
     {% include "HeaderMenu.html"%}
     <div class="ui main container">
@@ -53,54 +100,6 @@
             <div class="ui stacked segment">
               <h2 class="ui header" style="margin-left:140px">新建课程</h2>
               <div class="ui divider"></div>
-              <script>
-              $(document)
-                .ready(function() {
-                  $('.ui.form')
-                    .form({
-                      fields: {
-                        course_identifier: {
-                          identifier  : 'course_identifier',
-                          rules: [
-                            {
-                              type   : 'empty',
-                              prompt : 'Please enter the course_id'
-                            }
-                          ]
-                        },
-                        title: {
-                          identifier  : 'title',
-                          rules: [
-                            {
-                              type   : 'empty',
-                              prompt : 'Please enter the title'
-                            }
-                          ]
-                        },
-                        description: {
-                          identifier  : 'description',
-                          rules: [
-                            {
-                              type   : 'empty',
-                              prompt : 'Please enter the description'
-                            }
-                          ]
-                        },
-                        teacher: {
-                          identifier  : 'teacher',
-                          rules: [
-                            {
-                              type   : 'empty',
-                              prompt : "Please enter the teacher's name"
-                            }
-                          ]
-                        }
-                      }
-                    })
-                  ;
-                })
-                ;
-              </script>
               <form action="{{ path }}" method="post" class="ui form" enctype="multipart/form-data">
                 {% csrf_token %}
                 
