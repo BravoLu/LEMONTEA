@@ -18,6 +18,15 @@ class Article(models.Model):
 		(DRAFT,'Draft'),
 		(PUBLISHED,'Published'),
 	)
+	Comp = 'C'
+	Math = 'M'
+	Eng = 'E'
+	COMM = (
+		(Comp,'Computers'),
+		(Math,'Math'),
+		(Eng,'English'),
+	)
+	Type = models.CharField(max_length=1,choices=COMM)
 	update_date = models.DateTimeField(auto_now=True,null=True)
 	title = models.CharField(max_length=255,null=False,unique=True)
 	slug = AutoSlugField(populate_from='update_date')

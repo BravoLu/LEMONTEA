@@ -15,6 +15,9 @@ from forum.decorators import ajax_required
 
 def _articles(request, articles):
 	college_list = College.objects.all()
+	path = request.path
+	index = path.split('/')
+	iId = index[2]
 	paginator = Paginator(articles, 10)
 	page = request.GET.get('page')
 	try:
@@ -27,9 +30,12 @@ def _articles(request, articles):
 		articles = paginator.page(paginator.num_pages)
 
 	# popular_tags = Article.get_counted_tags()
-
-	return render(request, 'community.html', {'articles':articles, 'college_list':college_list})
-
+	if iId == 'C':
+		return render(request, 'community.html', {'articles':articles,'college_list':college_list} )
+	if iId == 'M':
+		return render(request, 'community2.html', {'articles':articles,'college_list':college_list} )
+	if iId == 'E':
+		return render(request, 'community3.html', {'articles':articles,'college_list':college_list} )	
 # class CreateArticle(LoginRequiredMixin, CreateView):
 # 	template_name = 'writeforum.html'
 # 	form_class = ArticleForm
@@ -42,26 +48,34 @@ def _articles(request, articles):
 def CreateArticle(request):
 	college_list = College.objects.all()
 	path = request.path
+	index = path.split('/')
+	iId = index[2]
+	print("ceshi",iId)
 	if request.method == 'POST':
 		form = ArticleForm(data=request.POST, auto_id="%s")
 		if form.is_valid():
+			Type = iId
 			title = form.cleaned_data["title"]
 			content = form.cleaned_data["content"]
 			status = 'P'
 			create_user = request.user
 			update_user = request.user
-			article = Article(title=title,content=content,create_user=create_user,
+			article = Article(title=title,content=content,create_user=create_user,Type=Type,
 								update_user=update_user,status=status)
 			
 			article.save()
-			path = path[0:path.rfind('write')]
+			path = path[0:path.rfind('write')-1]
 			print(path)
 			return redirect(path)
 	else:
 		form = ArticleForm(auto_id="%s")
 
-	return render(request,"writeforum.html",locals())
-
+	if iId == 'C':
+		return render(request,"writeforum.html",locals())
+	if iId == 'M':
+		return render(request,"writeforum1.html",locals())
+	if iId == 'E':
+		return render(request,"writeforum2.html",locals())
 
 class EditArticle(LoginRequiredMixin, UpdateView):
 	college_list = College.objects.all()
@@ -73,9 +87,16 @@ class EditArticle(LoginRequiredMixin, UpdateView):
 
 def articles(request):
 	college_list = College.objects.all()
-	all_articles = Article.get_published()
+	all_articles = Article.objects.filter(Type='C')
 	return _articles(request, all_articles)
 
+def math(request):
+	all_articles = Article.objects.filter(Type='M')
+	return _articles(request,all_articles)
+
+def foreign(request):
+	all_articles = Article.objects.filter(Type='E')
+	return _articles(request,all_articles)
 
 def article(request,slug):
 	college_list = College.objects.all()
