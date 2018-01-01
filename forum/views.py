@@ -6,7 +6,7 @@ from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import get_object_or_404, render,redirect
 from django.template.loader import render_to_string
 from django.urls import reverse_lazy
-
+from LemonApp.models import College
 import markdown
 from forum.forms import ArticleForm,CommentForm
 from forum.models import Article, ArticleComment
@@ -14,6 +14,7 @@ from forum.decorators import ajax_required
 
 
 def _articles(request, articles):
+	college_list = College.objects.all()
 	paginator = Paginator(articles, 10)
 	page = request.GET.get('page')
 	try:
@@ -27,7 +28,7 @@ def _articles(request, articles):
 
 	# popular_tags = Article.get_counted_tags()
 
-	return render(request, 'community.html', {'articles':articles})
+	return render(request, 'community.html', {'articles':articles, 'college_list':college_list})
 
 # class CreateArticle(LoginRequiredMixin, CreateView):
 # 	template_name = 'writeforum.html'
@@ -39,6 +40,7 @@ def _articles(request, articles):
 # 		return super(CreateArticle,self).form_valid(form)
 @login_required
 def CreateArticle(request):
+	college_list = College.objects.all()
 	path = request.path
 	if request.method == 'POST':
 		form = ArticleForm(data=request.POST, auto_id="%s")
@@ -62,6 +64,7 @@ def CreateArticle(request):
 
 
 class EditArticle(LoginRequiredMixin, UpdateView):
+	college_list = College.objects.all()
 	template_name = 'edit.html'
 	model = Article
 	form_class = ArticleForm
@@ -69,13 +72,15 @@ class EditArticle(LoginRequiredMixin, UpdateView):
 
 
 def articles(request):
+	college_list = College.objects.all()
 	all_articles = Article.get_published()
 	return _articles(request, all_articles)
 
 
 def article(request,slug):
+	college_list = College.objects.all()
 	article = get_object_or_404(Article, slug=slug, status=Article.PUBLISHED)
-	return render(request, 'page.html', {'article':article})
+	return render(request, 'page.html', {'article':article, 'college_list':college_list})
 
 # @login_required
 # def tag(request,tag_name):
@@ -84,14 +89,16 @@ def article(request,slug):
 
 @login_required
 def drafts(request):
+	college_list = College.objects.all()
 	drafts = Article.objects.filter(create_user=request.user,
 									status = Article.DRAFT)
-	return render(request,'drafts.html',{'drafts':drafts})
+	return render(request,'drafts.html',{'drafts':drafts, 'college_list':college_list})
 
 
 @login_required
 @ajax_required
 def preview(request):
+	college_list = College.objects.all()
 	try:
 		if request.method == 'POST':
 			content = request.POST.get('content')
@@ -137,6 +144,7 @@ def preview(request):
 @login_required
 # @ajax_required
 def comment(request):
+	college_list = College.objects.all()
 	path = request.path
 	if request.method == 'POST':
 		form = CommentForm(data=request.POST, auto_id="%s")
@@ -148,7 +156,7 @@ def comment(request):
 				article_comment = ArticleComment(user=request.user,article=article,comment=comment)
 				article_comment.save()
 
-				return render(request,'page.html',{'article':article})
+				return render(request,'page.html',{'article':article, 'college_list':college_list})
 
 
 

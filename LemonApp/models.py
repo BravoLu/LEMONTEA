@@ -99,8 +99,9 @@ class PPTImage(models.Model):
         return self.image_order
 
 class CourseComment(models.Model):
-    couse_id = models.ForeignKey(Course, on_delete=models.CASCADE)
+    course_id = models.ForeignKey(Course, on_delete=models.CASCADE)
     account_id = models.ForeignKey(Account, on_delete=models.CASCADE)
+    date = models.DateTimeField(auto_now_add=True)
     comment_order = models.IntegerField("评论顺序")
     content = models.TextField("评论内容")
     class Meta:

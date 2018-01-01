@@ -18,6 +18,27 @@
                 <h2 class="ui header">绑定账户</h2>
                 <div class="ui divider"></div>
                 {% if request.user.card_number == "-1" %}
+                    <script>
+                    $(document)
+                      .ready(function() {
+                        $('.ui.form')
+                          .form({
+                            fields: {
+                              title: {
+                                identifier  : 'card_number',
+                                rules: [
+                                  {
+                                    type   : 'card_number',
+                                    prompt : 'Please enter the card_number'
+                                  }
+                                ]
+                              }
+                            }
+                          })
+                        ;
+                      })
+                      ;
+                    </script>
                     <form action="{{ path }}" method="post" class="ui large form">
                     {% csrf_token %}
                     <p>
@@ -31,6 +52,7 @@
                         </div>
                     </p>
                         <button class="ui primary submit button" style="margin-top:60px;margin-left:100px">绑定</button>
+                        <div class="ui error message"></div>
                     </form>
                     {% if form.card_number.errors %}
                       <div class="ui error message">

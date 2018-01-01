@@ -1,12 +1,13 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 
 <head>
     <title>Lemon Tea!</title>
     <link rel="icon" href="/LemonApp/media/logo.jpg"  type="image/jpg">
-    <link rel="stylesheet" type="text/css" href="static/semantic.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'semantic.css' %}">
     <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.js"></script>
-    <script src="static/semantic.js"></script>
+    <script src="{% static 'semantic.js' %}"></script>
     <script>
     $(document).ready(function() {
         // 鼠标放到 dropdown 时显示下拉菜单，默认只有点击后才显示
@@ -184,7 +185,7 @@
                     <h3 class="ui header">学习资源共享</h3>
                 </div>
                 <div class="six wide right floated column">
-                    <img src="../static/images/indexlogo.png" class="ui large bordered rounded image">
+                    <img src="{% static 'images/indexlogo.png' %}" class="ui large bordered rounded image">
                 </div>
             </div>
             <div class="row">
