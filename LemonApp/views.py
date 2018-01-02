@@ -277,6 +277,7 @@ def add_ppt(request):
 			file = form.cleaned_data["file"]
 			ppt = PPTList(chapter_id=chapter, ppt_order=ppt_order, title=title, file=file)
 			ppt.save()
+			print(ppt.file.path)
 			# TODO: split
 	old_path = path[0:path.find('chapter')]
 	return redirect(old_path)
