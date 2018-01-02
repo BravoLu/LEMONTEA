@@ -190,7 +190,7 @@
         <h3 class="ui header">Lecture {{ chapter.chapter_order }}：{{ chapter.title }}</h3> 
         {%for ppt in ppt_list %} 
           {% if ppt.chapter_id.id == chapter.id %}
-            <p><a href="chapter/{{ chapter.id }}/ppt/{{ ppt.id }}/">PPT{{ ppt.ppt_order }}: {{ ppt.title }}</a>
+            <p><a href="chapter/{{ chapter.id }}/ppt/{{ ppt.id }}/" target="_blank">PPT{{ ppt.ppt_order }}: {{ ppt.title }}</a>
             {% if request.user.permission >= 10 %}
               <a class="mini ui button" href="chapter/{{ chapter.id }}/ppt/{{ ppt.id }}/delete_ppt/" style="float:right;margin-left:10px">删除</a>
             {% elif course.creator_id.id == request.user.id %}

@@ -1,0 +1,75 @@
+{% load static %}
+{% load humanize %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>{{ course.title }}</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/LemonApp/media/logo.jpg"  type="image/jpg">
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/menu.js' %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'semantic.css' %}">
+    <script src="{% static 'semantic.min.js' %}"></script>
+
+    <script>
+    $(document).ready(function() {
+        // 鼠标放到 dropdown 时显示下拉菜单，默认只有点击后才显示
+        $('.dropdown.item').dropdown({
+            on: 'hover'
+        });
+        $('.menu .item').tab();
+        $('.ui.accordion').accordion();
+     });
+    </script>
+    <style type="text/css">
+        /*.spanner {
+            height: 100%;
+        }*/
+    </style>
+</head>
+
+<body>
+    <div class="ui raised very padded container" style="width: 80rem">
+        <div class="container">
+            <div class="ui header">
+                <h4 class="ui horizontal divider header"></h4>
+                <div class="ui big breadcrumb">
+                  <a class="section" href="/college/{{ college.id }}/course/{{ course.id }}/" >{{ course.title }}</a>
+                  <i class="right angle icon divider"></i>
+                  <div class="active section">{{ chapter.title }}</div>
+                  <i class="right angle icon divider"></i>
+                  <div class="active section">{{ ppt.title }}</div>
+                  <br>
+                </div>
+                
+                <h2 class="ui horizontal divider header"></h2>
+
+                <div class="ui four column doubling stackable grid container">
+                  
+                    {% for ppt_page in ppt_page_pair %}
+                    <div class="column">
+                        <a href="/college/{{ college.id }}/course/{{ course.id }}/chapter/{{chapter.id}}/ppt/{{ppt.id}}/{{forloop.counter0}}">
+                        <img class = "ui fluid image" src="{{ img_base_url }}{{ ppt_page.0 }}">
+                        </a>
+                        {% if ppt_page.1 > 0 %}
+                            <h6>[comment: {{ppt_page.1}}]</h6>
+                        {% else %}
+                            <h6></h6>
+                        {% endif %}
+                        
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+<!--     <div class="ui inverted vertical footer segment">
+        <div class="ui text center aligned container">
+        <i>Powerby LemonTea Team.Copy Right</i>
+        </div>
+    </div> -->
+</body>
+
+</html>

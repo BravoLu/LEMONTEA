@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from LemonApp.forms import SignupForm, LoginForm, CourseForm, ChapterForm, PPTForm, ModifyInfoForm, BindForm
 from django.contrib.auth import get_user_model
 from django.contrib.auth import authenticate,login as auth_login, logout 
-from LemonApp.models import College, TeacherInformation, StudentInformation, Course, ChapterList, PPTList, CourseComment
+from LemonApp.models import College, TeacherInformation, StudentInformation, Course, ChapterList, PPTList, CourseComment, PPTComment
 import os
 
 # Create your views here.
@@ -277,6 +277,9 @@ def add_ppt(request):
 			file = form.cleaned_data["file"]
 			ppt = PPTList(chapter_id=chapter, ppt_order=ppt_order, title=title, file=file)
 			ppt.save()
+			print(ppt.file.path)
+			os.mkdir(os.path.join(os.path.split(ppt.file.path)[0], os.path.splitext(os.path.split(ppt.file.path)[1])[0]))
+			# TODO: split
 	old_path = path[0:path.find('chapter')]
 	return redirect(old_path)
 
@@ -285,7 +288,65 @@ def show_ppt(request):
 	error_type = tips(request)
 	if error_type > 0:
 		return render(request,'tips.html', locals())
-	pass
+	path = request.path
+	URL_list = path.split('/')
+	college_id = int(URL_list[2])
+	college = College.objects.filter(id=college_id)[0]
+	course_id = int(URL_list[4])
+	course = Course.objects.filter(id=course_id)[0]
+	chapter_id = int(URL_list[6])
+	chapter = ChapterList.objects.filter(id=chapter_id)[0]
+	ppt_id = int(URL_list[8])
+	ppt = PPTList.objects.filter(id=ppt_id)[0]
+	#ppt_page_list = PPTImage.objects.filter(ppt_id=ppt)
+	img_base_url = '/LemonApp/media/PPT/' + os.path.splitext(os.path.split(ppt.file.path)[1])[0] + '/'
+	ppt_page_pair = [("%s.jpg" % page,  PPTComment.objects.filter(ppt=ppt, page_num=page).count()) for page in range(0, ppt.page_count)]
+	#print(ppt_page_pair)
+	#print(img_base_dir)
+	return render(request, 'ppt_preview.html', locals())
+
+def show_ppt_page(request):
+	error_type = tips(request)
+	if error_type > 0:
+		return render(request,'tips.html', locals())
+	path = request.path
+	URL_list = path.split('/')
+	college_id = int(URL_list[2])
+	college = College.objects.filter(id=college_id)[0]
+	course_id = int(URL_list[4])
+	course = Course.objects.filter(id=course_id)[0]
+	chapter_id = int(URL_list[6])
+	chapter = ChapterList.objects.filter(id=chapter_id)[0]
+	ppt_id = int(URL_list[8])
+	ppt = PPTList.objects.filter(id=ppt_id)[0]
+	print(ppt.page_count)
+	page_num = int(URL_list[9])
+	page_num = page_num+1
+	img_base_url = '/LemonApp/media/PPT/' + os.path.splitext(os.path.split(ppt.file.path)[1])[0] + '/'
+	ppt_comment_list = PPTComment.objects.filter(ppt=ppt, page_num=page_num-1)
+	#assert(False)
+	return render(request, "ppt_page.html", locals())
+
+def ppt_comment_commit(request):
+	error_type = tips(request)
+	if error_type > 0:
+		return render(request,'tips.html', locals())
+	if request.method == 'POST':
+		path = request.path
+		URL_list = path.split('/')
+		ppt_id = int(URL_list[8])
+		ppt = PPTList.objects.filter(id=ppt_id)[0]
+		
+		account_id = request.user.id
+		UserModel = get_user_model()
+		account = UserModel.objects.filter(id=account_id)[0]
+		page_num = int(URL_list[9])
+		comment_order = PPTComment.objects.filter(ppt=ppt, page_num=page_num).count() + 1
+		content = request.POST['content']
+		comment = PPTComment(ppt=ppt, account_id=account, comment_order=comment_order, content=content, page_num=page_num)
+		comment.save()
+	old_path = path[0:path.find('add_comment')]
+	return redirect(old_path)
 
 def download(request):
 	college_list = College.objects.all()
