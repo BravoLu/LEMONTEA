@@ -25,7 +25,7 @@ SECRET_KEY = '$-a)!iq66+$rp&bfobh47ao(b*45epd-@8wfu4f)ft-afvxdv1'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['maiwj.cn']
 
 
 # Application definition
