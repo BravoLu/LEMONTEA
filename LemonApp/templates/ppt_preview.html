@@ -23,26 +23,44 @@
         $('.ui.accordion').accordion();
      });
     </script>
+    <style type="text/css">
+        /*.spanner {
+            height: 100%;
+        }*/
+    </style>
 </head>
 
 <body>
-    <div class="ui main container" style="width: 80rem">
-        <div>
-            <div class="ui breadcrumb">
-              <a class="section" href="/college/{{ college.id }}/course/{{ course.id }}/" >{{ course.title }}</a>
-              <i class="right angle icon divider"></i>
-              <div class="active section">{{ chapter.title }}</div>
-              <i class="right angle icon divider"></i>
-              <div class="active section">{{ ppt.title }}</div>
-            <br>
+    <div class="ui raised very padded container" style="width: 80rem">
+        <div class="container">
+            <div class="ui header">
+                <div class="ui big breadcrumb">
+                  <a class="section" href="/college/{{ college.id }}/course/{{ course.id }}/" >{{ course.title }}</a>
+                  <i class="right angle icon divider"></i>
+                  <div class="active section">{{ chapter.title }}</div>
+                  <i class="right angle icon divider"></i>
+                  <div class="active section">{{ ppt.title }}</div>
+                  <br>
+                </div>
 
-            {% for ppt_page_img in ppt_page_url_list %}
-            <a href="/college/{{ college.id }}/course/{{ course.id }}/chapter/{{chapter.id}}/ppt/{{ppt.ppt_order}}/{{forloop.counter0}}">
-            <img src="{{ img_base_url }}{{ ppt_page_img }}">
-            </a>
-            {% endfor %}
+                <div class="ui four column doubling stackable grid container">
+                  
+                    {% for ppt_page_img in ppt_page_url_list %}
+                    <div class="column">
+                        <a href="/college/{{ college.id }}/course/{{ course.id }}/chapter/{{chapter.id}}/ppt/{{ppt.ppt_order}}/{{forloop.counter0}}">
+                        <img class = "ui fluid image" src="{{ img_base_url }}{{ ppt_page_img }}">
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
         </div>
     </div>
+<!--     <div class="ui inverted vertical footer segment">
+        <div class="ui text center aligned container">
+        <i>Powerby LemonTea Team.Copy Right</i>
+        </div>
+    </div> -->
 </body>
 
 </html>

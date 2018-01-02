@@ -26,63 +26,91 @@
 </head>
 
 <body>
-    <div class="ui raised very padded text container" style="width: 80rem">
-        <a href="/college/{{ college.id }}/course/{{ course.id }}/">{{ course.title }}</a>
-        <p>{{ chapter.title }}</p>
-        <p>{{ ppt.title }} </p>
+    <div class="ui raised very padded container" style="width: 80rem">
+        <div class="ui text large breadcrumb">
+          <a class="section" href="/college/{{ college.id }}/course/{{ course.id }}/" >{{ course.title }}</a>
+          <i class="right angle icon divider"></i>
+          <div class="active section">{{ chapter.title }}</div>
+          <i class="right angle icon divider"></i>
+          <div class="active section">{{ ppt.title }}</div>
+          <i class="right angle icon divider"></i>
+          <div class="active section">第{{page_num|add:1}}页</div>
+          <p></p>
+          <br>
+        </div>
 
-        <p>{{page_num}}</p>
+        <img src="{{ img_base_url }}{{ page_num }}.jpg" class="ui fluid image">
+
+        <div class="ui three column grid container">
+            <div class="column">
+                <div class="ui right aligned container">
+                    <button class="ui labeled icon button"><i class="left arrow icon"></i> 上一页 </button>
+                </div>
+            </div>
+            <div class="column">
+            </div>
+            <div class="column">
+                <div class="ui left aligned container">
+                <button class="ui labeled icon button"><i class="right arrow icon"></i> 下一页 </button>
+                </div>
+            </div>
+        </div>
     
 
-    <h4 class="ui horizontal divider header"><i class="tag icon"></i> 讨论区 </h4>
+        <h2 class="ui horizontal divider header"><i class="tag icon"></i> 讨论区 </h2>
 
-    <div class="ui raised very padded text container">
+        <div class="ui raised very padded text container">
 
-        <h2 class="ui dividing header">列表</h2>
+            <h3 class="ui dividing header">列表</h3>
 
-        <div class="ui comments">
-              {% if ppt_comment_list %}
-                  {% for ppt_comment in ppt_comment_list %}
+            <div class="ui comments">
+                  {% if ppt_comment_list %}
+                      {% for ppt_comment in ppt_comment_list %}
+                        <div class="comment">
+                          <a class="avatar">
+                          <img src="/LemonApp/media/{{ ppt_comment.account_id.face }}">
+                          </a>
+                            <div class="content">
+                              <div class="author">{{ ppt_comment.account_id.username }} 
+                              {% if request.user.permission >= 10 %}
+                                <a class="mini ui button" href="comment/{{ ppt_comment.id }}/delete_comment/" style="margin-left:350px">删除</a>
+                              {% elif request.user.id == ppt_comment.account_id.id %}
+                                <a class="mini ui button" href="comment/{{ ppt_comment.id }}/delete_comment/" style="margin-left:350px">删除</a>
+                              {% endif %}
+                              </div>
+                              <div class="metadata">
+                              <span class="date">{{ ppt_comment.date|naturaltime }}</span>
+                              </div>
+                            <div class="text">{{ ppt_comment.content }}</div>
+                        </div>
+                        <div class="ui divider"></div>
+                      {% endfor %}
+                  {% else %}
                     <div class="comment">
-                      <a class="avatar">
-                      <img src="/LemonApp/media/{{ ppt_comment.account_id.face }}">
-                      </a>
-                        <div class="content">
-                          <div class="author">{{ ppt_comment.account_id.username }} 
-                          {% if request.user.permission >= 10 %}
-                            <a class="mini ui button" href="comment/{{ ppt_comment.id }}/delete_comment/" style="margin-left:350px">删除</a>
-                          {% elif request.user.id == ppt_comment.account_id.id %}
-                            <a class="mini ui button" href="comment/{{ ppt_comment.id }}/delete_comment/" style="margin-left:350px">删除</a>
-                          {% endif %}
-                          </div>
-                          <div class="metadata">
-                          <span class="date">{{ ppt_comment.date|naturaltime }}</span>
-                          </div>
-                        <div class="text">{{ ppt_comment.content }}</div>
+                      <p>暂无讨论</p>
                     </div>
-                    <div class="ui divider"></div>
-                  {% endfor %}
-              {% else %}
-                <div class="comment">
-                  <p>暂无讨论</p>
+                  {% endif %}
+               </div>
+                <h3 class="ui dividing">发表</h3>
+              <form action="add_comment/" method="post" class="ui large form">
+                {% csrf_token %}
+                <div class="ui stacked segment">
+                  <div class="field">
+                      <textarea name="content" cols="40" rows="6" placeholder="输入你的讨论内容" maxlength="200" required id="content"></textarea>
+                  </div>
+                  <button class="ui primary submit button" style="margin-left:450px">提交</button>
                 </div>
-              {% endif %}
-           </div>
-            <h3 class="ui dividing">发表</h3>
-          <form action="add_comment/" method="post" class="ui large form">
-            {% csrf_token %}
-            <div class="ui stacked segment">
-              <div class="field">
-                  <textarea name="content" cols="40" rows="6" placeholder="输入你的讨论内容" maxlength="200" required id="content"></textarea>
-              </div>
-              <button class="ui primary submit button" style="margin-left:450px">提交</button>
+                <div class="ui error message"></div>
+              </form>
             </div>
-            <div class="ui error message"></div>
-          </form>
+            <h2 class="ui horizontal divider header"></h2>
         </div>
-        
+    
     </div>
-
+    <div class="ui inverted vertical footer segment">
+        <div class="ui text center aligned container">
+        <i>Powerby LemonTea Team.Copy Right</i>
+        </div>
     </div>
 </body>
 

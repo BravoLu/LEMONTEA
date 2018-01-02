@@ -318,11 +318,30 @@ def show_ppt_page(request):
 	ppt_id = int(URL_list[8])
 	ppt = PPTList.objects.filter(id=ppt_id)[0]
 	page_num = int(URL_list[9])
+	img_base_url = '/LemonApp/media/PPT/' + os.path.splitext(os.path.split(ppt.file.path)[1])[0] + '/'
 	ppt_comment_list = PPTComment.objects.filter(ppt=ppt, page_num=page_num)
 	return render(request, "ppt_page.html", locals())
 
 def ppt_comment_commit(request):
-	return None
+	error_type = tips(request)
+	if error_type > 0:
+		return render(request,'tips.html', locals())
+	if request.method == 'POST':
+		path = request.path
+		URL_list = path.split('/')
+		ppt_id = int(URL_list[8])
+		ppt = PPTList.objects.filter(id=ppt_id)[0]
+		
+		account_id = request.user.id
+		UserModel = get_user_model()
+		account = UserModel.objects.filter(id=account_id)[0]
+		page_num = int(URL_list[9])
+		comment_order = PPTComment.objects.filter(ppt=ppt, page_num=page_num).count() + 1
+		content = request.POST['content']
+		comment = PPTComment(ppt=ppt, account_id=account, comment_order=comment_order, content=content, page_num=page_num)
+		comment.save()
+	old_path = path[0:path.find('add_comment')]
+	return redirect(old_path)
 
 def download(request):
 	college_list = College.objects.all()
