@@ -1,12 +1,13 @@
 from __future__ import absolute_import
 import os
-from django.conf import settings
 
-if not settings.DEBUG:
+from LemonTea.settings import DEBUG
+
+if not DEBUG:
     from celery import Celery
 
 # set the default Django settings module for the 'celery' program.
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'proj.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'LemonTea.settings')
 
 app = Celery('LemonTea')
 

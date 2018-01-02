@@ -1,11 +1,12 @@
 from __future__ import absolute_import
 
-from django.conf import settings
 from LemonApp.models import PPTList
 
-if not settings.DEBUG:
+from LemonTea.settings import DEBUG
+
+if not DEBUG:
     from celery import shared_task
-    
+
     @shared_task
     def ppt_to_img(ppt_path, ppt_pk):
         img_dir = os.path.join(os.path.split(ppt_path)[0], os.path.splitext(os.path.split(ppt_path)[1])[0])
