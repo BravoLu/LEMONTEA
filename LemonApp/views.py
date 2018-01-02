@@ -278,6 +278,7 @@ def add_ppt(request):
 			ppt = PPTList(chapter_id=chapter, ppt_order=ppt_order, title=title, file=file)
 			ppt.save()
 			print(ppt.file.path)
+			os.mkdir(os.path.join(os.path.split(ppt.file.path)[0], os.path.splitext(os.path.split(ppt.file.path)[1])[0]))
 			# TODO: split
 	old_path = path[0:path.find('chapter')]
 	return redirect(old_path)

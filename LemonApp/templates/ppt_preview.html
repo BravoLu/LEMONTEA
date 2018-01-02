@@ -50,7 +50,7 @@
                   
                     {% for ppt_page in ppt_page_pair %}
                     <div class="column">
-                        <a href="/college/{{ college.id }}/course/{{ course.id }}/chapter/{{chapter.id}}/ppt/{{ppt.ppt_order}}/{{forloop.counter0}}">
+                        <a href="/college/{{ college.id }}/course/{{ course.id }}/chapter/{{chapter.id}}/ppt/{{ppt.id}}/{{forloop.counter0}}">
                         <img class = "ui fluid image" src="{{ img_base_url }}{{ ppt_page.0 }}">
                         </a>
                         {% if ppt_page.1 > 0 %}

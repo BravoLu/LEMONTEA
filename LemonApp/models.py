@@ -1,8 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
+from django.db.models.signals import post_delete
 import os.path
-
+import shutil
 # Create your models here.
 class Account(AbstractUser):
     face = models.ImageField("头像", upload_to="UserPhoto/", null=True, default="UserPhoto/default.png")
@@ -83,13 +84,27 @@ class PPTList(models.Model):
     ppt_order = models.IntegerField("PPT编号")
     title = models.CharField("PPT标题", max_length=50)
     file = models.FileField("PPT文件", upload_to="PPT/")
-    page_count = models.IntegerField("页数", null=True)
+    page_count = models.IntegerField("页数", null=True, default=0)
     class Meta:
         unique_together = ("id",  "chapter_id")
         db_table = "PPTList"
 
     def __str__(self):
         return self.title
+
+def delete_ppt(sender, **kwargs):
+    ppt = kwargs['instance']
+    print(os.path.join(os.path.split(ppt.file.path)[0], os.path.splitext(os.path.split(ppt.file.path)[1])[0]))
+    #assert(False)
+    try:
+        shutil.rmtree(os.path.join(os.path.split(ppt.file.path)[0], os.path.splitext(os.path.split(ppt.file.path)[1])[0]))
+    except Exception as e:
+        pass
+    finally:
+        pass
+    
+
+post_delete.connect(delete_ppt, sender=PPTList)
 
 # class PPTImage(models.Model):
 #     ppt_id = models.ForeignKey(PPTList, on_delete=models.CASCADE)
