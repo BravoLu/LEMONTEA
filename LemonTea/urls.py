@@ -47,6 +47,8 @@ urlpatterns = [
     url(r'^college/[0-9]+/course/[0-9]+/chapter/[0-9]+/delete_chapter/$', views.delete_chapter, name="delete_chapter"),
     url(r'^college/[0-9]+/course/[0-9]+/chapter/[0-9]+/add_ppt/$',views.add_ppt, name="add_ppt"),
     url(r'^college/[0-9]+/course/[0-9]+/chapter/[0-9]+/ppt/[0-9]+/$',views.show_ppt, name="show_ppt"),
+    url(r'^college/[0-9]+/course/[0-9]+/chapter/[0-9]+/ppt/[0-9]+/[0-9]+/$',views.show_ppt_page, name="show_ppt_page"),
+    url(r'^college/[0-9]+/course/[0-9]+/chapter/[0-9]+/ppt/[0-9]+/[0-9]+/add_comment/$',views.ppt_comment_commit, name="ppt_comment_commit"),
     url(r'^college/[0-9]+/course/[0-9]+/chapter/[0-9]+/ppt/[0-9]+/delete_ppt/$',views.delete_ppt, name="delete_ppt"),
     url(r'^college/[0-9]+/course/[0-9]+/chapter/[0-9]+/ppt/[0-9]+/downloadppt/$', views.download, name='download'),
     

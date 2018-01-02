@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from LemonApp.forms import SignupForm, LoginForm, CourseForm, ChapterForm, PPTForm, ModifyInfoForm, BindForm
 from django.contrib.auth import get_user_model
 from django.contrib.auth import authenticate,login as auth_login, logout 
-from LemonApp.models import College, TeacherInformation, StudentInformation, Course, ChapterList, PPTList, CourseComment
+from LemonApp.models import College, TeacherInformation, StudentInformation, Course, ChapterList, PPTList, CourseComment, PPTComment
 import os
 
 # Create your views here.
@@ -297,11 +297,31 @@ def show_ppt(request):
 	chapter = ChapterList.objects.filter(id=chapter_id)[0]
 	ppt_id = int(URL_list[8])
 	ppt = PPTList.objects.filter(id=ppt_id)[0]
-	ppt_page_list = PPTImage.objects.filter(ppt_id=ppt)
+	#ppt_page_list = PPTImage.objects.filter(ppt_id=ppt)
+	img_base_url = '/LemonApp/media/PPT/' + os.path.splitext(os.path.split(ppt.file.path)[1])[0] + '/'
+	ppt_page_url_list = ["%s.jpg" % c for c in range(0, ppt.page_count)]
+	#print(img_base_dir)
 	return render(request, 'ppt_preview.html', locals())
 
 def show_ppt_page(request):
-	
+	error_type = tips(request)
+	if error_type > 0:
+		return render(request,'tips.html', locals())
+	path = request.path
+	URL_list = path.split('/')
+	college_id = int(URL_list[2])
+	college = College.objects.filter(id=college_id)[0]
+	course_id = int(URL_list[4])
+	course = Course.objects.filter(id=course_id)[0]
+	chapter_id = int(URL_list[6])
+	chapter = ChapterList.objects.filter(id=chapter_id)[0]
+	ppt_id = int(URL_list[8])
+	ppt = PPTList.objects.filter(id=ppt_id)[0]
+	page_num = int(URL_list[9])
+	ppt_comment_list = PPTComment.objects.filter(ppt=ppt, page_num=page_num)
+	return render(request, "ppt_page.html", locals())
+
+def ppt_comment_commit(request):
 	return None
 
 def download(request):

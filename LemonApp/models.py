@@ -1,5 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.conf import settings
+import os.path
+
 # Create your models here.
 class Account(AbstractUser):
     face = models.ImageField("头像", upload_to="UserPhoto/", null=True, default="UserPhoto/default.png")
@@ -80,6 +83,7 @@ class PPTList(models.Model):
     ppt_order = models.IntegerField("PPT编号")
     title = models.CharField("PPT标题", max_length=50)
     file = models.FileField("PPT文件", upload_to="PPT/")
+    page_count = models.IntegerField("页数", null=True)
     class Meta:
         unique_together = ("id",  "chapter_id")
         db_table = "PPTList"
@@ -87,16 +91,16 @@ class PPTList(models.Model):
     def __str__(self):
         return self.title
 
-class PPTImage(models.Model):
-    ppt_id = models.ForeignKey(PPTList, on_delete=models.CASCADE)
-    image_order = models.IntegerField("PPT图片编号")
-    image = models.ImageField("PPT图片", upload_to="PPTPhoto/")
-    class Meta:
-        unique_together = ("id",  "ppt_id")
-        db_table = "PPTImage"
+# class PPTImage(models.Model):
+#     ppt_id = models.ForeignKey(PPTList, on_delete=models.CASCADE)
+#     image_order = models.IntegerField("PPT图片编号")
+#     image = models.FilePathField(path=settings.MEDIA_ROOT+'/PPTPhoto/', match="^[0-9]*$.jpg")
+#     class Meta:
+#         unique_together = ("id",  "ppt_id")
+#         db_table = "PPTImage"
 
-    def __str__(self):
-        return self.image_order
+#     def __str__(self):
+#         return self.image_order
 
 class CourseComment(models.Model):
     course_id = models.ForeignKey(Course, on_delete=models.CASCADE)
@@ -111,7 +115,8 @@ class CourseComment(models.Model):
         return "comment"
 
 class PPTComment(models.Model):
-    ppt_image_id = models.ForeignKey(PPTImage, on_delete=models.CASCADE)
+    ppt      = models.ForeignKey(PPTList, on_delete=models.CASCADE)
+    page_num = models.IntegerField("页数") #models.ForeignKey(PPTImage, on_delete=models.CASCADE)
     account_id = models.ForeignKey(Account, on_delete=models.CASCADE)
     comment_order = models.IntegerField("评论顺序")
     content = models.TextField("评论内容")
