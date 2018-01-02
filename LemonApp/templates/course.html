@@ -247,9 +247,9 @@
                     <div class="content">
                       <div class="author">{{ course_comment.account_id.username }} 
                       {% if request.user.permission >= 10 %}
-                        <a class="mini ui button" href="comment/{{ course_comment.id }}/delete_comment/" style="margin-left:350px">删除评论</a>
+                        <a class="mini ui button" href="comment/{{ course_comment.id }}/delete_comment/" style="float:right">删除评论</a>
                       {% elif request.user.id == course_comment.account_id.id %}
-                        <a class="mini ui button" href="comment/{{ course_comment.id }}/delete_comment/" style="margin-left:350px">删除评论</a>
+                        <a class="mini ui button" href="comment/{{ course_comment.id }}/delete_comment/" style="float:right">删除评论</a>
                       {% endif %}
                       </div>
                       <div class="metadata">
