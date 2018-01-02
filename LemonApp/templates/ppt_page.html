@@ -23,6 +23,9 @@
         $('.ui.accordion').accordion();
      });
     </script>
+    <style type="text/css">
+
+    </style>
 </head>
 
 <body>
@@ -34,24 +37,35 @@
           <i class="right angle icon divider"></i>
           <div class="active section">{{ ppt.title }}</div>
           <i class="right angle icon divider"></i>
-          <div class="active section">第{{page_num|add:1}}页</div>
+          <div class="active section">第{{page_num}}页</div>
           <p></p>
           <br>
         </div>
 
         <img src="{{ img_base_url }}{{ page_num }}.jpg" class="ui fluid image">
-
+        <h2 class="ui horizontal divider header"></h2>
         <div class="ui three column grid container">
             <div class="column">
                 <div class="ui right aligned container">
-                    <button class="ui labeled icon button"><i class="left arrow icon"></i> 上一页 </button>
+                    {% if page_num > 1 %}
+                        <a href="/college/{{ college.id }}/course/{{ course.id }}/chapter/{{chapter.id}}/ppt/{{ppt.id}}/{{page_num | add:-2}}">
+                            <button class="ui labeled icon button"><i class="left arrow icon"></i>上一页 </button></a>
+                    {% else %}
+                        <button class="ui labeled icon button"><i class="left arrow icon"></i>上一页 </button>
+                    {% endif %}
                 </div>
             </div>
             <div class="column">
             </div>
             <div class="column">
                 <div class="ui left aligned container">
-                <button class="ui labeled icon button"><i class="right arrow icon"></i> 下一页 </button>
+
+                    {% if page_num < ppt.page_count %}
+                        <a href="/college/{{ college.id }}/course/{{ course.id }}/chapter/{{chapter.id}}/ppt/{{ppt.id}}/{{page_num}}">
+                            <button class="ui labeled icon button"><i class="right arrow icon"></i> 下一页 </button></a>
+                    {% else %}
+                        <button class="ui labeled icon button"><i class="right arrow icon"></i> 下一页 </button>
+                    {% endif %}
                 </div>
             </div>
         </div>

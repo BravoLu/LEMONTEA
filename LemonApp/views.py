@@ -299,7 +299,8 @@ def show_ppt(request):
 	ppt = PPTList.objects.filter(id=ppt_id)[0]
 	#ppt_page_list = PPTImage.objects.filter(ppt_id=ppt)
 	img_base_url = '/LemonApp/media/PPT/' + os.path.splitext(os.path.split(ppt.file.path)[1])[0] + '/'
-	ppt_page_url_list = ["%s.jpg" % c for c in range(0, ppt.page_count)]
+	ppt_page_pair = [("%s.jpg" % page,  PPTComment.objects.filter(ppt=ppt, page_num=page).count()) for page in range(0, ppt.page_count)]
+	#print(ppt_page_pair)
 	#print(img_base_dir)
 	return render(request, 'ppt_preview.html', locals())
 
@@ -317,9 +318,12 @@ def show_ppt_page(request):
 	chapter = ChapterList.objects.filter(id=chapter_id)[0]
 	ppt_id = int(URL_list[8])
 	ppt = PPTList.objects.filter(id=ppt_id)[0]
+	print(ppt.page_count)
 	page_num = int(URL_list[9])
+	page_num = page_num+1
 	img_base_url = '/LemonApp/media/PPT/' + os.path.splitext(os.path.split(ppt.file.path)[1])[0] + '/'
-	ppt_comment_list = PPTComment.objects.filter(ppt=ppt, page_num=page_num)
+	ppt_comment_list = PPTComment.objects.filter(ppt=ppt, page_num=page_num-1)
+	#assert(False)
 	return render(request, "ppt_page.html", locals())
 
 def ppt_comment_commit(request):

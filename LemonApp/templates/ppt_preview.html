@@ -34,6 +34,7 @@
     <div class="ui raised very padded container" style="width: 80rem">
         <div class="container">
             <div class="ui header">
+                <h4 class="ui horizontal divider header"></h4>
                 <div class="ui big breadcrumb">
                   <a class="section" href="/college/{{ college.id }}/course/{{ course.id }}/" >{{ course.title }}</a>
                   <i class="right angle icon divider"></i>
@@ -42,14 +43,22 @@
                   <div class="active section">{{ ppt.title }}</div>
                   <br>
                 </div>
+                
+                <h2 class="ui horizontal divider header"></h2>
 
                 <div class="ui four column doubling stackable grid container">
                   
-                    {% for ppt_page_img in ppt_page_url_list %}
+                    {% for ppt_page in ppt_page_pair %}
                     <div class="column">
                         <a href="/college/{{ college.id }}/course/{{ course.id }}/chapter/{{chapter.id}}/ppt/{{ppt.ppt_order}}/{{forloop.counter0}}">
-                        <img class = "ui fluid image" src="{{ img_base_url }}{{ ppt_page_img }}">
+                        <img class = "ui fluid image" src="{{ img_base_url }}{{ ppt_page.0 }}">
                         </a>
+                        {% if ppt_page.1 > 0 %}
+                            <h6>[comment: {{ppt_page.1}}]</h6>
+                        {% else %}
+                            <h6></h6>
+                        {% endif %}
+                        
                     </div>
                     {% endfor %}
                 </div>
