@@ -1,0 +1,36 @@
+{% load static %}
+{% load humanize %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>{{ course.title }}</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/LemonApp/media/logo.jpg"  type="image/jpg">
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/menu.js' %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'semantic.css' %}">
+    <script src="{% static 'semantic.min.js' %}"></script>
+
+    <script>
+    $(document).ready(function() {
+        // 鼠标放到 dropdown 时显示下拉菜单，默认只有点击后才显示
+        $('.dropdown.item').dropdown({
+            on: 'hover'
+        });
+        $('.menu .item').tab();
+        $('.ui.accordion').accordion();
+     });
+    </script>
+</head>
+
+<body>
+    <div class="ui main container" style="width: 80rem">
+        <a href="college/{{ college.id }}/course/{{ course.id }}/">{{ course.title }}</a>
+        <p>{{ chapter.title }}</p>
+        <p>{{ ppt.title }} </p>
+    </div>
+</body>
+
+</html>

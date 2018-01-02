@@ -277,6 +277,7 @@ def add_ppt(request):
 			file = form.cleaned_data["file"]
 			ppt = PPTList(chapter_id=chapter, ppt_order=ppt_order, title=title, file=file)
 			ppt.save()
+			# TODO: split
 	old_path = path[0:path.find('chapter')]
 	return redirect(old_path)
 
@@ -285,7 +286,22 @@ def show_ppt(request):
 	error_type = tips(request)
 	if error_type > 0:
 		return render(request,'tips.html', locals())
-	pass
+	path = request.path
+	URL_list = path.split('/')
+	college_id = int(URL_list[2])
+	college = College.objects.filter(id=college_id)[0]
+	course_id = int(URL_list[4])
+	course = Course.objects.filter(id=course_id)[0]
+	chapter_id = int(URL_list[6])
+	chapter = ChapterList.objects.filter(id=chapter_id)[0]
+	ppt_id = int(URL_list[8])
+	ppt = PPTList.objects.filter(id=ppt_id)[0]
+	ppt_page_list = PPTImage.objects.filter(ppt_id=ppt)
+	return render(request, 'ppt_preview.html', locals())
+
+def show_ppt_page(request):
+	
+	return None
 
 def download(request):
 	college_list = College.objects.all()
