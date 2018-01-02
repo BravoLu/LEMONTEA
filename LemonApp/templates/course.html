@@ -108,11 +108,12 @@
         {% elif course.creator_id.id == request.user.id %}
           <h2 class="ui header">{{ course.title }}<a class="tiny ui primary button" href="delete_course/" style="float:right">删除课程</a></h2>
         {% endif %}
+        <img src= "/LemonApp/media/{{ course.image }}" style="height:120px;width:180px;object-fit:cover;"></a>
         <p>
           {{ course.description }}
         </p>
 
-          <img src= "/LemonApp/media/{{ course.image }}" style="height:120px;width:180px;object-fit:cover;"></a>
+          
 
       <div class="ui three item stackable tabs menu">
         <a class="active item" data-tab="introduction">课程表</a>
