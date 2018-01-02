@@ -63,7 +63,9 @@
               <li><h4>{{ college.name }}</h4></li>
             {% endfor %}
           </ul>
-          <a class="ui primary submit button" href="/identity/" style="margin-top:20px">去绑定</a>
+          <a class="ui primary submit button" href="/identity/bind_college" style="margin-top:20px">去绑定</a>
+          <a class="ui button" href="/colleges/" style="margin-left:20px">去学校专区</a>
+          <a class="ui button" href="/" style="margin-left:20px">回到主页</a>
         {% elif error_type == 3 %}
           <ul class="list">
             <li><h3>抱歉，您访问的院校不存在</h3></li>
@@ -73,7 +75,8 @@
             <li><h3>抱歉，您没有权限访问此院校</h3></li>
             <li><h3>如果您是此院校的学生或老师, 请先进入个人中心绑定学号/教工号</h3></li>
           </ul>
-          <a class="ui primary submit button" href="/identity/" style="margin-top:20px">去绑定</a>
+          <a class="ui primary submit button" href="/identity/bind_college" style="margin-top:20px">去绑定</a>
+          <a class="ui button" href="/colleges/" style="margin-left:20px">去学校专区</a>
           <a class="ui button" href="/" style="margin-left:20px">回到主页</a>
         {% elif error_type == 5 %}
           <ul class="list">
