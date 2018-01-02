@@ -4,6 +4,9 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth import authenticate,login as auth_login, logout 
 from LemonApp.models import College, TeacherInformation, StudentInformation, Course, ChapterList, PPTList, CourseComment, PPTComment
 import os
+from django.conf import settings
+if not settings.DEBUG:
+	from .tasks import ppt_to_img
 
 # Create your views here.
 def identity(request):
@@ -280,6 +283,9 @@ def add_ppt(request):
 			print(ppt.file.path)
 			os.mkdir(os.path.join(os.path.split(ppt.file.path)[0], os.path.splitext(os.path.split(ppt.file.path)[1])[0]))
 			# TODO: split
+			# 目前ppt切图只能在生产环境（linux）下使用，开发环境关闭
+			if not settings.DEBUG:
+				ppt_to_img.delay(ppt.file.path, ppt.pk)
 	old_path = path[0:path.find('chapter')]
 	return redirect(old_path)
 
