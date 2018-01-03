@@ -16,7 +16,7 @@ if not DEBUG:
             os.mkdir(img_dir)
         if os.system("unoconv -f %s -o %s %s" % ("pdf", pdf_path, ppt_path)):
             raise RuntimeError("unoconv error")
-        if(os.system("convert -density 250 %s -quality 70 %s" % (pdf_path, os.path.join(img_dir, "%d.jpg")))):
+        if(os.system("convert -density 190 %s -quality 50 %s" % (pdf_path, os.path.join(img_dir, "%d.jpg")))):
             raise RuntimeError("convert error")
         ppt = PPTList.objects.filter(pk=ppt_pk)[0]
         ppt.page_count = len([name for name in os.listdir(img_dir) if os.path.isfile(os.path.join(img_dir, name))]) - 1
