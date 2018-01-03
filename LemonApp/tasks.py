@@ -3,6 +3,7 @@ from __future__ import absolute_import
 from LemonApp.models import PPTList
 
 from LemonTea.settings import DEBUG
+import os
 
 if not DEBUG:
     from celery import shared_task
@@ -20,3 +21,5 @@ if not DEBUG:
         ppt = PPTList.objects.filter(pk=ppt_pk)[0]
         ppt.page_count = len([name for name in os.listdir(img_dir) if os.path.isfile(os.path.join(img_dir, name))]) - 1
         ppt.save()
+        for name in os.listdir(img_dir):
+            print(name)

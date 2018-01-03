@@ -286,7 +286,7 @@ def add_ppt(request):
 			os.mkdir(os.path.join(os.path.split(ppt.file.path)[0], os.path.splitext(os.path.split(ppt.file.path)[1])[0]))
 			# TODO: split
 			# 目前ppt切图只能在生产环境（linux）下使用，开发环境关闭
-			if not settings.DEBUG:
+			if not DEBUG:
 				ppt_to_img.delay(ppt.file.path, ppt.pk)
 			print(ppt.file.path)
 	old_path = path[0:path.find('chapter')]
