@@ -104,15 +104,16 @@
     <h5 class = "ui header">><a href="/colleges/">学校专区</a>><a href="/college/{{ college.id }}/">{{ college.name }}</a>>{{ course.title }}:</h5>
       <div class="ui raised very padded text container segment" style= "width:75rem">
         {% if request.user.permission >= 10 %}
-          <h2 class="ui header">{{ course.title }}<a class="tiny ui primary button" href="delete_course/" style="margin-left:400px">删除课程</a></h2>
+          <h2 class="ui header">{{ course.title }}<a class="tiny ui primary button" href="delete_course/" style="float:right">删除课程</a></h2>
         {% elif course.creator_id.id == request.user.id %}
-          <h2 class="ui header">{{ course.title }}<a class="tiny ui primary button" href="delete_course/" style="margin-left:400px">删除课程</a></h2>
+          <h2 class="ui header">{{ course.title }}<a class="tiny ui primary button" href="delete_course/" style="float:right">删除课程</a></h2>
         {% endif %}
+        <img src= "/LemonApp/media/{{ course.image }}" style="height:120px;width:180px;object-fit:cover;"></a>
         <p>
           {{ course.description }}
         </p>
 
-          <img src= "/LemonApp/media/{{ course.image }}" style="height:120px;width:180px;object-fit:cover;"></a>
+          
 
       <div class="ui three item stackable tabs menu">
         <a class="active item" data-tab="introduction">课程表</a>
@@ -130,9 +131,9 @@
             {% for chapter in chapter_list %}
               <h3 class="ui header">Lecture {{ chapter.chapter_order }}：{{ chapter.title }}
               {% if request.user.permission >= 10 %}
-                <a class="mini ui button" href="chapter/{{ chapter.id }}/delete_chapter/" style="margin-left:100px">删除章节</a>
+                <a class="mini ui button" href="chapter/{{ chapter.id }}/delete_chapter/" style="float:right">删除章节</a>
               {% elif course.creator_id.id == request.user.id %}
-                <a class="mini ui button" href="chapter/{{ chapter.id }}/delete_chapter/" style="margin-left:100px">删除章节</a>
+                <a class="mini ui button" href="chapter/{{ chapter.id }}/delete_chapter/" style="float:right">删除章节</a>
               {% endif %}
               </h3>
               
@@ -191,12 +192,12 @@
         {%for ppt in ppt_list %} 
           {% if ppt.chapter_id.id == chapter.id %}
             <p><a href="chapter/{{ chapter.id }}/ppt/{{ ppt.id }}/" target="_blank">PPT{{ ppt.ppt_order }}: {{ ppt.title }}</a>
-            <a class="mini ui button" href="chapter/{{ chapter.id }}/ppt/{{ ppt.id }}/downloadppt/" style="margin-left:220px">下载</a>
             {% if request.user.permission >= 10 %}
-              <a class="mini ui button" href="chapter/{{ chapter.id }}/ppt/{{ ppt.id }}/delete_ppt/" style="margin-left:20px">删除</a>
+              <a class="mini ui button" href="chapter/{{ chapter.id }}/ppt/{{ ppt.id }}/delete_ppt/" style="float:right;margin-left:10px">删除</a>
             {% elif course.creator_id.id == request.user.id %}
-              <a class="mini ui button" href="chapter/{{ chapter.id }}/ppt/{{ ppt.id }}/delete_ppt/" style="margin-left:20px">删除</a>
+              <a class="mini ui button" href="chapter/{{ chapter.id }}/ppt/{{ ppt.id }}/delete_ppt/" style="float:right;margin-left:10px">删除</a>
             {% endif %}
+            <a class="mini ui button" href="chapter/{{ chapter.id }}/ppt/{{ ppt.id }}/downloadppt/" style="float:right">下载</a>
             </p>
           {% endif %}
         {% endfor %}
@@ -247,9 +248,9 @@
                     <div class="content">
                       <div class="author">{{ course_comment.account_id.username }} 
                       {% if request.user.permission >= 10 %}
-                        <a class="mini ui button" href="comment/{{ course_comment.id }}/delete_comment/" style="margin-left:350px">删除评论</a>
+                        <a class="mini ui button" href="comment/{{ course_comment.id }}/delete_comment/" style="float:right">删除评论</a>
                       {% elif request.user.id == course_comment.account_id.id %}
-                        <a class="mini ui button" href="comment/{{ course_comment.id }}/delete_comment/" style="margin-left:350px">删除评论</a>
+                        <a class="mini ui button" href="comment/{{ course_comment.id }}/delete_comment/" style="float:right">删除评论</a>
                       {% endif %}
                       </div>
                       <div class="metadata">
