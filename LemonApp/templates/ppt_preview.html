@@ -51,7 +51,7 @@
                     {% for ppt_page in ppt_page_pair %}
                     <div class="column">
                         <a href="/college/{{ college.id }}/course/{{ course.id }}/chapter/{{chapter.id}}/ppt/{{ppt.id}}/{{forloop.counter0}}">
-                        <img class = "ui fluid image" src="{{ img_base_url }}{{ ppt_page.0 }}">
+                        <img class = "ui fluid image" src="{{ img_base_url }}thumb/{{ ppt_page.0 }}">
                         </a>
                         {% if ppt_page.1 > 0 %}
                             <h6>[comment: {{ppt_page.1}}]</h6>
