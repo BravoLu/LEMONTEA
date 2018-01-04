@@ -131,3 +131,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'LemonApp/media')
 AUTH_USER_MODEL = 'LemonApp.Account'
 
 CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
+
+#
+FILE_UPLOAD_PERMISSIONS = 0o644
